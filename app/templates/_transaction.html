@@ -1,0 +1,24 @@
+    <table class="table table-hover">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('main.user', username=transaction.author.username) }}">
+                    {% if transaction.img_url != None %}
+                    <img src="{{ transaction.img_url }}" width="70px" height="70px"><br>
+                    {% else %}
+                    <img src="{{ transaction.author.avatar(70) }}"><br>
+                    {% endif %}
+                </a>
+            </td>
+            <td>
+                {% set user_link %}
+                    <a href="{{ url_for('main.user', username=transaction.author.username) }}">
+                        {{ transaction.author.username }}
+                    </a>
+                {% endset %}
+                {{ _('%(username)s sold 1 %(product)s %(when)s',
+                    username=user_link, product=transaction.product_name, when=moment(transaction.timestamp).fromNow()) }}
+                <br>
+                <span id="transaction{{ transaction.id }}">{{ transaction.name }}</span>
+            </td>
+        </tr>
+    </table>

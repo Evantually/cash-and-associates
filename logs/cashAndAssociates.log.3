@@ -1,0 +1,131 @@
+2021-07-31 07:16:52,650 ERROR: Exception on /point_of_sale [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1516, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1535, in finalize_request
+    response = self.make_response(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1698, in make_response
+    raise TypeError(
+TypeError: The view function for 'main.point_of_sale' did not return a valid response. The function either returned None or ended without a return statement.
+2021-07-31 07:20:33,043 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:20:41,399 ERROR: Exception on /point_of_sale [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1516, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1535, in finalize_request
+    response = self.make_response(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1698, in make_response
+    raise TypeError(
+TypeError: The view function for 'main.point_of_sale' did not return a valid response. The function either returned None or ended without a return statement.
+2021-07-31 07:27:35,028 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:27:37,166 ERROR: Exception on /user/Evan [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 37, in user
+    return render_template('user.html', user=user,
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\user.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 52, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\user.html", line 19, in block 'app_content'
+    {% if len(products) > 0 %}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\utils.py", line 84, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'len' is undefined
+2021-07-31 07:27:58,551 ERROR: Exception on /user/Evan [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 37, in user
+    return render_template('user.html', user=user,
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\user.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 52, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\user.html", line 19, in block 'app_content'
+    {% if len(products) > 0 %}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\utils.py", line 84, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'len' is undefined
+2021-07-31 07:29:40,178 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:30:16,704 ERROR: Exception on /point_of_sale [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1516, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1535, in finalize_request
+    response = self.make_response(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1698, in make_response
+    raise TypeError(
+TypeError: The view function for 'main.point_of_sale' did not return a valid response. The function either returned None or ended without a return statement.
+2021-07-31 07:32:12,255 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:32:17,832 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:33:07,560 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:34:38,645 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:35:04,578 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:35:23,116 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:35:35,461 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:36:02,030 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:36:18,176 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:36:36,441 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:36:55,815 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:37:09,614 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:38:38,978 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]

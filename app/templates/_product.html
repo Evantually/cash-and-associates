@@ -1,0 +1,22 @@
+<div class="col-md-2">
+    {% if product.img_url != None %}
+    <img src="{{ product.img_url }}" width="96px" height="96px"><br>
+    {% else %}
+    <img src="{{ user.avatar(96) }}"><br>
+    {% endif %}
+    <span id="product{{ product.id }}" product-id="{{ product.id }}">{{ product.name }} | ${{ product.price }}</span>
+    {% if user == current_user %}
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ url_for('main.delete_product', product_id=product.id) }}">{{ _('Delete this product') }}</a>
+        </div>
+        <div class="col-md-6">
+            <a href="javascript:post_sale(
+                            '#product{{ product.id }}',
+                            '#sale{{ product.id }}');">{{ _('Record Sale') }}</a>
+        </div>
+        <span id="sale{{ product.id }}"></span>
+    </div>
+    {% endif %}
+</div>

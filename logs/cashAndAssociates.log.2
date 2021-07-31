@@ -1,0 +1,92 @@
+2021-07-31 07:39:31,745 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:40:53,214 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:41:13,685 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:45:30,143 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:54:58,524 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:54:59,242 ERROR: Exception on /user/Evan [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: transaction.product_name
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 35, in user
+    transactions = Transaction.query.filter_by(user_id=user.id).all()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2709, in all
+    return self._iter().all()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
+    result = self.session.execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
+    ret = self._execute_context(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
+    self._handle_dbapi_exception(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
+    util.raise_(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: transaction.product_name
+[SQL: SELECT "transaction".id AS transaction_id, "transaction".product AS transaction_product, "transaction".product_name AS transaction_product_name, "transaction".timestamp AS transaction_timestamp, "transaction".user_id AS transaction_user_id 
+FROM "transaction" 
+WHERE "transaction".user_id = ?]
+[parameters: (1,)]
+(Background on this error at: http://sqlalche.me/e/14/e3q8)
+2021-07-31 07:55:26,797 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:55:31,320 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:55:33,770 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:55:38,691 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:56:06,377 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:56:34,846 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 07:56:39,739 ERROR: Exception on /delete_product/1 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+TypeError: delete_product() got an unexpected keyword argument 'product_id'
+2021-07-31 07:57:10,669 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 08:03:41,185 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 08:03:50,655 ERROR: Exception on /point_of_sale [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1516, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1535, in finalize_request
+    response = self.make_response(rv)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1698, in make_response
+    raise TypeError(
+TypeError: The view function for 'main.point_of_sale' did not return a valid response. The function either returned None or ended without a return statement.
+2021-07-31 08:05:18,285 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 08:09:19,875 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 08:10:58,383 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-07-31 08:46:13,903 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
