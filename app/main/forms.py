@@ -33,7 +33,6 @@ class AddProductForm(FlaskForm):
     price = IntegerField(_l('Price'), validators=[DataRequired()])
     img_url = StringField(_l('Image URL'))
     sales_item = BooleanField('Sales Item?')
-    category = QuerySelectField(query_factory=lambda: Category.query.all())
     submit = SubmitField(_l('Submit'))
 
 class AddTransactionForm(FlaskForm):
