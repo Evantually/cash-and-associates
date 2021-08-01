@@ -1,4 +1,4 @@
-2021-08-01 04:21:41,105 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-08-01 04:26:16,168 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -35,10 +35,10 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 62, in block 'content'
     {% block app_content %}{% endblock %}
   File "E:\Evan\Documents\NewDayRP\microblog\app\templates\index.html", line 14, in block 'app_content'
-    <h4 class="{% if total_revenue >= 0 %} cash {% else %} debt {% endif %}">${{ total_revenue }}</h4>
-jinja2.exceptions.UndefinedError: 'total_revenue' is undefined
-2021-08-01 04:22:44,085 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
-2021-08-01 04:22:44,602 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+    <h4 class="{% if transaction_info['total'] >= 0 %} cash {% else %} debt {% endif %}">${{ transaction_info['sum'] }}</h4>
+jinja2.exceptions.UndefinedError: 'flask.wrappers.Response object' has no attribute 'total'
+2021-08-01 04:27:11,593 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-08-01 04:27:13,773 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -75,11 +75,10 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 62, in block 'content'
     {% block app_content %}{% endblock %}
   File "E:\Evan\Documents\NewDayRP\microblog\app\templates\index.html", line 14, in block 'app_content'
-    <h4 class="{% if total_revenue >= 0 %} cash {% else %} debt {% endif %}">${{ transaction_info['sum'] }}</h4>
-jinja2.exceptions.UndefinedError: 'total_revenue' is undefined
-2021-08-01 04:23:06,119 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
-2021-08-01 04:23:59,336 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
-2021-08-01 04:23:59,921 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+    <h4 class="{% if transaction_info['sum'] >= 0 %} cash {% else %} debt {% endif %}">${{ transaction_info['sum'] }}</h4>
+jinja2.exceptions.UndefinedError: 'flask.wrappers.Response object' has no attribute 'sum'
+2021-08-01 04:28:17,129 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-08-01 04:28:17,483 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -91,17 +90,31 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 28, in index
-    transaction_info = jsonify(organize_data_by_date(transactions))
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\json\__init__.py", line 348, in jsonify
-    f"{dumps(data, indent=indent, separators=separators)}\n",
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\json\__init__.py", line 129, in dumps
-    rv = _json.dumps(obj, **kwargs)
-  File "i:\anaconda\envs\cash\lib\json\__init__.py", line 234, in dumps
-    return cls(
-  File "i:\anaconda\envs\cash\lib\json\encoder.py", line 199, in encode
-    chunks = self.iterencode(o, _one_shot=True)
-  File "i:\anaconda\envs\cash\lib\json\encoder.py", line 257, in iterencode
-    return _iterencode(o, 0)
-TypeError: '<' not supported between instances of 'datetime.date' and 'str'
-2021-08-01 04:26:13,079 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 29, in index
+    return render_template('index.html', title=_('Home'), transactions=transactions,
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\index.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 62, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\index.html", line 14, in block 'app_content'
+    <h4 class="{% if transaction_info.sum >= 0 %} cash {% else %} debt {% endif %}">${{ transaction_info['sum'] }}</h4>
+jinja2.exceptions.UndefinedError: 'flask.wrappers.Response object' has no attribute 'sum'
+2021-08-01 04:28:38,358 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]

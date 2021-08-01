@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Record Sales With the Point of Sale System</h1>
+    <p>
+        Probably the most useful feature is being able to record sales at the touch of a button!
+        Once you've entered your products and made them sales items, you will be able to use the
+        Point of Sale system to record a sale. Follow the instructions below for the basics.
+    </p>
+    <img src="{{ url_for('static', filename='imgs/point_of_sale.jpg') }}">
+    <p>
+        <b>Note:</b> Clicking the "Delete this product" button will not immediately delete the product. You will
+        be sent to a new page to confirm the deletion.
+    </p>
+    {% include '_tutorials.html' %}
+{% endblock %}

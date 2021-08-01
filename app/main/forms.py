@@ -32,7 +32,7 @@ class AddProductForm(FlaskForm):
     product = StringField(_l('Product Name'), validators=[DataRequired()])
     price = IntegerField(_l('Price'), validators=[DataRequired()])
     img_url = StringField(_l('Image URL'))
-    sales_item = BooleanField('Sales Item?')
+    sales_item = BooleanField('Sales Item? Check this if you want on your point of sale page.')
     submit = SubmitField(_l('Submit'))
 
 class AddTransactionForm(FlaskForm):

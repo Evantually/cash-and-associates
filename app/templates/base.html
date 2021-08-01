@@ -34,6 +34,7 @@
                     <li><a href="{{ url_for('main.add_category') }}">{{ _('Add Category') }}</a></li>
                     {% endif %}
                     {% endif %}
+                    <li><a href="{{ url_for('main.tutorials') }}">{{ _('Tutorials') }}</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}

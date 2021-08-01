@@ -172,3 +172,27 @@ def post_sale():
     db.session.add(transaction)
     db.session.commit()
     return jsonify({'text': f'The sale of 1 {product.name} for ${price} has been recorded.'})
+
+@bp.route('/tutorials')
+def tutorials():
+    return render_template('tutorial.html')
+
+@bp.route('/add_product_tutorial')
+def add_product_tutorial():
+    return render_template('add_product_tutorial.html')
+
+@bp.route('/add_transaction_tutorial')
+def add_transaction_tutorial():
+    return render_template('add_transaction_tutorial.html')
+
+@bp.route('/recording_sales_tutorial')
+def recording_sales_tutorial():
+    return render_template('recording_sales_tutorial.html')
+
+@bp.route('/changelogs')
+def changelogs():
+    return render_template('changelogs.html')
+
+@bp.route('/roadmap')
+def roadmap():
+    return render_template('roadmap.html')

@@ -25,5 +25,12 @@
         {% for transaction in transactions %}
             {% include '_transaction.html' %}
         {% endfor %}
+    {% else %}
+    <h3>Get Started</h3>
+    <p>
+        Welcome to the Cash & Associates accounting software! Let's get started by <a href="{{ url_for('main.add_product') }}">adding
+        some of your products</a>!
+    </p>
+    {% include '_tutorials.html' %}
     {% endif %}
 {% endblock %}

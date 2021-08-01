@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>How to Add a Product</h1>
+    <p>
+        One of the useful tools is adding your products so they are available to your Point of Sale page.
+        This will make it easy to record a sale at the click of a button. Follow the instructions below
+        to add your first product!
+    </p>
+    <img src="{{ url_for('static', filename='imgs/add_product.jpg') }}">
+    {% include '_tutorials.html' %}
+{% endblock %}
