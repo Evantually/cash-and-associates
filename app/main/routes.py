@@ -166,9 +166,9 @@ def post_sale():
     price = request.form['cost']
     if request.form['cost'] == '':
         price = product.price
-    transaction = Transaction(product=product.id, product_name=product.name,
-                              user_id=current_user.id, img_url=product.img_url,
-                              price=price, quantity=1, total=price)
+    transaction = Transaction(transaction_type='Revenue', product=product.id, 
+                              product_name=product.name, user_id=current_user.id, 
+                              price=price, quantity=1, total=price, category='Sales')
     db.session.add(transaction)
     db.session.commit()
     return jsonify({'text': f'The sale of 1 {product.name} for ${price} has been recorded.'})
