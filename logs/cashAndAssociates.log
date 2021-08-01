@@ -1,53 +1,10 @@
-2021-07-31 09:11:32,033 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-08-01 07:57:43,658 ERROR: Exception on /add_transaction [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 32, in index
-    return render_template('index.html', title=_('Home'), transactions=transactions,
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
-    return _render(
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
-    rv = template.render(context)
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\index.html", line 2, in top-level template code
-    {% import 'bootstrap/wtf.html' as wtf %}
-  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 1, in top-level template code
-    {% extends 'bootstrap/base.html' %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
-    {% block doc -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
-    {%- block html %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
-    {% block body -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
-    {% block content -%}
-  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\base.html", line 52, in block 'content'
-    {% block app_content %}{% endblock %}
-  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\index.html", line 17, in block 'app_content'
-    {% include '_transaction.html' %}
-  File "E:\Evan\Documents\NewDayRP\microblog\app\templates\_transaction.html", line 8, in top-level template code
-    <img src="{{ user.avatar(70) }}"><br>
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'user' is undefined
-2021-07-31 09:12:14,667 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
-2021-07-31 09:14:50,172 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
-2021-07-31 09:14:53,215 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 1366, in visit_textual_label_reference
-    col = with_cols[element.element]
-KeyError: 'timestamp desc'
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.InterfaceError: Error binding parameter 8 - probably unsupported type.
 
 The above exception was the direct cause of the following exception:
 
@@ -62,53 +19,50 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 26, in index
-    transactions = Transaction.query.filter_by(user_id=current_user.id).order_by("timestamp desc").all()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2709, in all
-    return self._iter().all()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
-    result = self.session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
+  File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 70, in add_transaction
+    db.session.commit()
+  File "<string>", line 2, in commit
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1428, in commit
+    self._transaction.commit(_to_root=self.future)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 829, in commit
+    self._prepare_impl()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 808, in _prepare_impl
+    self.session.flush()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3298, in flush
+    self._flush(objects)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3438, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3398, in _flush
+    flush_context.execute()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 456, in execute
+    rec.execute(self)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 630, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 242, in save_obj
+    _emit_insert_statements(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 1219, in _emit_insert_statements
+    result = connection._execute_20(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
     return meth(self, args_10style, kwargs_10style, execution_options)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
     return connection._execute_clauseelement(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1443, in _execute_clauseelement
-    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 518, in _compile_w_cache
-    compiled_sql = self._compiler(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 553, in _compiler
-    return dialect.statement_compiler(dialect, self, **kw)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 766, in __init__
-    Compiled.__init__(self, dialect, statement, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 455, in __init__
-    self.string = self.process(self.statement, **compile_kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 490, in process
-    return obj._compiler_dispatch(self, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\visitors.py", line 82, in _compiler_dispatch
-    return meth(self, **kw)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 3133, in visit_select
-    text = self._compose_select_body(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 3306, in _compose_select_body
-    text += self.order_by_clause(select, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 3373, in order_by_clause
-    order_by = self._generate_delimited_list(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 1589, in _generate_delimited_list
-    return separator.join(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 1589, in <genexpr>
-    return separator.join(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 1591, in <genexpr>
-    for s in (c._compiler_dispatch(self, **kw) for c in elements)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\visitors.py", line 82, in _compiler_dispatch
-    return meth(self, **kw)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\compiler.py", line 1368, in visit_textual_label_reference
-    coercions._no_text_coercion(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 347, in _no_text_coercion
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
+    ret = self._execute_context(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
+    self._handle_dbapi_exception(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
     util.raise_(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
     raise exception
-sqlalchemy.exc.CompileError: Can't resolve label reference for ORDER BY / GROUP BY / DISTINCT etc. Textual SQL expression 'timestamp desc' should be explicitly declared as text('timestamp desc')
-2021-07-31 09:15:31,609 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
-2021-07-31 09:16:08,266 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
-2021-07-31 09:19:08,560 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.InterfaceError: <unprintable InterfaceError object>
+2021-08-01 07:58:08,319 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-08-01 08:00:31,876 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-08-01 08:01:06,438 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]

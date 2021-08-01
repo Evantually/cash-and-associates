@@ -5,10 +5,11 @@ from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from app import db
-from app.main.forms import EditProfileForm, EmptyForm, AddProductForm, DeleteForm
-from app.models import User, Transaction, Product
+from app.main.forms import EditProfileForm, EmptyForm, AddProductForm, DeleteForm, AddTransactionForm, AddCategoryForm
+from app.models import User, Transaction, Product, Category
 from app.translate import translate
 from app.main import bp
+from app.main.utils import organize_data_by_date
 
 
 @bp.before_app_request
@@ -24,20 +25,16 @@ def before_request():
 @login_required
 def index():
     transactions = Transaction.query.filter_by(user_id=current_user.id).order_by(Transaction.timestamp.desc()).all()
-    total_sales = 0
-    total_revenue = 0
-    for transaction in transactions:
-        total_sales += 1
-        total_revenue += Product.query.filter_by(id=transaction.product).first().price
+    transaction_info = organize_data_by_date(transactions)
     return render_template('index.html', title=_('Home'), transactions=transactions,
-                            total_sales=total_sales, total_revenue=total_revenue)
+                            transaction_info=transaction_info)
 
 
 @bp.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    products = Product.query.filter_by(user_id=user.id).order_by(Product.name).all()
+    products = Product.query.filter_by(user_id=user.id).filter_by(sales_item=True).order_by(Product.name).all()
     transactions = Transaction.query.filter_by(user_id=user.id).order_by(Transaction.timestamp.desc()).all()
     form = EmptyForm()
     return render_template('user.html', user=user,
@@ -49,12 +46,47 @@ def add_product():
     form = AddProductForm()
     if form.validate_on_submit():
         product = Product(name=form.product.data, price=form.price.data,
-                          user_id=current_user.id, img_url=form.img_url.data)
+                          user_id=current_user.id, img_url=form.img_url.data,
+                          sales_item=form.sales_item.data)
         db.session.add(product)
         db.session.commit()
         flash(f'{product.name} has been successfully added.')
         return redirect(url_for('main.add_product'))
     return render_template('add_product.html', title=_('Add Product'),
+                           form=form)
+
+@bp.route('/add_transaction', methods=['GET', 'POST'])
+@login_required
+def add_transaction():
+    form = AddTransactionForm()
+    choices = [("","---")]
+    form.product.choices = [("", "---")]+[(s.id, s.name) for s in Product.query.filter_by(user_id=current_user.id).all()]
+    if form.validate_on_submit():
+        transaction = Transaction(transaction_type=str(form.transaction_type.data), product=int(form.product.data), 
+                                  product_name=Product.query.filter_by(id=int(form.product.data)).first().name, 
+                                  user_id=current_user.id, price=int(form.price.data), quantity=int(form.quantity.data),
+                                  total=int(form.price.data)*int(form.quantity.data), category=str(form.category.data))
+        db.session.add(transaction)
+        db.session.commit()
+        flash(f'Your transaction has been successfully added.')
+        return redirect(url_for('main.add_transaction'))
+    return render_template('add_product.html', title=_('Add Transaction'),
+                           form=form)
+
+@bp.route('/add_category', methods=['GET', 'POST'])
+@login_required
+def add_category():
+    if current_user.username != 'Evan':
+        flash('You do not have access to add a category.')
+        return redirect(url_for('main.index'))
+    form = AddCategoryForm()
+    if form.validate_on_submit():
+        category = Category(name=form.category.data)
+        db.session.add(category)
+        db.session.commit()
+        flash(f'{category.name} has been added as a category.')
+        return redirect(url_for('main.add_category'))
+    return render_template('add_product.html', title=_('Add Category'),
                            form=form)
 
 @bp.route('/delete_product/<product_id>', methods=['GET', 'POST'])
@@ -74,12 +106,42 @@ def delete_product(product_id):
     return render_template('add_product.html', title=_('Delete Product'),
                            form=form)
 
+@bp.route('/delete_transaction/<transaction_id>', methods=['GET', 'POST'])
+@login_required
+def delete_transaction(transaction_id):
+    form = DeleteForm()
+    if form.validate_on_submit():
+        transaction = Transaction.query.filter_by(id=transaction_id).first_or_404()
+        if current_user.id == Transaction.query.filter_by(id=transaction_id).first().user_id:
+            db.session.delete(transaction)
+            db.session.commit()
+            flash(f'{transaction.product_name} has been deleted successfully.')
+            return redirect(url_for('main.add_product'))
+        else:
+            flash('You do not have authority to delete this transaction.')
+            return redirect(url_for('main.index'))
+    return render_template('add_product.html', title=_('Delete Transaction'),
+                           form=form)
+
 @bp.route('/point_of_sale')
 @login_required
 def point_of_sale():
-    products = Product.query.filter_by(user_id=current_user.id).order_by(Product.name).all()
+    products = Product.query.filter_by(user_id=current_user.id).filter_by(sales_item=True).order_by(Product.name).all()
     return render_template('point_of_sale.html', products=products, user=current_user)
 
+
+@bp.route('/purchase_inventory', methods=['GET', 'POST'])
+@login_required
+def purchase_inventory():
+    form = PurchaseInventoryForm()
+    if form.validate_on_submit():
+        inventory = Inventory(user_id=current_user.id, product_id=form.product.data.id,
+                             quantity=form.quantity.data, price_paid=form.price_paid.data)
+        db.session.add(inventory)
+        db.session.commit()
+        flash(f'{form.quantity.data} {form.product.data} have been added to the inventory of {current_user.username}')
+        return redirect(url_for('main.purchase_inventory'))
+    return render_template('add_product.html', title='Purchase Inventory', form=form)
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -101,8 +163,12 @@ def edit_profile():
 @login_required
 def post_sale():
     product = Product.query.filter_by(id=request.form['product_id']).first()
+    price = request.form['cost']
+    if request.form['cost'] == '':
+        price = product.price
     transaction = Transaction(product=product.id, product_name=product.name,
-                              user_id=current_user.id, img_url=product.img_url)
+                              user_id=current_user.id, img_url=product.img_url,
+                              price=price, quantity=1, total=price)
     db.session.add(transaction)
     db.session.commit()
-    return jsonify({'text': f'The sale of 1 {product.name} has been recorded.'})
+    return jsonify({'text': f'The sale of 1 {product.name} for ${price} has been recorded.'})

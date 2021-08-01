@@ -4,6 +4,12 @@
     {% if title %}{{ title }} - Cash & Associates{% else %}{{ _('Welcome to Cash & Associates') }}{% endif %}
 {% endblock %}
 
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('static', filename='styles/style.css')}}">
+{% endblock %}
+
 {% block navbar %}
     <nav class="navbar navbar-default">
         <div class="container">
@@ -23,6 +29,10 @@
                     {% else %}
                     <li><a href="{{ url_for('main.add_product') }}">{{ _('Add Product') }}</a></li>
                     <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
+                    <li><a href="{{ url_for('main.add_transaction') }}">{{ _('Add Transaction') }}</a></li>
+                    {% if current_user.username == 'admin' %}
+                    <li><a href="{{ url_for('main.add_category') }}">{{ _('Add Category') }}</a></li>
+                    {% endif %}
                     {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -57,17 +67,115 @@
     {{ super() }}
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-        function post_sale(sourceElem, destElem) {
+        function post_sale(sourceElem, destElem, costElem) {
             $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
             $.post('/post_sale', {
                 text: $(sourceElem).text(),
+                cost: $(costElem).val(),
                 product_id: $(sourceElem).attr("product-id")
             }).done(function(response) {
                 $(destElem).text(response['text'])
             }).fail(function() {
                 $(destElem).text("{{ _('Error: Could not contact server.') }}");
             });
+        }
+        function create_graph(data){
+            data.dates.forEach(d => {
+                d.formatted_date = d3.timeParse("%Y-%m-%d")(d.date)
+            });
+            data.dates.sort((a,b) => (a.formatted_date > b.formatted_date ? 1: -1))
+            // set the dimensions and margins of the graph
+            var margin = {top: 10, right: 30, bottom: 30, left: 60},
+                width = 460 - margin.left - margin.right,
+                height = 400 - margin.top - margin.bottom;
+
+            // append the svg object to the body of the page
+            d3.select("#graph1").selectAll("svg").remove();
+            var svg = d3.select("#graph1")
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+
+            // Add X axis --> it is a date format
+            var x = d3.scaleTime()
+            .domain(d3.extent(data.dates, function(d) { return d.formatted_date; }))
+            .range([ 0, width ]);
+            svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+            .domain([0, d3.max(data.dates, function(d) { return +d.sum; })])
+            .range([ height, 0 ]);
+            svg.append("g")
+            .call(d3.axisLeft(y));
+
+            var bisect = d3.bisector(function(d) { return d.formatted_date; }).right;
+
+            var focus = svg
+                .append('g')
+                .append('circle')
+                .style("fill", "none")
+                .attr("stroke", "black")
+                .attr('r', 8.5)
+                .style("opacity", 0)
+
+            var focusText = svg
+                .append('g')
+                .append('text')
+                .style("opacity", 0)
+                .style("font", "10px sans-serif")
+
+            // Add the line
+            svg.append("path")
+            .datum(data.dates)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 1.5)
+            .attr("d", d3.line()
+                .x(function(d) { return x(d.formatted_date) })
+                .y(function(d) { return y(d.sum) })
+                )
+
+            svg
+                .append('rect')
+                .style("fill", "none")
+                .style("pointer-events", "all")
+                .attr('width', width)
+                .attr('height', height)
+                .on('mouseover', mouseover)
+                .on('mousemove', mousemove)
+                .on('mouseout', mouseout);
+
+            function mouseover() {
+                focus.style("opacity", 1)
+                focusText.style("opacity",1)
+            }
+
+            function mousemove() {
+                // recover coordinate we need
+                var x0 = x.invert(d3.pointer(event)[0]);
+                var i = bisect(data.dates, x0, 1);
+                selectedData = data.dates[i-1]
+                focus
+                .attr("cx", x(selectedData.formatted_date))
+                .attr("cy", y(selectedData.sum))
+                focusText
+                .html(`Revenue: $${selectedData.sum}`)
+                .attr("x", x(selectedData.formatted_date)+15)
+                .attr("y", y(selectedData.sum))
+                }
+            function mouseout() {
+                focus.style("opacity", 0)
+                focusText.style("opacity", 0)
+            }
         }
     </script>
 {% endblock %}

@@ -1,9 +1,11 @@
 from flask import request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField
+from flask_login import current_user
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, DecimalField, BooleanField, SelectField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import ValidationError, DataRequired, Length
 from flask_babel import _, lazy_gettext as _l
-from app.models import User
+from app.models import User, Product, Category
 
 
 class EditProfileForm(FlaskForm):
@@ -30,8 +32,23 @@ class AddProductForm(FlaskForm):
     product = StringField(_l('Product Name'), validators=[DataRequired()])
     price = IntegerField(_l('Price'), validators=[DataRequired()])
     img_url = StringField(_l('Image URL'))
+    sales_item = BooleanField('Sales Item?')
+    category = QuerySelectField(query_factory=lambda: Category.query.all())
+    submit = SubmitField(_l('Submit'))
+
+class AddTransactionForm(FlaskForm):
+    transaction_type = SelectField(_l('Transaction Type'), choices=[('Expense','Expense'), ('Revenue','Revenue'), ('Equity', 'Equity')])
+    product = SelectField('Product')
+    price = IntegerField(_l('Price'), validators=[DataRequired()])
+    quantity = IntegerField(_l('Quantity'), validators=[DataRequired()])
+    category = QuerySelectField(query_factory=lambda: Category.query.all())
+    inventory = BooleanField('Inventory item?')
     submit = SubmitField(_l('Submit'))
 
 class DeleteForm(FlaskForm):
     delete = StringField(_l('Type "Delete" to delete this product.'))
+    submit = SubmitField(_l('Submit'))
+
+class AddCategoryForm(FlaskForm):
+    category = StringField(_l('Category'))
     submit = SubmitField(_l('Submit'))

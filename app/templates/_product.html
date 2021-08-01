@@ -1,4 +1,4 @@
-<div class="col-md-2">
+<div class="col-md-3">
     {% if product.img_url != None %}
     <img src="{{ product.img_url }}" width="96px" height="96px"><br>
     {% else %}
@@ -8,14 +8,33 @@
     {% if user == current_user %}
     <br>
     <div class="row">
+        <div class="col-md-4">
+            <label for="input">Manual Price</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number" id="cost{{ product.id }}">
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
-            <a href="{{ url_for('main.delete_product', product_id=product.id) }}">{{ _('Delete this product') }}</a>
+            <a href="{{ url_for('main.delete_product', product_id=product.id) }}">
+                <button class="btn btn-danger">
+                    {{ _('Delete this product') }}
+                </button>
+            </a>
         </div>
         <div class="col-md-6">
             <a href="javascript:post_sale(
                             '#product{{ product.id }}',
-                            '#sale{{ product.id }}');">{{ _('Record Sale') }}</a>
+                            '#sale{{ product.id }}',
+                            '#cost{{ product.id }}');">
+                <button class="btn btn-success">
+                    {{ _('Record Sale') }}
+                </button>
+            </a>
         </div>
+    </div>
+    <div class="row">
         <span id="sale{{ product.id }}"></span>
     </div>
     {% endif %}

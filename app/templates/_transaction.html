@@ -2,7 +2,7 @@
         <tr>
             <td width="70px">
                 <a href="{{ url_for('main.user', username=transaction.author.username) }}">
-                    {% if transaction.img_url != None %}
+                    {% if transaction.img_url not in (None, "") %}
                     <img src="{{ transaction.img_url }}" width="70px" height="70px"><br>
                     {% else %}
                     <img src="{{ transaction.author.avatar(70) }}"><br>
@@ -15,10 +15,14 @@
                         {{ transaction.author.username }}
                     </a>
                 {% endset %}
-                {{ _('%(username)s sold 1 %(product)s %(when)s',
-                    username=user_link, product=transaction.product_name, when=moment(transaction.timestamp).fromNow()) }}
+                {{ _('%(username)s sold %(quantity)s %(product)s at a price of $%(price)s %(when)s',
+                    username=user_link, quantity=transaction.quantity, product=transaction.product_name, 
+                    price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
                 <br>
                 <span id="transaction{{ transaction.id }}">{{ transaction.name }}</span>
             </td>
         </tr>
     </table>
+    <div class="row">
+        <a href="{{ url_for('main.delete_transaction', transaction_id=transaction.id) }}">Delete this transaction</a>
+    </div>

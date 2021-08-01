@@ -11,7 +11,7 @@ from app import db, login
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+    email = db.Column(db.String(120))
     password_hash = db.Column(db.String(128))
     transactions = db.relationship('Transaction', backref='author', lazy='dynamic')
     products = db.relationship('Product', backref='author', lazy='dynamic')
@@ -54,21 +54,33 @@ def load_user(id):
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    transaction_type = db.Column(db.String(64))
     product =  db.Column(db.Integer, db.ForeignKey('product.id'))
-    product_name = db.Column(db.String(140))
+    product_name = db.Column(db.String(64))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    img_url = db.Column(db.String(140))
+    price = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
+    total = db.Column(db.Integer)
+    category = db.Column(db.String(64))
 
     def __repr__(self):
         return '<Transaction {}>'.format(self.product)
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(140))
+    name = db.Column(db.String(64))
     price = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     img_url = db.Column(db.String(140))
+    sales_item = db.Column(db.Boolean)
 
     def __repr__(self):
-        return f'<Product {self.name} | ${self.price}'
+        return f'{self.name}'
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+
+    def __repr__(self):
+        return f'{self.name}'

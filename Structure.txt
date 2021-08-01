@@ -1,0 +1,63 @@
+Two column layout
+    Revenue on left
+    Expenses on right
+
+
+Database Structure
+
+User
+    Fields
+        Username - String
+        Email - String
+        Password Hash - String
+        Transactions - Relationship
+        Products - Relationship
+        About Me - String
+        Last Seen - DateTime
+    Functions
+        Set Password
+        Check Password
+        Avatar
+        Get Reset Password Token
+        Verify Reset Password Token
+
+Transaction
+    Fields
+        Type - String
+            Equity
+            Expense
+            Revenue           
+        Price (per unit) - Float
+        Quantity - Integer
+        Category - Foreign Key
+        Product - Foreign Key
+        User - Foreign Key
+        Details - Text
+        
+Product
+    Fields
+        Name - String
+        Price - Integer
+        User ID - Foreign Key
+
+Inventory
+    Fields
+        Category - Foreign Key
+        Name - String
+        Product - Foreign Key
+        
+Category
+    Fields
+        Name - String
+            Sales
+            Returns and Allowances
+            Cost of Goods Sold
+            Other Income
+            Advertising
+            Wages
+            Contract Labor
+            Legal & Professional Services
+            Supplies
+            Business Licensing Fees
+            Other Expenses
+            Owner Equity
