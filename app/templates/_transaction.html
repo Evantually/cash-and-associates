@@ -2,11 +2,7 @@
         <tr>
             <td width="70px">
                 <a href="{{ url_for('main.user', username=transaction.author.username) }}">
-                    {% if transaction.img_url not in (None, "") %}
-                    <img src="{{ transaction.img_url }}" width="70px" height="70px"><br>
-                    {% else %}
                     <img src="{{ transaction.author.avatar(70) }}"><br>
-                    {% endif %}
                 </a>
             </td>
             <td>

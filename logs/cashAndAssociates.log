@@ -72,3 +72,4 @@ Traceback (most recent call last):
     product_name=Product.query.filter_by(id=product_id).first().name,
 AttributeError: 'NoneType' object has no attribute 'name'
 2021-08-01 13:43:38,684 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
+2021-08-01 16:02:36,230 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]
