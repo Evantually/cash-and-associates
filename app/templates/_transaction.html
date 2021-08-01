@@ -19,7 +19,7 @@
                     {{ _('%(username)s sold %(quantity)s %(product)s at a price of $%(price)s %(when)s',
                         username=user_link, quantity=transaction.quantity, product=transaction.name, 
                         price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
-                {% elseif transaction.transaction_type == 'Expense'%}
+                {% elif transaction.transaction_type == 'Expense'%}
                     {{ _('%(username)s incurred %(quantity)s expense of %(product)s at a price of $%(price)s %(when)s',
                         username=user_link, quantity=transaction.quantity, product=transaction.name, 
                         price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
