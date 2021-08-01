@@ -76,7 +76,7 @@ def add_transaction():
 @bp.route('/add_category', methods=['GET', 'POST'])
 @login_required
 def add_category():
-    if current_user.username != 'Evan':
+    if current_user.username != 'admin':
         flash('You do not have access to add a category.')
         return redirect(url_for('main.index'))
     form = AddCategoryForm()
