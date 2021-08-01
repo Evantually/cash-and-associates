@@ -55,6 +55,7 @@ def load_user(id):
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     transaction_type = db.Column(db.String(64))
+    name = db.Column(db.String(64))
     product =  db.Column(db.Integer, db.ForeignKey('product.id'))
     product_name = db.Column(db.String(64))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -62,6 +63,7 @@ class Transaction(db.Model):
     price = db.Column(db.Integer)
     quantity = db.Column(db.Integer)
     total = db.Column(db.Integer)
+    details = db.Column(db.String(512))
     category = db.Column(db.String(64))
 
     def __repr__(self):

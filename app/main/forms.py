@@ -37,11 +37,13 @@ class AddProductForm(FlaskForm):
 
 class AddTransactionForm(FlaskForm):
     transaction_type = SelectField(_l('Transaction Type'), choices=[('Expense','Expense'), ('Revenue','Revenue'), ('Equity', 'Equity')])
+    name = StringField('Transaction Name')
     product = SelectField('Product')
     price = IntegerField(_l('Price'), validators=[DataRequired()])
     quantity = IntegerField(_l('Quantity'), validators=[DataRequired()])
     category = QuerySelectField(query_factory=lambda: Category.query.all())
     inventory = BooleanField('Inventory item?')
+    description = TextAreaField('Details')
     submit = SubmitField(_l('Submit'))
 
 class DeleteForm(FlaskForm):

@@ -62,10 +62,15 @@ def add_transaction():
     choices = [("","---")]
     form.product.choices = [("", "---")]+[(s.id, s.name) for s in Product.query.filter_by(user_id=current_user.id).all()]
     if form.validate_on_submit():
-        transaction = Transaction(transaction_type=str(form.transaction_type.data), product=int(form.product.data), 
-                                  product_name=Product.query.filter_by(id=int(form.product.data)).first().name, 
+        if form.product.data == "":
+            product_id = 1
+        else:
+            product_id = form.product.data
+        transaction = Transaction(name=form.name.data, transaction_type=str(form.transaction_type.data), product=product_id, 
+                                  product_name=Product.query.filter_by(id=product_id).first().name, 
                                   user_id=current_user.id, price=int(form.price.data), quantity=int(form.quantity.data),
-                                  total=int(form.price.data)*int(form.quantity.data), category=str(form.category.data))
+                                  total=int(form.price.data)*int(form.quantity.data), category=str(form.category.data),
+                                  description=form.description.data)
         db.session.add(transaction)
         db.session.commit()
         flash(f'Your transaction has been successfully added.')
@@ -166,9 +171,10 @@ def post_sale():
     price = request.form['cost']
     if request.form['cost'] == '':
         price = product.price
-    transaction = Transaction(transaction_type='Revenue', product=product.id, 
+    transaction = Transaction(transaction_type='Revenue', name='Sale', product=product.id, 
                               product_name=product.name, user_id=current_user.id, 
-                              price=price, quantity=1, total=price, category='Sales')
+                              price=price, quantity=1, total=price, category='Sales',
+                              description='N/A')
     db.session.add(transaction)
     db.session.commit()
     return jsonify({'text': f'The sale of 1 {product.name} for ${price} has been recorded.'})
