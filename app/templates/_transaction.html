@@ -15,9 +15,19 @@
                         {{ transaction.author.username }}
                     </a>
                 {% endset %}
-                {{ _('%(username)s sold %(quantity)s %(product)s at a price of $%(price)s %(when)s',
-                    username=user_link, quantity=transaction.quantity, product=transaction.product_name, 
-                    price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
+                {% if transaction.transaction_type == 'Revenue' %}
+                    {{ _('%(username)s sold %(quantity)s %(product)s at a price of $%(price)s %(when)s',
+                        username=user_link, quantity=transaction.quantity, product=transaction.name, 
+                        price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
+                {% elseif transaction.transaction_type == 'Expense'%}
+                    {{ _('%(username)s incurred %(quantity)s expense of %(product)s at a price of $%(price)s %(when)s',
+                        username=user_link, quantity=transaction.quantity, product=transaction.name, 
+                        price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
+                {% else %}
+                    {{ _('%(username)s received %(quantity)s equity payment for %(product)s in the amount of $%(price)s %(when)s',
+                        username=user_link, quantity=transaction.quantity, product=transaction.name, 
+                        price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
+                {% endif %}
                 <br>
                 <span id="transaction{{ transaction.id }}">{{ transaction.name }}</span>
             </td>
