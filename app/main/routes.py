@@ -70,7 +70,7 @@ def add_transaction():
                                   product_name=Product.query.filter_by(id=product_id).first().name, 
                                   user_id=current_user.id, price=int(form.price.data), quantity=int(form.quantity.data),
                                   total=int(form.price.data)*int(form.quantity.data), category=str(form.category.data),
-                                  description=form.description.data)
+                                  details=form.description.data)
         db.session.add(transaction)
         db.session.commit()
         flash(f'Your transaction has been successfully added.')
@@ -174,7 +174,7 @@ def post_sale():
     transaction = Transaction(transaction_type='Revenue', name='Sale', product=product.id, 
                               product_name=product.name, user_id=current_user.id, 
                               price=price, quantity=1, total=price, category='Sales',
-                              description='N/A')
+                              details='N/A')
     db.session.add(transaction)
     db.session.commit()
     return jsonify({'text': f'The sale of 1 {product.name} for ${price} has been recorded.'})
