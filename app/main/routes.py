@@ -24,10 +24,16 @@ def before_request():
 @bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    transactions = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Revenue').order_by(Transaction.timestamp.desc()).all()
-    transaction_info = organize_data_by_date(transactions)
-    return render_template('index.html', title=_('Home'), transactions=transactions,
-                            transaction_info=transaction_info)
+    transactions = Transact.query.filter_by(user_id=current_user.id).all()
+    revenue = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Revenue').order_by(Transaction.timestamp.desc()).all()
+    revenue_info = organize_data_by_date(revenue)
+    expenses = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Expense').order_by(Transaction.timestamp.desc()).all()
+    expense_info = organize_data_by_date(expenses)
+    equity = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Equity').order_by(Transaction.timestamp.desc()).all()
+    equity_info = organize_data_by_date(equity)
+    return render_template('index.html', title=_('Home'), revenue=revenue, transactions=transactions,
+                            revenue_info=revenue_info, expenses=expenses,
+                            expense_info=expense_info, equity=equity, equity_info=equity_info)
 
 
 @bp.route('/user/<username>')

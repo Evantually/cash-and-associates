@@ -71,3 +71,4 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\microblog\app\main\routes.py", line 70, in add_transaction
     product_name=Product.query.filter_by(id=product_id).first().name,
 AttributeError: 'NoneType' object has no attribute 'name'
+2021-08-01 13:43:38,684 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\microblog\app\__init__.py:74]

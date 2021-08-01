@@ -3,20 +3,40 @@
 
 {% block app_content %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
-    {% if transactions|length > 0 %}
+    {% if revenue|length > 0 %}
     <div class="row">
         <div class="col-md-6">
-            <h3>Total sales:</h3> 
-            <h4 class="sales">{{ transaction_info['total']|safe }}</h4>
+            <h3>Total sales events:</h3> 
+            <h4 class="sales">{{ revenue_info['total']|safe }}</h4>
         </div>
         <div class="col-md-6">
-            <h3>Total revenue:</h3> 
-            <h4 class="{% if 0 >= 0 %} cash {% else %} debt {% endif %}">${{ transaction_info['sum']|safe }}</h4>
+            <h3>Total revenue ($):</h3> 
+            <h4 class="{% if 0 >= 0 %} cash {% else %} debt {% endif %}">${{ revenue_info['sum']|safe }}</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Total expense events:</h3> 
+            <h4 class="sales">{{ expense_info['total']|safe }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h3>Total expenses ($):</h3> 
+            <h4 class="{% if 0 >= 0 %} cash {% else %} debt {% endif %}">${{ expense_info['sum']|safe }}</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Total equity events:</h3> 
+            <h4 class="sales">{{ equity_info['total']|safe }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h3>Total equity ($):</h3> 
+            <h4 class="{% if 0 >= 0 %} cash {% else %} debt {% endif %}">${{ equity_info['sum']|safe }}</h4>
         </div>
     </div>
     <div id="graph1" class="graph">
-        {% if transaction_info %}
-            <a href="javascript:create_graph({{ transaction_info|safe }});">
+        {% if revenue_info %}
+            <a href="javascript:create_graph({{ revenue_info|safe }});">
                 <button class="btn btn-primary">Create Graph</button>
             </a>
         {% endif %}
