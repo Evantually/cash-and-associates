@@ -19,3 +19,12 @@
     color:#f24965;;
     font-weight: bold;
 }
+
+.completed {
+    text-decoration: line-through;
+}
+
+.date-complete {
+    color:#0ac775;
+    font-style: italic;
+}
