@@ -53,3 +53,11 @@ class DeleteForm(FlaskForm):
 class AddCategoryForm(FlaskForm):
     category = StringField(_l('Category'))
     submit = SubmitField(_l('Submit'))
+
+class AddCompanyForm(FlaskForm):
+    name = StringField(_l('Company'))
+    submit = SubmitField(_l('Submit'))
+
+class AddEmployeeForm(FlaskForm):
+    employee = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').filter_by(company=None).all())
+    submit = SubmitField(_l('Submit'))

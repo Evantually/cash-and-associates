@@ -5,7 +5,8 @@ from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from app import db
-from app.main.forms import EditProfileForm, EmptyForm, AddProductForm, DeleteForm, AddTransactionForm, AddCategoryForm
+from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm, 
+    DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm)
 from app.models import User, Transaction, Product, Category
 from app.translate import translate
 from app.main import bp
