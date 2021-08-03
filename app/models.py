@@ -11,12 +11,14 @@ from app import db, login
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120))
+    email = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
     transactions = db.relationship('Transaction', backref='author', lazy='dynamic')
     products = db.relationship('Product', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    access_level = db.Column(db.String(16), default='individual')
+    company = db.Column(db.Integer, db.ForeignKey('company.id'))
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -86,3 +88,7 @@ class Category(db.Model):
 
     def __repr__(self):
         return f'{self.name}'
+
+class Company(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))

@@ -84,10 +84,12 @@ def add_transaction():
     return render_template('add_product.html', title=_('Add Transaction'),
                            form=form)
 
+# BEGIN ADMIN AREA
+
 @bp.route('/add_category', methods=['GET', 'POST'])
 @login_required
 def add_category():
-    if current_user.username != 'admin':
+    if current_user.access_level != 'admin':
         flash('You do not have access to add a category.')
         return redirect(url_for('main.index'))
     form = AddCategoryForm()
@@ -99,6 +101,43 @@ def add_category():
         return redirect(url_for('main.add_category'))
     return render_template('add_product.html', title=_('Add Category'),
                            form=form)
+
+@bp.route('/add_company', methods=['GET', 'POST'])
+@login_required
+def add_company():
+    if current_user.access_level != 'admin':
+        flash('You do not have access to add a company.')
+        return redirect(url_for('main.index'))
+    form = AddCompanyForm()
+    if form.validate_on_submit():
+        company = Company(name=form.name.data)
+        db.session.add(company)
+        db.session.commit()
+        flash(f'{company.name} has been added as a company.')
+        return redirect(url_for('main.add_company'))
+    return render_template('add_product.html', title=_('Add Company'),
+                           form=form)
+
+# END ADMIN AREA
+# BEGIN BUSINESS MANAGER AREA
+
+@bp.route('/set_employees', methods=['GET', 'POST'])
+@login_required
+def set_employees():
+    if current_user.access_level not in ('admin', 'manager'):
+        flash('You do not have access to add a company.')
+        return redirect(url_for('main.index'))
+    form = AddEmployeeForm()
+    if form.validate_on_submit():
+        employee = User.query.filter_by(username=form.employee.data).first()
+        employee.company = current_user.company
+        db.session.commit()
+        flash(f'{employee.name} has been added to your company.')
+        return redirect(url_for('main.set_employees'))
+    return render_template('add_product.html', title=_('Add Employees'),
+                           form=form)
+
+#END BUSINESS MANAGER AREA
 
 @bp.route('/delete_product/<product_id>', methods=['GET', 'POST'])
 @login_required
