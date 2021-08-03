@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
     company = db.Column(db.Integer, db.ForeignKey('company.id'))
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '{}'.format(self.username)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

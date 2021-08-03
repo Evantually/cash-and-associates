@@ -7,7 +7,7 @@ from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm, 
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm)
-from app.models import User, Transaction, Product, Category
+from app.models import User, Transaction, Product, Category, Company
 from app.translate import translate
 from app.main import bp
 from app.main.utils import organize_data_by_date
@@ -111,8 +111,15 @@ def add_company():
         return redirect(url_for('main.index'))
     form = AddCompanyForm()
     if form.validate_on_submit():
+        manager = form.manager.data
         company = Company(name=form.name.data)
         db.session.add(company)
+        db.session.commit()
+        company = Company.query.filter_by(name=form.name.data).first()
+        manager.company = company.id
+        db.session.merge(manager)
+        manager.access_level = 'manager'
+        db.session.merge(manager)
         db.session.commit()
         flash(f'{company.name} has been added as a company.')
         return redirect(url_for('main.add_company'))
@@ -126,14 +133,16 @@ def add_company():
 @login_required
 def set_employees():
     if current_user.access_level not in ('admin', 'manager'):
-        flash('You do not have access to add a company.')
+        flash('You do not have access to add a company. If you are a manager, talk to Luca or Naomi')
         return redirect(url_for('main.index'))
     form = AddEmployeeForm()
     if form.validate_on_submit():
-        employee = User.query.filter_by(username=form.employee.data).first()
+        employee = User.query.filter_by(username=form.employee.data.username).first()
         employee.company = current_user.company
+        db.session.merge(employee)
         db.session.commit()
-        flash(f'{employee.name} has been added to your company.')
+        company = Company.query.filter_by(id=current_user.company).first()
+        flash(f'{employee.username} has been added as an employee of {company.name}.')
         return redirect(url_for('main.set_employees'))
     return render_template('add_product.html', title=_('Add Employees'),
                            form=form)

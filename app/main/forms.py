@@ -56,6 +56,7 @@ class AddCategoryForm(FlaskForm):
 
 class AddCompanyForm(FlaskForm):
     name = StringField(_l('Company'))
+    manager = QuerySelectField(query_factory=lambda: User.query.filter(User.access_level != 'admin').filter(User.access_level != 'manager').filter_by(company=None).all())
     submit = SubmitField(_l('Submit'))
 
 class AddEmployeeForm(FlaskForm):
