@@ -128,3 +128,4 @@ Traceback (most recent call last):
     balance = revenue_info['sum'] - expense_info['sum']
 KeyError: 'sum'
 2021-08-04 17:28:09,127 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-04 17:47:00,699 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
