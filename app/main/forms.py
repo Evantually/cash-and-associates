@@ -36,7 +36,7 @@ class AddProductForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class AddTransactionForm(FlaskForm):
-    transaction_type = SelectField(_l('Transaction Type'), choices=[('Expense','Expense'), ('Revenue','Revenue'), ('Equity', 'Equity')])
+    transaction_type = SelectField(_l('Transaction Type'), choices=[('Expense','Expense'), ('Revenue','Revenue')])
     name = StringField('Transaction Name')
     product = SelectField('Product')
     price = IntegerField(_l('Price'), validators=[DataRequired()])

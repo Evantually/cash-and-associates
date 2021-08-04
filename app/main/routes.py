@@ -25,16 +25,21 @@ def before_request():
 @bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    transactions = Transaction.query.filter_by(user_id=current_user.id).order_by(Transaction.timestamp.desc()).all()
-    revenue = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Revenue').order_by(Transaction.timestamp.desc()).all()
+    if current_user.access_level in ('manager'):
+        subquery = [u.id for u in User.query.filter(User.company == current_user.company).all()]
+        transactions = Transaction.query.filter(Transaction.user_id.in_(subquery)).order_by(Transaction.timestamp.desc()).all()
+        revenue = Transaction.query.filter(Transaction.user_id.in_(subquery)).filter_by(transaction_type='Revenue').order_by(Transaction.timestamp.desc()).all()
+        expenses = Transaction.query.filter(Transaction.user_id.in_(subquery)).filter_by(transaction_type='Expense').order_by(Transaction.timestamp.desc()).all()
+    else:
+        transactions = Transaction.query.filter_by(user_id=current_user.id).order_by(Transaction.timestamp.desc()).all()
+        revenue = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Revenue').order_by(Transaction.timestamp.desc()).all()
+        expenses = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Expense').order_by(Transaction.timestamp.desc()).all()
     revenue_info = organize_data_by_date(revenue)
-    expenses = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Expense').order_by(Transaction.timestamp.desc()).all()
     expense_info = organize_data_by_date(expenses)
-    equity = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Equity').order_by(Transaction.timestamp.desc()).all()
-    equity_info = organize_data_by_date(equity)
+    balance = revenue_info['sum'] - expense_info['sum']
     return render_template('index.html', title=_('Home'), revenue=revenue, transactions=transactions,
                             revenue_info=revenue_info, expenses=expenses,
-                            expense_info=expense_info, equity=equity, equity_info=equity_info)
+                            expense_info=expense_info, balance=balance)
 
 
 @bp.route('/user/<username>')

@@ -28,3 +28,7 @@
     color:#0ac775;
     font-style: italic;
 }
+
+.invisible-element {
+    display: none;
+}
