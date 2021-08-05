@@ -5,24 +5,24 @@
         {% else %}
         <img src="{{ user.avatar(128) }}"><br>
         {% endif %}
-        <h1 id="product{{ product.id }}" product-id="{{ product.id }}">{{ product.name }}</h1>
+        <h3 id="product{{ product.id }}" product-id="{{ product.id }}">{{ product.name }}</h3>
         <p class="price">${{ product.price }}</p>
         {% if user == current_user %}
         <div class="row">
             <div class="col-md-12">
-                <input type="number" class="form-control" id="cost{{ product.id }}" placeholder="Enter Manual Price">
+                <p><input type="number" class="form-control" id="cost{{ product.id }}" placeholder="Enter Manual Price"></p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <a href="javascript:post_sale(
+                <p><a href="javascript:post_sale(
                                 '#product{{ product.id }}',
                                 '#sale{{ product.id }}',
                                 '#cost{{ product.id }}');">
                     <button class="btn btn-success">
                         {{ _('Record Sale') }}
                     </button>
-                </a>
+                </a></p>
             </div>
         </div>
         <div class="row">

@@ -760,3 +760,13 @@
     color: #fff;
     border: 1px solid #832d23;
 }
+
+[data-theme="dark"] .navbar,
+[data-theme="dark"] .navbar-brand,
+[data-theme="dark"] .navbar-header,
+[data-theme="dark"] .navbar-nav,
+[data-theme="dark"] .nav,
+[data-theme="dark"].navbar > .container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
