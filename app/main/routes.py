@@ -36,7 +36,9 @@ def index():
         expenses = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Expense').order_by(Transaction.timestamp.desc()).all()
     revenue_info = organize_data_by_date(revenue)
     expense_info = organize_data_by_date(expenses)
-    balance = revenue_info['sum'] - expense_info['sum']
+    balance = (revenue_info['sum'] - expense_info['sum'],"{:,.2f}".format(revenue_info['sum'] - expense_info['sum']))
+    revenue_info['sum'] = "{:,.2f}".format(revenue_info['sum'])
+    expense_info['sum'] = "{:,.2f}".format(expense_info['sum'])
     return render_template('index.html', title=_('Home'), revenue=revenue, transactions=transactions,
                             revenue_info=revenue_info, expenses=expenses,
                             expense_info=expense_info, balance=balance)
