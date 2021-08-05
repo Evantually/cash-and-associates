@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     access_level = db.Column(db.String(16), default='individual')
     company = db.Column(db.Integer, db.ForeignKey('company.id'))
+    dark_mode = db.Column(db.Boolean)
 
     def __repr__(self):
         return '{}'.format(self.username)

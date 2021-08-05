@@ -1,17 +1,16 @@
 {% extends 'bootstrap/base.html' %}
-
 {% block title %}
     {% if title %}{{ title }} - Cash & Associates{% else %}{{ _('Welcome to Cash & Associates') }}{% endif %}
 {% endblock %}
 
 {% block styles %}
 {{super()}}
-<link rel="stylesheet"
-      href="{{url_for('static', filename='styles/style.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='styles/dark-mode.css')}}">
 {% endblock %}
 
 {% block navbar %}
-    <nav class="navbar navbar-default">
+    <nav onload="setdarkmode()" class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -186,5 +185,12 @@
             style: 'currency',
             currency: 'USD',
             });
+
+        function setdarkmode() {
+            $('html').attr('data-theme','dark')
+            $('body').attr('data-theme','dark')
+            $('nav').attr('data-theme','dark')
+        }
+        setdarkmode();
     </script>
 {% endblock %}
