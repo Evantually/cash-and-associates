@@ -2,6 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+    <p>Looking to <a href="{{ url_for('auth.login') }}">log in?</a></p>
     <h1>Learning Center</h1>
     {% include '_tutorials.html' %}
 {% endblock %}
