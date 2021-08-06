@@ -1,19 +1,4 @@
-2021-08-03 12:38:42,964 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 12:59:14,066 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 13:00:16,472 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 13:01:02,515 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 13:57:06,836 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 14:31:56,693 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 14:32:29,858 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 14:33:02,042 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 14:33:26,154 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 14:34:12,967 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 14:44:24,209 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 14:47:36,910 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:14:11,838 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:15:00,283 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:15:27,564 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:22:56,768 ERROR: Exception on /add_company [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-08-03 16:03:29,210 ERROR: Exception on /set_employees [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 500, in _literal_coercion
     return expr._bind_param(operator, element, type_=bindparam_type)
@@ -25,7 +10,7 @@ Traceback (most recent call last):
     _coerced_type = _resolve_value_to_type(value)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 3276, in _resolve_value_to_type
     raise exc.ArgumentError(
-sqlalchemy.exc.ArgumentError: Object Test is not legal as a SQL literal value
+sqlalchemy.exc.ArgumentError: Object Blade is not legal as a SQL literal value
 
 The above exception was the direct cause of the following exception:
 
@@ -40,8 +25,8 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 114, in add_company
-    manager = User.query.filter_by(username=form.manager.data)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 140, in set_employees
+    employee = User.query.filter_by(username=form.employee.data).first()
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 1751, in filter_by
     clauses = [
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 1752, in <listcomp>
@@ -76,9 +61,9 @@ Traceback (most recent call last):
     util.raise_(exc.ArgumentError(msg, code=code), replace_context=err)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
     raise exception
-sqlalchemy.exc.ArgumentError: SQL expression element or literal value expected, got Test.
-2021-08-03 15:25:03,712 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:25:05,649 ERROR: Exception on /add_company [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+sqlalchemy.exc.ArgumentError: SQL expression element or literal value expected, got Blade.
+2021-08-03 16:05:35,376 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-03 16:05:42,165 ERROR: Exception on /set_employees [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -90,22 +75,13 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 114, in add_company
-    print(form.manager.data.type)
-AttributeError: 'User' object has no attribute 'type'
-2021-08-03 15:25:55,917 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:26:34,215 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:30:08,237 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:30:36,010 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:44:04,102 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-03 15:44:13,969 ERROR: Exception on /add_company [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2566, in add
-    state = attributes.instance_state(instance)
-AttributeError: 'BaseQuery' object has no attribute '_sa_instance_state'
-
-The above exception was the direct cause of the following exception:
-
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 144, in set_employees
+    flash(f'{employee.name} has been added to your company.')
+AttributeError: 'User' object has no attribute 'name'
+2021-08-03 16:06:18,426 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-03 16:07:02,033 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-03 16:08:00,215 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-03 16:08:04,198 ERROR: Exception on /set_employees [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -117,12 +93,42 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 119, in add_company
-    db.session.add(manager)
-  File "<string>", line 2, in add
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2568, in add
-    util.raise_(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
-    raise exception
-sqlalchemy.orm.exc.UnmappedInstanceError: Class 'flask_sqlalchemy.BaseQuery' is not mapped
-2021-08-03 15:44:53,136 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 145, in set_employees
+    flash(f'{employee.username} has been added to {company.name}.')
+AttributeError: 'BaseQuery' object has no attribute 'name'
+2021-08-03 16:08:21,702 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-03 17:42:56,725 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-03 21:35:25,363 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-03 21:36:43,123 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-04 16:52:47,013 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-04 16:53:01,759 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 41, in index
+    balance = revenue_info['total'] - expense_info['total']
+KeyError: 'total'
+2021-08-04 16:55:01,508 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-04 16:55:02,409 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 38, in index
+    balance = revenue_info['sum'] - expense_info['sum']
+KeyError: 'sum'

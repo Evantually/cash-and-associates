@@ -22,6 +22,9 @@ def before_request():
 
 
 @bp.route('/', methods=['GET', 'POST'])
+def landing_page():
+    return render_template('landing_page.html')
+
 @bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
@@ -264,3 +267,23 @@ def changelogs():
 @bp.route('/roadmap')
 def roadmap():
     return render_template('roadmap.html')
+
+@bp.route('/services')
+def services():
+    return render_template('services.html')
+
+@bp.route('/portfolio')
+def portfolio():
+    return render_template('portfolio.html')
+
+@bp.route('/pricing')
+def pricing():
+    return render_template('pricing.html')
+
+@bp.route('/team')
+def team():
+    return render_template('team.html')
+
+@bp.route('/contact')
+def contact():
+    return render_template('contact.html')

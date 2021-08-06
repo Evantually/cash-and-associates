@@ -1,108 +1,125 @@
-2021-08-05 09:58:28,783 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-sqlite3.OperationalError: no such column: user.dark_mode
-
-The above exception was the direct cause of the following exception:
-
+2021-08-05 14:29:36,200 ERROR: Exception on / [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 18, in before_request
-    if current_user.is_authenticated:
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 422, in __get__
-    obj = instance._get_current_object()
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 544, in _get_current_object
-    return self.__local()  # type: ignore
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 346, in _get_user
-    current_app.login_manager._load_user()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
-    user = self._user_callback(user_id)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\models.py", line 55, in load_user
-    return User.query.get(int(id))
-  File "<string>", line 2, in get
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\deprecations.py", line 390, in warned
-    return fn(*args, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 942, in get
-    return self._get_impl(ident, loading.load_on_pk_identity)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 946, in _get_impl
-    return self.session._get_impl(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2839, in _get_impl
-    return db_load_fn(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
-    session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
-    ret = self._execute_context(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
-    self._handle_dbapi_exception(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
-    util.raise_(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
-    raise exception
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: user.dark_mode
-[SQL: SELECT user.id AS user_id, user.username AS user_username, user.email AS user_email, user.password_hash AS user_password_hash, user.about_me AS user_about_me, user.last_seen AS user_last_seen, user.access_level AS user_access_level, user.company AS user_company, user.dark_mode AS user_dark_mode 
-FROM user 
-WHERE user.id = ?]
-[parameters: (2,)]
-(Background on this error at: http://sqlalche.me/e/14/e3q8)
-2021-08-05 09:58:40,483 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 09:58:44,022 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 09:58:47,739 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 09:59:11,498 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:02:34,108 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:05:31,396 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:05:40,534 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:06:39,295 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:07:15,365 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:07:43,275 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:08:56,175 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:15:20,599 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:15:45,843 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:16:35,592 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:18:58,699 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:20:08,049 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:20:39,883 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:21:41,257 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:22:05,538 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:22:19,509 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:22:26,969 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:28:36,727 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:29:10,685 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:29:35,696 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:31:49,781 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:32:16,071 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:33:13,449 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:33:31,387 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:34:16,532 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:37:59,382 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:39:13,917 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 10:42:31,076 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:14:29,961 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:16:35,555 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:17:42,713 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:18:05,635 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:18:12,503 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:18:34,871 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:20:09,511 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-05 11:21:33,108 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 26, in landing_page
+    return render_template('landing_page.html')
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\landing_page.html", line 83, in top-level template code
+    <li class="nav-item"><a class="page-scroll" href="{{ url_for('main.services') }}">Services</a></li>
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\helpers.py", line 338, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\helpers.py", line 325, in url_for
+    rv = url_adapter.build(
+  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\routing.py", line 2305, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint 'main.services'. Did you mean 'main.user' instead?
+2021-08-05 14:29:52,030 ERROR: Exception on / [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 26, in landing_page
+    return render_template('landing_page.html')
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\landing_page.html", line 83, in top-level template code
+    <li class="nav-item"><a class="page-scroll" href="{{ url_for('main.services') }}">Services</a></li>
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\helpers.py", line 338, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\helpers.py", line 325, in url_for
+    rv = url_adapter.build(
+  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\routing.py", line 2305, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint 'main.services'. Did you mean 'main.user' instead?
+2021-08-05 18:26:46,982 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 18:57:01,149 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 18:58:37,539 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:02:48,131 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:10:11,813 ERROR: Exception on /services [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 273, in services
+    return render_template('services.html')
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 148, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: services.html
+2021-08-05 19:16:20,862 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:34:11,825 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:38:19,729 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:38:47,869 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:39:30,932 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:41:25,413 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:43:19,304 ERROR: Exception on /services [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 273, in services
+    return render_template('services.html')
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 148, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: services.html
+2021-08-05 19:50:50,942 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 19:52:01,869 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-05 20:09:22,475 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

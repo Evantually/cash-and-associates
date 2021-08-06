@@ -1,0 +1,557 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    
+    <!--====== Title ======-->
+    <title>Cash & Associates Accounting Firm</title>
+    
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--====== Favicon Icon ======-->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png">
+        
+    <!--====== Magnific Popup CSS ======-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/magnific-popup.css') }}">
+        
+    <!--====== Slick CSS ======-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/slick.css') }}">
+        
+    <!--====== Line Icons CSS ======-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/LineIcons.css') }}">
+        
+    <!--====== Bootstrap CSS ======-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/bootstrap.min.css') }}">
+    
+    <!--====== Default CSS ======-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/default.css') }}">
+    
+    <!--====== Style CSS ======-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    
+</head>
+
+<body>
+    <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+   
+    <!--====== PRELOADER PART START ======-->
+
+    <div class="preloader">
+        <div class="loader">
+            <div class="ytp-spinner">
+                <div class="ytp-spinner-container">
+                    <div class="ytp-spinner-rotator">
+                        <div class="ytp-spinner-left">
+                            <div class="ytp-spinner-circle"></div>
+                        </div>
+                        <div class="ytp-spinner-right">
+                            <div class="ytp-spinner-circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--====== PRELOADER PART ENDS ======-->
+    
+    <!--====== NAVBAR TWO PART START ======-->
+
+    <section class="navbar-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg">
+                       
+                        <a class="navbar-brand" href="#">
+                            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
+                        </a>
+                        
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTwo" aria-controls="navbarTwo" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarTwo">
+                            <ul class="navbar-nav m-auto">
+                                <li class="nav-item active"><a class="page-scroll" href="#home">Home</a></li>
+                                <li class="nav-item"><a class="page-scroll" href="#services">Services</a></li>
+                                <li class="nav-item"><a class="page-scroll" href="#pricing">Pricing</a></li>
+                                <li class="nav-item"><a class="page-scroll" href="#testimonial">Testimonials</a></li>
+                                <li class="nav-item"><a class="page-scroll" href="#team">Team</a></li>
+                                <li class="nav-item"><a class="page-scroll" href="#contact">Contact</a></li>
+                                <li class="nav-item"><a href="{{ url_for('auth.login') }}">Login</a></li>
+                            </ul>
+                        </div>
+                    </nav> <!-- navbar -->
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== NAVBAR TWO PART ENDS ======-->
+    
+    <!--====== SLIDER PART START ======-->
+
+    <section id="home" class="slider_area">
+        <div id="carouselThree" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselThree" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselThree" data-slide-to="1"></li>
+                <li data-target="#carouselThree" data-slide-to="2"></li>
+            </ol>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="slider-content">
+                                    <h1 class="title">Business is Now Digital</h1>
+                                    <p class="text">Cash & Associates blends insight and experience to create bespoke solutions for local businesses. Treat your business right!</p>
+                                    <ul class="slider-btn rounded-buttons">
+                                        <li><a class="main-btn rounded-one" href="{{ url_for('main.landing_page') }}">GET STARTED</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> <!-- row -->
+                    </div> <!-- container -->
+                    <div class="slider-image-box d-none d-lg-flex align-items-end">
+                        <div class="slider-image">
+                            <img src="{{ url_for('static', filename='images/slider/1.png') }}" alt="Hero">
+                        </div> <!-- slider-imgae -->
+                    </div> <!-- slider-imgae box -->
+                </div> <!-- carousel-item -->
+
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="slider-content">
+                                    <h1 class="title">Crafted for Success</h1>
+                                    <p class="text">Cash & Associates knows what it takes to succeed. Why not utilize these same tools with your business?</p>
+                                    <ul class="slider-btn rounded-buttons">
+                                        <li><a class="main-btn rounded-one" href="{{ url_for('main.landing_page') }}">GET STARTED</a></li>
+                                    </ul>
+                                </div> <!-- slider-content -->
+                            </div>
+                        </div> <!-- row -->
+                    </div> <!-- container -->
+                    <div class="slider-image-box d-none d-lg-flex align-items-end">
+                        <div class="slider-image">
+                            <img src="{{ url_for('static', filename='images/slider/2.png') }}" alt="Hero">
+                        </div> <!-- slider-imgae -->
+                    </div> <!-- slider-imgae box -->
+                </div> <!-- carousel-item -->
+
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="slider-content">
+                                    <h1 class="title">Operate On the Go</h1>
+                                    <p class="text">Cash & Associates makes it easy to run your business from anywhere! You won't fall behind your competitors with our offerings.</p>
+                                    <ul class="slider-btn rounded-buttons">
+                                        <li><a class="main-btn rounded-one" href="{{ url_for('main.landing_page') }}">GET STARTED</a></li>
+                                    </ul>
+                                </div> <!-- slider-content -->
+                            </div>
+                        </div> <!-- row -->
+                    </div> <!-- container -->
+                    <div class="slider-image-box d-none d-lg-flex align-items-end">
+                        <div class="slider-image">
+                            <img src="{{ url_for('static', filename='images/slider/3.png') }}" alt="Hero">
+                        </div> <!-- slider-imgae -->
+                    </div> <!-- slider-imgae box -->
+                </div> <!-- carousel-item -->
+            </div>
+
+            <a class="carousel-control-prev" href="#carouselThree" role="button" data-slide="prev">
+                <i class="lni lni-arrow-left"></i>
+            </a>
+            <a class="carousel-control-next" href="#carouselThree" role="button" data-slide="next">
+                <i class="lni lni-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!--====== SLIDER PART ENDS ======-->
+    
+    <!--====== FEATURES TWO PART START ======-->
+
+    <section id="services" class="features-area">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-10">
+                    <div class="section-title text-center pb-10">
+                        <h3 class="title">Our Services</h3>
+                        <p class="text">You provide the passion. Cash & Associates provides the tools to succeed. Happiness guaranteed!</p>
+                    </div> <!-- row -->
+                </div>
+            </div> <!-- row -->
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-7 col-sm-9">
+                    <div class="single-features mt-40">
+                        <div class="features-title-icon d-flex justify-content-between">
+                            <h4 class="features-title"><a href="#">Point of Sale Technology</a></h4>
+                            <div class="features-icon">
+                                <i class="lni lni-brush"></i>
+                                <img class="shape" src="{{ url_for('static', filename='images/f-shape-1.svg') }}" alt="Shape">
+                            </div>
+                        </div>
+                        <div class="features-content">
+                            <p class="text">Cash & Associates point of sale technology makes it easier than ever to record transactions. Keep your ledger up to date and accurate.</p>
+                            <a class="features-btn" href="#">LEARN MORE</a>
+                        </div>
+                    </div> <!-- single features -->
+                </div>
+                <div class="col-lg-4 col-md-7 col-sm-9">
+                    <div class="single-features mt-40">
+                        <div class="features-title-icon d-flex justify-content-between">
+                            <h4 class="features-title"><a href="#">Profits Made Easy</a></h4>
+                            <div class="features-icon">
+                                <i class="lni lni-layout"></i>
+                                <img class="shape" src="{{ url_for('static', filename='images/f-shape-1.svg') }}" alt="Shape">
+                            </div>
+                        </div>
+                        <div class="features-content">
+                            <p class="text">Managing your transactions has never been simpler. Quick categorization makes sure you stay in compliance with Department of Commerce & Labor standards.</p>
+                            <a class="features-btn" href="#">LEARN MORE</a>
+                        </div>
+                    </div> <!-- single features -->
+                </div>
+                <div class="col-lg-4 col-md-7 col-sm-9">
+                    <div class="single-features mt-40">
+                        <div class="features-title-icon d-flex justify-content-between">
+                            <h4 class="features-title"><a href="#">Business Intelligence</a></h4>
+                            <div class="features-icon">
+                                <i class="lni lni-bolt"></i>
+                                <img class="shape" src="{{ url_for('static', filename='images/f-shape-1.svg') }}" alt="Shape">
+                            </div>
+                        </div>
+                        <div class="features-content">
+                            <p class="text">A dashboard of useful metrics will keep you on top of your business finances. Never miss a sales opportunity again! Go above and beyond for your customers.</p>
+                            <a class="features-btn" href="#">LEARN MORE</a>
+                        </div>
+                    </div> <!-- single features -->
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== FEATURES TWO PART ENDS ======-->
+    
+    <!--====== PRICNG START ======-->
+
+    <section id="pricing" class="pricing-area ">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-10">
+                    <div class="section-title text-center pb-25">
+                        <h3 class="title">Pricing Plans</h3>
+                        <p class="text">Cash & Associates point of sale technology makes it easier than ever to record transactions. Start by talking with us to gauge your business needs.</p>
+                    </div> <!-- section title -->
+                </div>
+            </div> <!-- row -->
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-7 col-sm-9">
+                    <div class="pricing-style mt-30">
+                        <div class="pricing-icon text-center">
+                            <img src="{{ url_for('static', filename='images/basic.svg') }}" alt="">
+                        </div>
+                        <div class="pricing-header text-center">
+                            <h5 class="sub-title">Basic</h5>
+                            <p class="month">Starting at <span class="price">$500</span>/week</p>
+                        </div>
+                        <div class="pricing-list">
+                            <ul>
+                                <li><i class="lni lni-check-mark-circle"></i>Point of Sale System</li>
+                                <li><i class="lni lni-check-mark-circle"></i>Transactional Recordkeeping</li>
+                                <li><i class="lni lni-check-mark-circle"></i>Perfect for personal and limited business use</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-btn rounded-buttons text-center">
+                            <a class="main-btn rounded-one" href="{{ url_for('main.landing_page') }}">GET STARTED</a>
+                        </div>    
+                    </div> <!-- pricing style one -->
+                </div>
+                
+                <div class="col-lg-4 col-md-7 col-sm-9">
+                    <div class="pricing-style mt-30">
+                        <div class="pricing-icon text-center">
+                            <img src="{{ url_for('static', filename='images/pro.svg') }}" alt="">
+                        </div>
+                        <div class="pricing-header text-center">
+                            <h5 class="sub-title">Pro</h5>
+                            <p class="month">Starting at <span class="price">$1,000</span>/week</p>
+                        </div>
+                        <div class="pricing-list">
+                            <ul>
+                                <li><i class="lni lni-check-mark-circle"></i>Includes everything in the basic plan, plus:</li>
+                                <li><i class="lni lni-check-mark-circle"></i>Department of Commerce & Labor compliant filing</li>
+                                <li><i class="lni lni-check-mark-circle"></i>Accounting Advice and Oversight</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-btn rounded-buttons text-center">
+                            <a class="main-btn rounded-one" href="{{ url_for('main.landing_page') }}">GET STARTED</a>
+                        </div>
+                    </div> <!-- pricing style one -->
+                </div>
+                
+                <div class="col-lg-4 col-md-7 col-sm-9">
+                    <div class="pricing-style mt-30">
+                        <div class="pricing-icon text-center">
+                            <img src="{{ url_for('static', filename='images/enterprise.svg') }}" alt="">
+                        </div>
+                        <div class="pricing-header text-center">
+                            <h5 class="sub-title">Enterprise</h5>
+                            <p class="month">Starting at <span class="price">$2,500</span>/week</p>
+                        </div>
+                        <div class="pricing-list">
+                            <ul>
+                                <li><i class="lni lni-check-mark-circle"></i>Everything in the pro plan, plus:</li>
+                                <li><i class="lni lni-check-mark-circle"></i>Individual accounts for employees</li>
+                                <li><i class="lni lni-check-mark-circle"></i>Full access to metrics and business intelligence</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-btn rounded-buttons text-center">
+                            <a class="main-btn rounded-one" href="{{ url_for('main.landing_page') }}">GET STARTED</a>
+                        </div>
+                    </div> <!-- pricing style one -->
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== PRICNG ENDS ======-->
+    
+    <!--====== TESTIMONIAL PART START ======-->
+
+    <section id="testimonial" class="testimonial-area">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-xl-5 col-lg-6">
+                    <div class="testimonial-left-content mt-45">
+                        <h6 class="sub-title">Testimonials</h6>
+                        <h4 class="title">What Clients Say <br> About Us</h4>
+                        <p class="text">Cash & Associates prides ourselves on providing bespoke accounting solutions. Every client has individual needs. We do what it takes to ensure success. <br> <br> Competition is tough in Los Santos. Enhance your business with the services provided by Cash & Associates. Don't believe us? Take some testimonial from our happy clients.</p>
+                    </div> <!-- testimonial left content -->
+                </div>
+                <div class="col-lg-6">
+                    <div class="testimonial-right-content mt-50">
+                        <div class="quota">
+                            <i class="lni lni-quotation"></i>
+                        </div>
+                        <div class="testimonial-content-wrapper testimonial-active">
+                            <div class="single-testimonial">
+                                <div class="testimonial-text">
+                                    <p class="text">“My name is Diego Perron, and I wake up every morning thanking the heavens that I clicked that local milfs in my area ad because it brought me to Cash & Associates. I haven't been to jail since I started using their amazing accounting software!”</p>
+                                </div>
+                                <div class="testimonial-author d-sm-flex justify-content-between">
+                                    <div class="author-info d-flex align-items-center">
+                                        <div class="author-image">
+                                            <img src="{{ url_for('static', filename='images/author-1.jpg') }}" alt="author">
+                                        </div>
+                                        <div class="author-name media-body">
+                                            <h5 class="name">Diego Perron</h5>
+                                            <span class="sub-title">Business Owner - Diego's Donuts</span>
+                                        </div>
+                                    </div>
+                                    <div class="author-review">
+                                        <ul class="star">
+                                            <li><i class="lni lni-star-filled"></i></li>
+                                            <li><i class="lni lni-star-filled"></i></li>
+                                            <li><i class="lni lni-star-filled"></i></li>
+                                            <li><i class="lni lni-star-filled"></i></li>
+                                            <li><i class="lni lni-star-filled"></i></li>
+                                        </ul>
+                                        <span class="review">( 1 Review )</span>
+                                    </div>
+                                </div>
+                            </div> <!-- single testimonial -->
+                        </div> <!-- testimonial content wrapper -->
+                    </div> <!-- testimonial right content -->
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== TESTIMONIAL PART ENDS ======-->
+    
+    <!--====== TEAM START ======-->
+
+    <section id="team" class="team-area pt-120 pb-130">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-10">
+                    <div class="section-title text-center pb-30">
+                        <h3 class="title">Meet The Team</h3>
+                        <p class="text">Cash & Associates is a thriving company with top-notch talent. If you're interested in employment here, please get in touch!</p>
+                    </div> <!-- section title -->
+                </div>
+            </div> <!-- row -->
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="team-style-eleven text-center mt-30 wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                        <div class="team-image">
+                            <img src="{{ url_for('static', filename='images/team-1.png') }}" alt="Team">
+                        </div>
+                        <div class="team-content">
+                            <h4 class="team-name"><a href="#">Luca Pacioli, CPA</a></h4>
+                            <span class="sub-title">Owner | Accountant</span>
+                        </div>
+                    </div> <!-- single team -->
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="team-style-eleven text-center mt-30 wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                        <div class="team-image">
+                            <img src="{{ url_for('static', filename='images/team-2.jpg') }}" alt="Team">
+                        </div>
+                        <div class="team-content">
+                            <h4 class="team-name"><a href="#">Naomi Miller</a></h4>
+                            <span class="sub-title">Accountant</span>
+                        </div>
+                    </div> <!-- single team -->
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== TEAM  ENDS ======-->
+    
+    <!--====== CONTACT PART START ======-->
+
+    <section id="contact" class="contact-area">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-10">
+                    <div class="section-title text-center pb-30">
+                        <h3 class="title">Contact</h3>
+                        <p class="text">All inquiries welcome. Let us know how we can help serve you. Offering bespoke solutions as well as the full suite of standard accounting services.</p>
+                    </div> <!-- section title -->
+                </div>
+            </div> <!-- row -->
+            <div class="contact-info pt-30">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-contact-info contact-color-1 mt-30 d-flex ">
+                            <div class="contact-info-icon">
+                                <i class="lni lni-map-marker"></i>
+                            </div>
+                            <div class="contact-info-content media-body">
+                                <p class="text"> Maze Bank West<br>Office #845</p>
+                            </div>
+                        </div> <!-- single contact info -->
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-contact-info contact-color-2 mt-30 d-flex ">
+                            <div class="contact-info-icon">
+                                <i class="lni lni-envelope"></i>
+                            </div>
+                            <div class="contact-info-content media-body">
+                                <p class="text">Luca Pacioli</p>
+                                <p class="text">Naomi Miller</p>
+                            </div>
+                        </div> <!-- single contact info -->
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-contact-info contact-color-3 mt-30 d-flex ">
+                            <div class="contact-info-icon">
+                                <i class="lni lni-phone"></i>
+                            </div>
+                            <div class="contact-info-content media-body">
+                                <p class="text">064-958-4960</p>
+                                <p class="text">068-921-1697</p>
+                            </div>
+                        </div> <!-- single contact info -->
+                    </div>
+                </div> <!-- row -->
+            </div> <!-- contact info -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== CONTACT PART ENDS ======-->
+    
+    <!--====== FOOTER PART START ======-->
+
+    <section class="footer-area footer-dark">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="footer-logo text-center">
+                        <a class="mt-30" href="{{ url_for('main.landing_page') }}"><img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo"></a>
+                    </div> <!-- footer logo -->
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== FOOTER PART ENDS ======-->
+    
+    <!--====== BACK TOP TOP PART START ======-->
+
+    <a href="#" class="back-to-top"><i class="lni lni-chevron-up"></i></a>
+
+    <!--====== BACK TOP TOP PART ENDS ======-->    
+
+    <!--====== PART START ======-->
+
+<!--
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+-->
+
+    <!--====== PART ENDS ======-->
+
+
+
+
+    <!--====== Jquery js ======-->
+    <script src="{{ url_for('static', filename='js/vendor/jquery-1.12.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/modernizr-3.7.1.min.js') }}"></script>
+    
+    <!--====== Bootstrap js ======-->
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    
+    <!--====== Slick js ======-->
+    <script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+    
+    <!--====== Magnific Popup js ======-->
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+    
+    <!--====== Ajax Contact js ======-->
+    <script src="{{ url_for('static', filename='js/ajax-contact.js') }}"></script>
+    
+    <!--====== Isotope js ======-->
+    <script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/isotope.pkgd.min.js') }}"></script>
+    
+    <!--====== Scrolling Nav js ======-->
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scrolling-nav.js') }}"></script>
+    
+    <!--====== Main js ======-->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <script>
+        console.log($('.sidebar-close'));
+    </script>
+</body>
+
+</html>
