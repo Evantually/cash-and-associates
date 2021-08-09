@@ -51,3 +51,22 @@ def organize_data_by_date(data):
                     except KeyError:
                         output['dates'][index]['sum'] = d.total
     return output
+
+def summarize_data(data):
+    output = {
+        'total_sum' : 0,
+        'quantity_sum': 0,
+    }
+    for d in data:
+        if d.transaction_type == 'Expense':
+            output['total_sum'] -= d.total
+        else:
+            output['total_sum'] += d.total
+        output['quantity_sum'] += d.quantity
+        d.total = format_currency(d.total)
+        d.price = format_currency(d.price)
+    output['total_sum'] = format_currency(output['total_sum'])
+    return output, data
+
+def format_currency(amount):
+    return "{:,.2f}".format(amount)

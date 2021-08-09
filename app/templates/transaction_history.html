@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    {% if transactions|length > 0 %}
+    <h2>Transaction History</h2>
+    <table class="table table-stripeda table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Transaction Type</th>
+                <th scope="col">Employee</th>
+                <th scope="col">Transaction Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr class="{% if transaction.transaction_type == 'Expense' %}debt{% else %}cash{% endif %}">
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.author.username }}</td>
+                    <td>{{ transaction.name }}</td>
+                    <td>{{ transaction.timestamp }}</td>
+                    <td>{{ transaction.product_name }}</td>
+                    <td>${{ transaction.price }}</td>
+                    <td>{{ transaction.quantity }}</td>
+                    <td>${{ transaction.total }}</td>
+                    <td>{{ transaction.details }}</td>
+                </tr>
+            {% endfor %}
+            <thead>
+                <tr>
+                    <th>Total</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>{{ tr_info['quantity_sum'] }}</th>
+                    <th>${{ tr_info['total_sum'] }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

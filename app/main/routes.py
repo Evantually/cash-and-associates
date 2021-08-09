@@ -10,8 +10,7 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
 from app.models import User, Transaction, Product, Category, Company
 from app.translate import translate
 from app.main import bp
-from app.main.utils import organize_data_by_date
-
+from app.main.utils import organize_data_by_date, summarize_data, format_currency
 
 @bp.before_app_request
 def before_request():
@@ -39,9 +38,9 @@ def index():
         expenses = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Expense').order_by(Transaction.timestamp.desc()).all()
     revenue_info = organize_data_by_date(revenue)
     expense_info = organize_data_by_date(expenses)
-    balance = (revenue_info['sum'] - expense_info['sum'],"{:,.2f}".format(revenue_info['sum'] - expense_info['sum']))
-    revenue_info['sum'] = "{:,.2f}".format(revenue_info['sum'])
-    expense_info['sum'] = "{:,.2f}".format(expense_info['sum'])
+    balance = (revenue_info['sum'] - expense_info['sum'],format_currency(revenue_info['sum'] - expense_info['sum']))
+    revenue_info['sum'] = format_currency(revenue_info['sum'])
+    expense_info['sum'] = format_currency(expense_info['sum'])
     return render_template('index.html', title=_('Home'), revenue=revenue, transactions=transactions,
                             revenue_info=revenue_info, expenses=expenses,
                             expense_info=expense_info, balance=balance)
@@ -157,6 +156,18 @@ def set_employees():
     return render_template('add_product.html', title=_('Add Employees'),
                            form=form)
 
+@bp.route('/transaction_history', methods=['GET', 'POST'])
+@login_required
+def transaction_history():
+    if current_user.access_level not in ('admin', 'manager'):
+        flash('You do not have access to add a company. If you are a manager, talk to Luca or Naomi')
+        return redirect(url_for('main.index'))
+    company = current_user.company
+    subquery = [u.id for u in User.query.filter(User.company == current_user.company).all()]
+    transactions = Transaction.query.filter(Transaction.user_id.in_(subquery)).order_by(Transaction.timestamp.desc()).all()
+    transaction_info, transactions = summarize_data(transactions)
+    return render_template('transaction_history.html', transactions=transactions, tr_info=transaction_info)
+
 #END BUSINESS MANAGER AREA
 
 @bp.route('/delete_product/<product_id>', methods=['GET', 'POST'])
@@ -236,7 +247,7 @@ def post_sale():
     price = request.form['cost']
     if request.form['cost'] == '':
         price = product.price
-    transaction = Transaction(transaction_type='Revenue', name='Sale', product=product.id, 
+    transaction = Transaction(transaction_type='Revenue', name=f'{product.name} sale', product=product.id, 
                               product_name=product.name, user_id=current_user.id, 
                               price=price, quantity=1, total=price, category='Sales',
                               details='N/A')
