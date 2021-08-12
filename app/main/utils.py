@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from app.models import User, Product, Company
 
 def organize_data_by_date(data):
     output = {}
@@ -77,3 +78,10 @@ def format_currency(amount):
 
 def format_date(date):
     return date.strftime("%b %d, %Y, %H:%M:%S")
+
+def setup_company(company_info):
+    company = Company.query.filter_by(name='Test Company').first()
+    if company_info == 'Restaurant':
+        pass
+    elif company_info == 'Mechanic':
+        pass
