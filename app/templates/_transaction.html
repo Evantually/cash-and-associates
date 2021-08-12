@@ -14,11 +14,11 @@
                 {% if transaction.transaction_type == 'Revenue' %}
                     {{ _('%(username)s sold %(quantity)s %(product)s at a price of $%(price)s %(when)s',
                         username=user_link, quantity=transaction.quantity, product=transaction.name, 
-                        price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
+                        price=transaction.format_price, when=moment(transaction.timestamp).fromNow()) }}
                 {% elif transaction.transaction_type == 'Expense'%}
                     {{ _('%(username)s incurred %(quantity)s expense of %(product)s at a price of $%(price)s %(when)s',
                         username=user_link, quantity=transaction.quantity, product=transaction.name, 
-                        price=transaction.price, when=moment(transaction.timestamp).fromNow()) }}
+                        price=transaction.format_price, when=moment(transaction.timestamp).fromNow()) }}
                 {% endif %}
                 <br>
                 <span id="transaction{{ transaction.id }}">{{ transaction.name }}</span>

@@ -65,8 +65,8 @@ def summarize_data(data):
         else:
             output['total_sum'] += d.total
         output['quantity_sum'] += d.quantity
-        d.total = format_currency(d.total)
-        d.price = format_currency(d.price)
+        d.format_total = format_currency(d.total)
+        d.format_price = format_currency(d.price)
         d.time = format_date(d.timestamp)
     if output['total_sum'] < 0:
         output['total_type'] = 'Expense'
