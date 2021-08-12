@@ -1,5 +1,5 @@
 <div class="col-md-3 product">
-    <div class="card">
+    <div class="card" onmouseover="show_inventory('#inv{{ product.id }}')" onmouseout="hide_inventory('#inv{{ product.id }}')">
         {% if product.img_url != None %}
         <img src="{{ product.img_url }}" style="width:100%"><br>
         {% else %}
@@ -7,6 +7,11 @@
         {% endif %}
         <h3 id="product{{ product.id }}" product-id="{{ product.id }}">{{ product.name }}</h3>
         <p class="price">${{ product.price }}</p>
+        <p style="display:none;" id="inv{{ product.id }}">
+        {% for inv in inventory %}
+            {% if inv.product_id == product.id %}Current Inventory Level: {{ inv.quantity }}{% endif %}
+        {% endfor %}
+        </p>
         {% if user == current_user %}
         <div class="row">
             <div class="col-md-12">
@@ -15,10 +20,17 @@
         </div>
         <div class="row">
             <div class="col-md-12">
+                <p><input type="number" class="form-control" id="quantity{{ product.id }}" placeholder="Enter Manual Quantity"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <p><a href="javascript:post_sale(
                                 '#product{{ product.id }}',
                                 '#sale{{ product.id }}',
-                                '#cost{{ product.id }}');">
+                                '#cost{{ product.id }}',
+                                '#quantity{{ product.id }}',
+                                '#inv{{ product.id }}');">
                     <button class="btn btn-success">
                         {{ _('Record Sale') }}
                     </button>

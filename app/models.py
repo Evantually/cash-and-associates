@@ -79,6 +79,7 @@ class Product(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     img_url = db.Column(db.String(140))
     sales_item = db.Column(db.Boolean)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
 
     def __repr__(self):
         return f'{self.name}'
@@ -93,3 +94,9 @@ class Category(db.Model):
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
+
+class Inventory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    quantity = db.Column(db.Integer)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))

@@ -7,7 +7,7 @@ from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm, 
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm)
-from app.models import User, Transaction, Product, Category, Company
+from app.models import User, Transaction, Product, Category, Company, Inventory
 from app.translate import translate
 from app.main import bp
 from app.main.utils import organize_data_by_date, summarize_data, format_currency
@@ -38,6 +38,7 @@ def index():
         expenses = Transaction.query.filter_by(user_id=current_user.id).filter_by(transaction_type='Expense').order_by(Transaction.timestamp.desc()).all()
     revenue_info = organize_data_by_date(revenue)
     expense_info = organize_data_by_date(expenses)
+    transaction_info, transactions = summarize_data(transactions)
     balance = (revenue_info['sum'] - expense_info['sum'],format_currency(revenue_info['sum'] - expense_info['sum']))
     revenue_info['sum'] = format_currency(revenue_info['sum'])
     expense_info['sum'] = format_currency(expense_info['sum'])
@@ -64,6 +65,8 @@ def add_product():
         product = Product(name=form.product.data, price=form.price.data,
                           user_id=current_user.id, img_url=form.img_url.data,
                           sales_item=form.sales_item.data)
+        if form.company_item.data:
+            product.company_id = current_user.company
         db.session.add(product)
         db.session.commit()
         flash(f'{product.name} has been successfully added.')
@@ -76,10 +79,10 @@ def add_product():
 def add_transaction():
     form = AddTransactionForm()
     choices = [("","---")]
-    form.product.choices = [("", "---")]+[(s.id, s.name) for s in Product.query.filter_by(user_id=current_user.id).all()]
+    form.product.choices = [("", "---")]+[(s.id, s.name) for s in Product.query.filter_by(company_id=current_user.company).all()]
     if form.validate_on_submit():
         if form.product.data == "":
-            product_id = 1
+            product_id = None
         else:
             product_id = form.product.data
         transaction = Transaction(name=form.name.data, transaction_type=str(form.transaction_type.data), product=product_id, 
@@ -87,7 +90,10 @@ def add_transaction():
                                   user_id=current_user.id, price=int(form.price.data), quantity=int(form.quantity.data),
                                   total=int(form.price.data)*int(form.quantity.data), category=str(form.category.data),
                                   details=form.description.data)
+        if form.inventory.data:
+            inv = Inventory(quantity=form.quantity.data, product_id=product_id, company_id=current_user.company)
         db.session.add(transaction)
+        db.session.add(inv)
         db.session.commit()
         flash(f'Your transaction has been successfully added.')
         return redirect(url_for('main.add_transaction'))
@@ -142,12 +148,13 @@ def add_company():
 @login_required
 def set_employees():
     if current_user.access_level not in ('admin', 'manager'):
-        flash('You do not have access to add a company. If you are a manager, talk to Luca or Naomi')
+        flash('You do not have access to add employees. If you are a manager, talk to Luca or Naomi')
         return redirect(url_for('main.index'))
     form = AddEmployeeForm()
     if form.validate_on_submit():
         employee = User.query.filter_by(username=form.employee.data.username).first()
         employee.company = current_user.company
+        employee.access_level = 'employee'
         db.session.merge(employee)
         db.session.commit()
         company = Company.query.filter_by(id=current_user.company).first()
@@ -160,9 +167,8 @@ def set_employees():
 @login_required
 def transaction_history():
     if current_user.access_level not in ('admin', 'manager'):
-        flash('You do not have access to add a company. If you are a manager, talk to Luca or Naomi')
+        flash('You do not have access to the full transaction history. If you are a manager, talk to Luca or Naomi.')
         return redirect(url_for('main.index'))
-    company = current_user.company
     subquery = [u.id for u in User.query.filter(User.company == current_user.company).all()]
     transactions = Transaction.query.filter(Transaction.user_id.in_(subquery)).order_by(Transaction.timestamp.desc()).all()
     transaction_info, transactions = summarize_data(transactions)
@@ -181,6 +187,11 @@ def delete_product(product_id):
             db.session.commit()
             flash(f'{product.name} has been deleted successfully.')
             return redirect(url_for('main.add_product'))
+        elif current_user.company == Product.query.filter_by(id=product_id).first().company_id and current_user.access_level == 'manager':
+            db.session.delete(product)
+            db.session.commit()
+            flash(f'{product.name} has been deleted successfully.')
+            return redirect(url_for('main.add_product'))
         else:
             flash('You do not have authority to delete this product.')
             return redirect(url_for('main.add_product'))
@@ -191,8 +202,8 @@ def delete_product(product_id):
 @login_required
 def delete_transaction(transaction_id):
     form = DeleteForm()
+    transaction = Transaction.query.filter_by(id=transaction_id).first_or_404()
     if form.validate_on_submit():
-        transaction = Transaction.query.filter_by(id=transaction_id).first_or_404()
         if current_user.id == Transaction.query.filter_by(id=transaction_id).first().user_id:
             db.session.delete(transaction)
             db.session.commit()
@@ -201,14 +212,15 @@ def delete_transaction(transaction_id):
         else:
             flash('You do not have authority to delete this transaction.')
             return redirect(url_for('main.index'))
-    return render_template('add_product.html', title=_('Delete Transaction'),
-                           form=form)
+    return render_template('delete_transaction.html', title=_('Delete Transaction'),
+                           form=form, transaction=transaction)
 
 @bp.route('/point_of_sale')
 @login_required
 def point_of_sale():
-    products = Product.query.filter_by(user_id=current_user.id).filter_by(sales_item=True).order_by(Product.name).all()
-    return render_template('point_of_sale.html', products=products, user=current_user)
+    products = Product.query.filter_by(company_id=current_user.company).filter_by(sales_item=True).order_by(Product.name).all()
+    inventory = Inventory.query.filter_by(company_id=current_user.company).all()
+    return render_template('point_of_sale.html', products=products, inventory=inventory, user=current_user)
 
 
 @bp.route('/purchase_inventory', methods=['GET', 'POST'])
@@ -244,16 +256,28 @@ def edit_profile():
 @login_required
 def post_sale():
     product = Product.query.filter_by(id=request.form['product_id']).first()
-    price = request.form['cost']
-    if request.form['cost'] == '':
+    try:
+        price = int(request.form['cost'])
+    except ValueError:
         price = product.price
+    try:
+        quantity = int(request.form['quantity'])
+    except ValueError:
+        quantity = 1
+    inv = Inventory.query.filter_by(product_id=product.id).first()
+    if inv is not None:
+        inv.quantity -= quantity
+        amount = inv.quantity
+    else:
+        amount = 0
     transaction = Transaction(transaction_type='Revenue', name=f'{product.name} sale', product=product.id, 
                               product_name=product.name, user_id=current_user.id, 
-                              price=price, quantity=1, total=price, category='Sales',
+                              price=price, quantity=quantity, total=price*quantity, category='Sales',
                               details='N/A')
     db.session.add(transaction)
     db.session.commit()
-    return jsonify({'text': f'The sale of 1 {product.name} for ${price} has been recorded.'})
+    return jsonify({'text': f'The sale of {quantity} {product.name}{"" if quantity == 1 else "s"} for ${price} each has been recorded (${price*quantity} total).',
+                    'quantity': amount})
 
 @bp.route('/tutorials')
 def tutorials():

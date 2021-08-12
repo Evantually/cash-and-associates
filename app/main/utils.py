@@ -56,6 +56,7 @@ def summarize_data(data):
     output = {
         'total_sum' : 0,
         'quantity_sum': 0,
+        'total_type': ''
     }
     for d in data:
         if d.transaction_type == 'Expense':
@@ -65,8 +66,14 @@ def summarize_data(data):
         output['quantity_sum'] += d.quantity
         d.total = format_currency(d.total)
         d.price = format_currency(d.price)
+        d.time = format_date(d.timestamp)
+    if output['total_sum'] < 0:
+        output['total_type'] = 'Expense'
     output['total_sum'] = format_currency(output['total_sum'])
     return output, data
 
 def format_currency(amount):
     return "{:,.2f}".format(amount)
+
+def format_date(date):
+    return date.strftime("%b %d, %Y, %H:%M:%S")

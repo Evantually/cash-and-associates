@@ -5,6 +5,7 @@
 
 {% block styles %}
 {{super()}}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 <link rel="stylesheet" href="{{url_for('static', filename='styles/dark-mode.css')}}">
 {% endblock %}
 
@@ -25,12 +26,21 @@
                     <li><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
                     {% if current_user.is_anonymous %}
                     {% else %}
-                    <li><a href="{{ url_for('main.add_product') }}">{{ _('Add Product') }}</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Management Tools
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('main.add_product') }}">Add Product</a></li>
+                            <li><a href="{{ url_for('main.add_transaction') }}">Add Transaction</a></li>
+                            {% if current_user.access_level == 'manager' %}
+                            <li><a href="{{ url_for('main.set_employees') }}">{{ _('Add Employee to Company') }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
                     <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
-                    <li><a href="{{ url_for('main.add_transaction') }}">{{ _('Add Transaction') }}</a></li>
-                    {% endif %}                    
+                    {% endif %}
                     {% if current_user.access_level == 'manager' %}
-                    <li><a href="{{ url_for('main.set_employees') }}">{{ _('Add Employee to Company') }}</a></li>
+                    <li><a href="{{ url_for('main.transaction_history') }}">{{ _('Dashboard') }}</a></li>
                     {% endif %}
                     {% if current_user.access_level == 'admin' %}
                     <li><a href="{{ url_for('main.add_category') }}">{{ _('Add Category') }}</a></li>
@@ -70,15 +80,19 @@
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        function post_sale(sourceElem, destElem, costElem) {
+        function post_sale(sourceElem, destElem, costElem, quantElem, invElem) {
             $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
             $.post('/post_sale', {
                 text: $(sourceElem).text(),
                 cost: $(costElem).val(),
+                quantity: $(quantElem).val(),
                 product_id: $(sourceElem).attr("product-id")
             }).done(function(response) {
                 $(destElem).text(response['text'])
+                $(invElem).text(`Current Inventory Level: ${response['quantity']}`)
             }).fail(function() {
                 $(destElem).text("{{ _('Error: Could not contact server.') }}");
             });
@@ -189,6 +203,29 @@
             $('html').attr('data-theme','dark')
             $('body').attr('data-theme','dark')
             $('nav').attr('data-theme','dark')
+        }
+
+        function show_full_table() {
+            $('.container').addClass('container-fluid')
+            $('.container').removeClass('container')
+            $('#tr-history tr').removeClass('hidden')
+            $('#see-more').addClass('hidden')
+            $('#hide-rows').html('<a href="javascript:hide_extra_rows();">Hide Rows...</a>')
+        }
+
+        function hide_extra_rows() {
+            $('.container-fluid').addClass('container')
+            $('.container-fluid').removeClass('container-fluid')
+            $('.extra-row').addClass('hidden')
+            $('#see-more').removeClass('hidden')
+            $('#hide-rows').html('')
+        }
+
+        function show_inventory(elem){
+            $(elem).css('display', 'block');
+        }
+        function hide_inventory(elem){
+            $(elem).css('display', 'none');
         }
         setdarkmode();
     </script>

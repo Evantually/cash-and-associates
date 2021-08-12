@@ -33,6 +33,7 @@ class AddProductForm(FlaskForm):
     price = IntegerField(_l('Price'), validators=[DataRequired()])
     img_url = StringField(_l('Image URL'))
     sales_item = BooleanField('Sales Item? Check this if you want on your point of sale page.')
+    company_item = BooleanField('Company Item? Check this if you want this to appear for all employees.')
     submit = SubmitField(_l('Submit'))
 
 class AddTransactionForm(FlaskForm):
@@ -47,8 +48,7 @@ class AddTransactionForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class DeleteForm(FlaskForm):
-    delete = StringField(_l('Type "Delete" to delete this product.'))
-    submit = SubmitField(_l('Submit'))
+    submit = SubmitField(_l('Delete'))
 
 class AddCategoryForm(FlaskForm):
     category = StringField(_l('Category'))
@@ -62,3 +62,9 @@ class AddCompanyForm(FlaskForm):
 class AddEmployeeForm(FlaskForm):
     employee = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').filter_by(company=None).all())
     submit = SubmitField(_l('Submit'))
+
+class AddInventoryForm(FlaskForm):
+    product = SelectField('Product')
+    price = IntegerField(_l('Price'), validators=[DataRequired()])
+    quantity = IntegerField(_l('Quantity'), validators=[DataRequired()])
+    category = QuerySelectField(query_factory=lambda: Category.query.all())

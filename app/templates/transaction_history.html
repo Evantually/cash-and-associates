@@ -5,11 +5,13 @@
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     {% if transactions|length > 0 %}
     <h2>Transaction History</h2>
-    <table class="table table-stripeda table-hover">
+    <p>Total transactions: {{ transactions|length }}</p>
+    <table id="tr-history" class="table table-stripeda table-hover">
         <thead>
             <tr>
                 <th scope="col">Transaction Type</th>
                 <th scope="col">Employee</th>
+                <th scope="col">Category</th>
                 <th scope="col">Transaction Name</th>
                 <th scope="col">Date</th>
                 <th scope="col">Product Name</th>
@@ -21,11 +23,30 @@
         </thead>
         <tbody>
             {% for transaction in transactions %}
+                {% if loop.index < 10 %}
                 <tr class="{% if transaction.transaction_type == 'Expense' %}debt{% else %}cash{% endif %}">
+                {% elif loop.index == 11 %}
+                <tr id="see-more">
+                    <td><a href="javascript:show_full_table();">See more...</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="extra-row hidden {% if transaction.transaction_type == 'Expense' %}debt{% else %}cash{% endif %}">
+                {% else %}
+                <tr class="extra-row hidden {% if transaction.transaction_type == 'Expense' %}debt{% else %}cash{% endif %}">
+                {% endif %}
                     <td>{{ transaction.transaction_type }}</td>
                     <td>{{ transaction.author.username }}</td>
+                    <td>{{ transaction.category }}</td>
                     <td>{{ transaction.name }}</td>
-                    <td>{{ transaction.timestamp }}</td>
+                    <td>{{ transaction.time }}</td>
                     <td>{{ transaction.product_name }}</td>
                     <td>${{ transaction.price }}</td>
                     <td>{{ transaction.quantity }}</td>
@@ -34,8 +55,9 @@
                 </tr>
             {% endfor %}
             <thead>
-                <tr>
+                <tr class="{% if tr_info['total_type'] == 'Expense' %}debt{% else %}cash{% endif %}">
                     <th>Total</th>
+                    <th id="hide-rows"></th>
                     <th></th>
                     <th></th>
                     <th></th>
