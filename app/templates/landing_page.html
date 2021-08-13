@@ -519,7 +519,7 @@
                                 <img src="{{ url_for('static', filename='images/sample-2.jpg') }}" alt="Team">
                             </div>
                             <div class="team-content">
-                                <h4 class="team-name"><a href="#">Auto Business</a></h4>
+                                <h4 class="team-name"><a href="{{ url_for('main.test', business='restaurant') }}">Auto Business</a></h4>
                                 <span class="sub-title">Sample a wear & tear template</span>
                             </div>
                         </div>
@@ -530,7 +530,7 @@
                                 <img src="{{ url_for('static', filename='images/sample-3.jpg') }}" alt="Team">
                             </div>
                             <div class="team-content">
-                                <h4 class="team-name"><a href="#">Cab Business</a></h4>
+                                <h4 class="team-name"><a href="{{ url_for('main.test', business='restaurant') }}">Cab Business</a></h4>
                                 <span class="sub-title">Sample a cab business template</span>
                             </div>
                         </div>
