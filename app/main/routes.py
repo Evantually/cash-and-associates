@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, g, \
     jsonify, current_app
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required, login_user
 from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from app import db
@@ -10,7 +10,7 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
 from app.models import User, Transaction, Product, Category, Company, Inventory
 from app.translate import translate
 from app.main import bp
-from app.main.utils import organize_data_by_date, summarize_data, format_currency
+from app.main.utils import organize_data_by_date, summarize_data, format_currency, setup_company
 
 @bp.before_app_request
 def before_request():
@@ -91,9 +91,13 @@ def add_transaction():
                                   total=int(form.price.data)*int(form.quantity.data), category=str(form.category.data),
                                   details=form.description.data)
         if form.inventory.data:
-            inv = Inventory(quantity=form.quantity.data, product_id=product_id, company_id=current_user.company)
+            inv = Inventory.query.filter_by(product_id=product_id).first()
+            if inv is None:
+                inv = Inventory(quantity=form.quantity.data, product_id=product_id, company_id=current_user.company)
+                db.session.add(inv)
+            else:
+                inv.quantity += form.quantity.data
         db.session.add(transaction)
-        db.session.add(inv)
         db.session.commit()
         flash(f'Your transaction has been successfully added.')
         return redirect(url_for('main.add_transaction'))
@@ -166,7 +170,7 @@ def set_employees():
 @bp.route('/transaction_history', methods=['GET', 'POST'])
 @login_required
 def transaction_history():
-    if current_user.access_level not in ('admin', 'manager'):
+    if current_user.access_level not in ('admin', 'manager', 'temp'):
         flash('You do not have access to the full transaction history. If you are a manager, talk to Luca or Naomi.')
         return redirect(url_for('main.index'))
     subquery = [u.id for u in User.query.filter(User.company == current_user.company).all()]
@@ -303,22 +307,8 @@ def changelogs():
 def roadmap():
     return render_template('roadmap.html')
 
-@bp.route('/services')
-def services():
-    return render_template('services.html')
-
-@bp.route('/portfolio')
-def portfolio():
-    return render_template('portfolio.html')
-
-@bp.route('/pricing')
-def pricing():
-    return render_template('pricing.html')
-
-@bp.route('/team')
-def team():
-    return render_template('team.html')
-
-@bp.route('/contact')
-def contact():
-    return render_template('contact.html')
+@bp.route('/test/<business>', methods=['GET', 'POST'])
+def test(business):
+    user = setup_company(business)
+    login_user(user)
+    return redirect(url_for('main.point_of_sale'))

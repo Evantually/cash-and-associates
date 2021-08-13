@@ -3244,3 +3244,16 @@ p.form-message.success, p.form-message.error {
     background-color: #0067f4; }
 
 /*# sourceMappingURL=style.css.map */
+
+.popup {
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #0067f4;
+  position: absolute;
+  display: none;
+  left: 10%;
+  top:75%;
+  width: 80%;
+  opacity: 0;
+  transition: opacity .2s ease-out;
+}

@@ -191,21 +191,23 @@ $(function() {
     });
     
     
-    //===== 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    //=====     
+        
     
     
     
 });
+
+function toggle_popup() {
+    let popup = $(".popup");
+    let features_icon = $('.features-icon');
+    if (popup.css('opacity') === '0') {
+        popup.css('opacity', 1);
+        popup.css('display', 'block');
+        features_icon.css('opacity', 0)
+    } else {
+        popup.css('opacity', 0);
+        popup.css('display', 'none');
+        features_icon.css('opacity', 1)
+    }
+}

@@ -197,7 +197,7 @@
                         </div>
                         <div class="features-content">
                             <p class="text">Cash & Associates point of sale technology makes it easier than ever to record transactions. Keep your ledger up to date and accurate.</p>
-                            <a class="features-btn" href="#">LEARN MORE</a>
+                            <a class="features-btn" href="javascript:toggle_popup();">LEARN MORE</a>
                         </div>
                     </div> <!-- single features -->
                 </div>
@@ -484,6 +484,63 @@
     <a href="#" class="back-to-top"><i class="lni lni-chevron-up"></i></a>
 
     <!--====== BACK TOP TOP PART ENDS ======-->    
+
+    <!--====== POPUP START ======-->
+    <section id="popup" class="team-area">
+        <div class="container">
+            <div class="popup">
+                <div class="row" style="float: right;">
+                    <a href="javascript:toggle_popup();">
+                        <img src="{{ url_for('static', filename='images/close-button.png') }}">
+                    </a>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-10">
+                        <div class="section-title text-center pb-30">
+                            <h3 class="title">Test the Point of Sale with a template!</h3>
+                        </div> <!-- section title -->
+                    </div>
+                </div> <!-- row -->
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="team-style-eleven text-center mt-30 wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                            <div class="team-image">
+                                <img src="{{ url_for('static', filename='images/sample-1.jpg') }}" alt="Team">
+                            </div>
+                            <div class="team-content">
+                                <h4 class="team-name"><a href="{{ url_for('main.test', business='restaurant') }}">Restaurant Business</a></h4>
+                                <span class="sub-title">Sample a restaurant template</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="team-style-eleven text-center mt-30 wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                            <div class="team-image">
+                                <img src="{{ url_for('static', filename='images/sample-2.jpg') }}" alt="Team">
+                            </div>
+                            <div class="team-content">
+                                <h4 class="team-name"><a href="#">Auto Business</a></h4>
+                                <span class="sub-title">Sample a wear & tear template</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="team-style-eleven text-center mt-30 wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                            <div class="team-image">
+                                <img src="{{ url_for('static', filename='images/sample-3.jpg') }}" alt="Team">
+                            </div>
+                            <div class="team-content">
+                                <h4 class="team-name"><a href="#">Cab Business</a></h4>
+                                <span class="sub-title">Sample a cab business template</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--====== POPUP ENDS ======-->
 
     <!--====== PART START ======-->
 
