@@ -87,6 +87,7 @@ def setup_company(company_info):
     db.session.commit()
     user = User(username=username,email='test@test.com', access_level='temp', company=company.id)
     db.session.add(user)
+    db.session.commit()
     if company_info == 'restaurant':
         products = [
             {
