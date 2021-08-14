@@ -85,8 +85,12 @@ def add_transaction():
             product_id = None
         else:
             product_id = form.product.data
+        try:
+            product_name = Product.query.filter_by(id=product_id).first().name
+        except AttributeError:
+            product_name=None
         transaction = Transaction(name=form.name.data, transaction_type=str(form.transaction_type.data), product=product_id, 
-                                  product_name=Product.query.filter_by(id=product_id).first().name, 
+                                  product_name=product_name, 
                                   user_id=current_user.id, price=int(form.price.data), quantity=int(form.quantity.data),
                                   total=int(form.price.data)*int(form.quantity.data), category=str(form.category.data),
                                   details=form.description.data)
