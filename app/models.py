@@ -94,6 +94,7 @@ class Category(db.Model):
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
+    access_token = db.Column(db.String(128))
 
 class Inventory(db.Model):
     id = db.Column(db.Integer, primary_key=True)

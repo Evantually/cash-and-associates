@@ -316,3 +316,11 @@ def test(business):
     user = setup_company(business)
     login_user(user)
     return redirect(url_for('main.point_of_sale'))
+
+@bp.route('/fetch_info/<company_id>/<access_token>')
+def fetch_info(company_id, access_token):
+    company = Company.query.filter_by(id=company_id).first()
+    if access_token == company.access_token:
+
+        return jsonify()
+    return 'Incorrect access token. Please check with your manager or C&A staff.'
