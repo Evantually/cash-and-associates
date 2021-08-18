@@ -68,3 +68,8 @@ class AddInventoryForm(FlaskForm):
     price = IntegerField(_l('Price'), validators=[DataRequired()])
     quantity = IntegerField(_l('Quantity'), validators=[DataRequired()])
     category = QuerySelectField(query_factory=lambda: Category.query.all())
+
+class AddJobForm(FlaskForm):
+    name = StringField(_l('Name of trip'))
+    trip_type = SelectField(_l('Trip Type'), choices=[('Hunting','Hunting'), ('Fishing','Fishing')])
+    submit = SubmitField(_l('Submit'))

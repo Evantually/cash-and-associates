@@ -4,9 +4,9 @@
 {% endblock %}
 
 {% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='styles/dark-mode.css')}}">
 {{super()}}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-<link rel="stylesheet" href="{{url_for('static', filename='styles/dark-mode.css')}}">
 {% endblock %}
 
 {% block navbar %}
@@ -35,6 +35,13 @@
                             {% if current_user.access_level == 'manager' %}
                             <li><a href="{{ url_for('main.set_employees') }}">{{ _('Add Employee to Company') }}</a></li>
                             {% endif %}
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Job Trackers
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('main.jobs') }}">New Job</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
@@ -75,6 +82,10 @@
     </div>
 {% endblock %}
 
+{% block right_sidebar %}
+
+{% endblock %}
+
 {% block scripts %}
     {{ super() }}
     {{ moment.include_moment() }}
@@ -97,6 +108,76 @@
                 $(destElem).text("{{ _('Error: Could not contact server.') }}");
             });
         }
+        function add_hunting_entry(destElem, jobId) {
+            $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+            testing_array_pre = ['onemeat', 'twomeat', 'smpelt', 'medpelt', 'lgpelt', 'coll'];
+            testing_array = [];
+            for (i=0;i<testing_array_pre.length;i++) {
+                testing_array.push(testing_array_pre[i]+String(jobId));
+            }
+            console.log(jobId);
+            output_obj = {
+                coll: 0,
+                meat: 0,
+                smpelt: 0,
+                medpelt: 0,
+                lgpelt: 0,
+                job_id: jobId
+            }
+            for (i=0;i<testing_array.length;i++) {
+                test_elem = document.getElementById(testing_array[i]);
+                if (test_elem.classList.contains('btn-success')) {
+                     output_item = testing_array[i].replace(/[0-9]/g, '');
+                     console.log(output_item);
+                     if (output_item === 'onemeat') {
+                        output_obj['meat'] = 1
+                     } else if (output_item === 'twomeat') {
+                        output_obj['meat'] = 2
+                     } else {
+                        output_obj[output_item] = 1
+                     }
+                }
+            }
+            console.log(output_obj);
+            $.post('/jobs/hunting/tracker/add_entry', output_obj)
+            .done(function(response) {
+                $(`#${destElem}`).text(response['text'])
+            }).fail(function() {
+                $(`#${destElem}`).text("{{ _('Error: Could not contact server.') }}");
+            });
+        }
+        function set_class_danger(elem_id) {
+            other_elem = $(elem_id);
+            other_elem.removeClass('btn-success');
+            other_elem.addClass('btn-danger');
+        }
+        function set_active(elem, jobID) {
+            change_elem = document.getElementById(elem);
+            jq_elem = $('#' + elem);
+            console.log(elem);
+            console.log(change_elem.classList.contains('btn-danger'));
+            if (elem === 'onemeat' + String(jobID) && change_elem.classList.contains('btn-danger')) {
+                set_class_danger('#twomeat' + String(jobID));
+            } else if (elem === 'twomeat'  + String(jobID) && change_elem.classList.contains('btn-danger')) {
+                set_class_danger('#onemeat' + String(jobID));
+            } else if (elem === 'smpelt' + String(jobID)) {
+                set_class_danger('#medpelt' + String(jobID));
+                set_class_danger('#lgpelt' + String(jobID));
+            } else if (elem === 'medpelt' + String(jobID)) {
+                set_class_danger('#smpelt' + String(jobID));
+                set_class_danger('#lgpelt' + String(jobID));
+            } else if (elem === 'lgpelt' + String(jobID)) {
+                set_class_danger('#smpelt' + String(jobID));
+                set_class_danger('#medpelt' + String(jobID));
+            }
+            if (change_elem.classList.contains('btn-danger')) {
+                jq_elem.removeClass('btn-danger');
+                jq_elem.addClass('btn-success');
+            } else {
+                jq_elem.removeClass('btn-success');
+                jq_elem.addClass('btn-danger');
+            }
+        }       
         function create_graph(data){
             data.dates.forEach(d => {
                 d.formatted_date = d3.timeParse("%Y-%m-%d")(d.date)

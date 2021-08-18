@@ -6,8 +6,10 @@ from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm, 
-    DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm)
-from app.models import User, Transaction, Product, Category, Company, Inventory
+    DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
+    AddJobForm)
+from app.models import (User, Transaction, Product, Category, Company,
+                        Inventory, Job, HuntingEntry, FishingEntry)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import organize_data_by_date, summarize_data, format_currency, setup_company
@@ -321,6 +323,46 @@ def test(business):
 def fetch_info(company_id, access_token):
     company = Company.query.filter_by(id=company_id).first()
     if access_token == company.access_token:
-
+        # Add transactional info here to be spit out into json
         return jsonify()
     return 'Incorrect access token. Please check with your manager or C&A staff.'
+
+# Job tracking section
+@bp.route('/jobs', methods=['GET','POST'])
+def jobs():
+    form = AddJobForm()
+    jobs = Job.query.filter_by(user_id=current_user.id)
+    if form.validate_on_submit():
+        job = Job(name=form.name.data, job_type=form.trip_type.data, user_id=current_user.id)
+        db.session.add(job)
+        db.session.commit()
+        flash(f'{job.name} has been added.')
+        if job.job_type == 'Hunting':
+            return redirect(url_for('main.hunting_tracker', job=job.id))
+        elif job.job_type == 'Fishing':
+            return redirect(url_for('main.fishing_tracker', job=job.id))
+    return render_template('add_product.html',title='Start Job', jobs=jobs, form=form)
+
+@bp.route('/jobs/hunting/tracker/<job_id>')
+def hunting_tracker(job_id):
+    job = Job.query.filter_by(id=job_id).first()
+    return render_template('hunting_tracker.html', job=job)
+
+@bp.route('/jobs/fishing/tracker/<job_id>')
+def fishing_tracker(job_id):
+    job = Job.query.filter_by(id=job_id).first()
+    return render_template('fishing_tracker.html', job=job)
+
+@bp.route('/jobs/hunting/tracker/add_entry', methods=['POST'])
+def add_hunting_entry():
+    job = Job.query.filter_by(id=request.form['job_id']).first()
+    if request.form['coll'] == 0:
+        coll = False
+    else:
+        coll = True
+    entry = HuntingEntry(job=job.id, user_id=current_user.id, collateral=coll,
+                        meat=request.form['meat'], small_pelt=request.form['smpelt'],
+                        med_pelt=request.form['medpelt'], large_pelt=request.form['lgpelt'])
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})

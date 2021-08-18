@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     access_level = db.Column(db.String(16), default='individual')
     company = db.Column(db.Integer, db.ForeignKey('company.id'))
     dark_mode = db.Column(db.Boolean)
+    sub_expiration = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return '{}'.format(self.username)
@@ -63,6 +64,7 @@ class Transaction(db.Model):
     product_name = db.Column(db.String(64))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     price = db.Column(db.Integer)
     quantity = db.Column(db.Integer)
     total = db.Column(db.Integer)
@@ -101,3 +103,33 @@ class Inventory(db.Model):
     quantity = db.Column(db.Integer)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+
+# Job Tracking
+class Job(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job_type = db.Column(db.String(64))
+    name = db.Column(db.String(64))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class HuntingEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job = db.Column(db.Integer, db.ForeignKey('job.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    validated = db.Column(db.Boolean)
+    collateral = db.Column(db.Boolean)
+    meat = db.Column(db.Integer)
+    small_pelt = db.Column(db.Integer)
+    med_pelt = db.Column(db.Integer)
+    large_pelt = db.Column(db.Integer)
+
+class FishingEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job = db.Column(db.Integer, db.ForeignKey('job.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    misc = db.Column(db.Integer)
+    fish = db.Column(db.Integer)
