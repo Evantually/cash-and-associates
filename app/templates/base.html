@@ -115,7 +115,6 @@
             for (i=0;i<testing_array_pre.length;i++) {
                 testing_array.push(testing_array_pre[i]+String(jobId));
             }
-            console.log(jobId);
             output_obj = {
                 coll: 0,
                 meat: 0,
@@ -137,8 +136,9 @@
                         output_obj[output_item] = 1
                      }
                 }
+                set_class_danger(`#${testing_array[i]}`)
             }
-            console.log(output_obj);
+            
             $.post('/jobs/hunting/tracker/add_entry', output_obj)
             .done(function(response) {
                 $(`#${destElem}`).text(response['text'])
