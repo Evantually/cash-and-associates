@@ -338,9 +338,9 @@ def jobs():
         db.session.commit()
         flash(f'{job.name} has been added.')
         if job.job_type == 'Hunting':
-            return redirect(url_for('main.hunting_tracker', job=job.id))
+            return redirect(url_for('main.hunting_tracker', job_id=job.id))
         elif job.job_type == 'Fishing':
-            return redirect(url_for('main.fishing_tracker', job=job.id))
+            return redirect(url_for('main.fishing_tracker', job_id=job.id))
     return render_template('add_product.html',title='Start Job', jobs=jobs, form=form)
 
 @bp.route('/jobs/hunting/tracker/<job_id>')
