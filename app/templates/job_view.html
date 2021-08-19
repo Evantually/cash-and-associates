@@ -89,7 +89,7 @@
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['total_time'] == 0 %}{% else %}You killed an average of {{ round((output['kill_count'] * 60) / output['total_time'],2) }} animals per minute.{% endif %}</div>
+                            <div class="flex-sub value" style="width: 190px;">{% if output['total_time'] == 0 %}{% else %}You killed an average of {{ (output['kill_count'] * 60) / output['total_time']|round(2) }} animals per minute.{% endif %}</div>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of {{ round(output['meat']  / output['kill_count'],2) }} meat.{% endif %}</div>
+                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of {{ output['meat']  / output['kill_count']|round(2) }} meat.{% endif %}</div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of ${{ round(output['total']  / output['kill_count'],2) }}.{% endif %}</div>
+                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of ${{ output['total']  / output['kill_count']|round(2) }}.{% endif %}</div>
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}{{ round((output['nothing']  / output['kill_count']) * 100,2) }}% of your kills yielded nothing.{% endif %}</div>
+                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}{{ (output['nothing']  / output['kill_count']) * 100|round(2) }}% of your kills yielded nothing.{% endif %}</div>
                         </div>
                     </div>
                 </div>
