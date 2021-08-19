@@ -2,7 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <div class="statistics-section-title">Jobs Overview</div>
+    <div class="statistics-section-title"><h1>Jobs Overview</h1></div>
     {% for job in jobs %}
     <a href="{{ url_for('main.hunting_view', job_id=job.id) }}">
         <div class="row">
