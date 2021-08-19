@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from app.models import User, Product, Company, Inventory, Transaction
+from app.models import User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry
 from app import db
 
 def organize_data_by_date(data):
@@ -149,6 +149,21 @@ def clear_temps():
     users = User.query.filter_by(access_level='temp').all()
     for u in users:
         company = u.company
+        # Delete hunting entries
+        hes = HuntingEntry.query.filter_by(user_id=u.id).all()
+        for he in hes:
+            db.session.delete(he)
+        db.session.commit()
+        # Delete fishing entries
+        # fes = FishingEntry.query.filter_by(user_id=u.id).all()
+        # for fe in fes:
+        #     db.session.delete(fe)
+        # db.session.commit()
+        # Delete jobs
+        jobs = Job.query.filter_by(user_id=u.id).all()
+        for job in jobs:
+            db.session.delete(job)
+        db.session.commit()
         # Delete transactions
         trs = u.transactions
         for tr in trs:
