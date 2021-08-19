@@ -358,12 +358,10 @@ def hunting_view(job_id):
     entries = HuntingEntry.query.filter_by(job=job_id).all()
     output = summarize_job(entries)
     job = Job.query.filter_by(id=job_id).first()
-    if job.total_earnings is None:
-        job.total_earnings = output['total']
-    if job.hourly_earnings is None:
-        job.hourly_earnings = output['total_hour']
+    job.total_earnings = output['total']
+    job.hourly_earnings = output['total_hour']
     db.session.commit()
-    return render_template('job_view.html', output=output)
+    return render_template('job_view.html', output=output, entries=entries)
 
 @bp.route('/jobs/fishing/tracker/<job_id>')
 def fishing_tracker(job_id):
@@ -383,5 +381,9 @@ def add_hunting_entry():
     db.session.add(entry)
     db.session.commit()
     return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})
+
+@bp.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 # Casino section

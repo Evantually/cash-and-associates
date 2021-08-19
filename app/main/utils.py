@@ -180,7 +180,8 @@ def summarize_job(entries):
         'medpelt': 0,
         'lgpelt': 0,
         'total': 0,
-        'total_hour': 0
+        'total_hour': 0,
+        'total_time': 0
     }
     sell_values = {
         'meat': 65,
@@ -201,7 +202,13 @@ def summarize_job(entries):
         output['lgpelt'] += entry.large_pelt
     for key in sell_values:
         output['total'] += output[key] * sell_values[key]
-    output['total_hour'] = format_currency(output['total'] / ((end_timestamp - start_timestamp).seconds / 3600))
+    total_time = (end_timestamp - start_timestamp).seconds
+    output['total_time'] = total_time
+    output['total_hour'] = format_currency(output['total'] / (total_time / 3600))
     output['total'] = format_currency(output['total'])
     return output
 
+def moving_average(entries):
+    moving_average_data = {}
+    for entry in entries:
+        pass
