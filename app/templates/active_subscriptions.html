@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>Active Subscribers</h2>
+    <p>Total subscriptions: {{ active_subs|length }}</p>
+    <table id="tr-history" class="table table-stripeda table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Hunting Subscription</th>
+                <th scope="col">Fishing Subscription</th>
+                <th scope="col">Sub Expiration Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in active_subs %}
+                <tr>
+                    <td>{{ sub.username }}</td>
+                    <td>{{ sub.hunter }}</td>
+                    <td>{{ sub.fisher }}</td>
+                    <td>{{ moment(sub.sub_expiration).calendar() }}</td>                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -157,7 +157,7 @@ def add_company():
 @bp.route('/manage_subscriptions', methods=['GET','POST'])
 @login_required
 def manage_subscriptions():
-    if current_user.access_level == 'admin' or current_user.username == 'Luca Pacioli':
+    if current_user.access_level == 'admin' or current_user.company == 1:
         form = ManageSubscriptionForm()
         if form.validate_on_submit():
             user = User.query.filter_by(id=form.user.data.id).first()
@@ -172,6 +172,15 @@ def manage_subscriptions():
         flash('You do not have access to this page.')
         return redirect(url_for('main.index'))
 
+@bp.route('/active_subscriptions', methods=['GET'])
+@login_required
+def active_subscriptions():
+    if current_user.access_level == 'admin' or current_user.company == 1:
+        active_subs = User.query.filter((User.hunter == True) | (User.fisher == True)).filter(User.sub_expiration >= datetime.utcnow()).order_by(User.sub_expiration).all()
+        return render_template('active_subscriptions.html',active_subs=active_subs)
+    else:
+        flash('You do not have access to this page.')
+        return redirect(url_for('main.index'))
 # END ADMIN AREA
 # BEGIN BUSINESS MANAGER AREA
 
