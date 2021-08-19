@@ -4,13 +4,13 @@
 {% block app_content %}
     <h1>Hunting Tracker</h1>
     <div class="row" id="trip{{ job.id }}">
-        <div class="col-md-12"><a href="javascript:set_active('onemeat{{ job.id }}',{{ job.id }});" role="button"><button id="onemeat{{ job.id }}"class="btn btn-danger">1 Cut of Meat</button></a></div>
-        <div class="col-md-12"><a href="javascript:set_active('twomeat{{ job.id }}', {{ job.id }});" role="button"><button id="twomeat{{ job.id }}"class="btn btn-danger">2 Cuts of Meat</button></a></div>
-        <div class="col-md-12"><a href="javascript:set_active('smpelt{{ job.id }}', {{ job.id }});" role="button"><button id="smpelt{{ job.id }}"class="btn btn-danger">1 Small Pelt</button></a></div>
-        <div class="col-md-12"><a href="javascript:set_active('medpelt{{ job.id }}', {{ job.id }});" role="button"><button id="medpelt{{ job.id }}"class="btn btn-danger">1 Medium Pelt</button></a></div>
-        <div class="col-md-12"><a href="javascript:set_active('lgpelt{{ job.id }}', {{ job.id }});" role="button"><button id="lgpelt{{ job.id }}"class="btn btn-danger">1 Large Pelt</button></a></div>
-        <div class="col-md-12"><a href="javascript:set_active('coll{{ job.id }}', {{ job.id }});" role="button"><button id="coll{{ job.id }}"class="btn btn-danger">Collateral Kill</button></a></div>
-        <div class="col-md-12"><a href="javascript:add_hunting_entry('output', {{ job.id }});" role="button"><button class="btn btn-primary">Submit Entry</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('onemeat{{ job.id }}',{{ job.id }});" role="button"><button id="onemeat{{ job.id }}"class="btn btn-danger btn-lg">1 Cut of Meat</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('twomeat{{ job.id }}', {{ job.id }});" role="button"><button id="twomeat{{ job.id }}"class="btn btn-danger btn-lg">2 Cuts of Meat</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('smpelt{{ job.id }}', {{ job.id }});" role="button"><button id="smpelt{{ job.id }}"class="btn btn-danger btn-lg">1 Small Pelt</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('medpelt{{ job.id }}', {{ job.id }});" role="button"><button id="medpelt{{ job.id }}"class="btn btn-danger btn-lg">1 Medium Pelt</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('lgpelt{{ job.id }}', {{ job.id }});" role="button"><button id="lgpelt{{ job.id }}"class="btn btn-danger btn-lg">1 Large Pelt</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('coll{{ job.id }}', {{ job.id }});" role="button"><button id="coll{{ job.id }}"class="btn btn-danger btn-lg">Collateral Kill</button></a></div>
+        <div class="col-md-12"><a href="javascript:add_hunting_entry('output', {{ job.id }});" role="button"><button class="btn btn-primary btn-lg">Submit Entry</button></a></div>
     </div>
     <div id="output"></div>
 {% endblock %}
