@@ -38,7 +38,7 @@
                             {% endif %}
                         </ul>
                     </li>
-                    {% if current_user.access_level == 'admin' or current_user.username == 'Luca Pacioli' %}
+                    {% if current_user.access_level == 'admin' or current_user.company == 1 %}
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Tools
                         <span class="caret"></span></a>
