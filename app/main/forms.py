@@ -75,7 +75,7 @@ class AddJobForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class ManageSubscriptionForm(FlaskForm):
-    user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').all())
+    user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').order_by(User.username).all())
     hunter = BooleanField('Hunting Subscription')
     fisher = BooleanField('Fishing Subscription')
     submit = SubmitField(_l('Submit'))
