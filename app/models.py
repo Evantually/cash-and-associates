@@ -135,6 +135,7 @@ class HuntingEntry(db.Model):
 class FishingEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     job = db.Column(db.Integer, db.ForeignKey('job.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     misc = db.Column(db.Integer)
     fish = db.Column(db.Integer)

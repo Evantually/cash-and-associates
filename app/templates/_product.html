@@ -25,12 +25,18 @@
         </div>
         <div class="row">
             <div class="col-md-12">
+                <p><input type="textarea" class="form-control" id="desc{{ product.id }}" placeholder="Enter more details"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <p><a href="javascript:post_sale(
                                 '#product{{ product.id }}',
                                 '#sale{{ product.id }}',
                                 '#cost{{ product.id }}',
                                 '#quantity{{ product.id }}',
-                                '#inv{{ product.id }}');">
+                                '#inv{{ product.id }}',
+                                '#desc{{ product.id }}');">
                     <button class="btn btn-success">
                         {{ _('Record Sale') }}
                     </button>

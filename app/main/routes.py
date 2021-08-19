@@ -304,7 +304,7 @@ def post_sale():
     transaction = Transaction(transaction_type='Revenue', name=f'{product.name} sale', product=product.id, 
                               product_name=product.name, user_id=current_user.id, 
                               price=price, quantity=quantity, total=price*quantity, category='Sales',
-                              details='N/A')
+                              details=request.form['description'])
     db.session.add(transaction)
     db.session.commit()
     return jsonify({'text': f'The sale of {quantity} {product.name}{"" if quantity == 1 else "s"} for ${price} each has been recorded (${price*quantity} total).',

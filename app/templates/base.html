@@ -107,13 +107,14 @@
     <script>
         var fail_audio = new Audio("{{ url_for('static', filename='audio/failure.mp3') }}")
         var success_audio = new Audio("{{ url_for('static', filename='audio/success.mp3') }}")
-        function post_sale(sourceElem, destElem, costElem, quantElem, invElem) {
+        function post_sale(sourceElem, destElem, costElem, quantElem, invElem, descElem) {
             $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
             $.post('/post_sale', {
                 text: $(sourceElem).text(),
                 cost: $(costElem).val(),
                 quantity: $(quantElem).val(),
-                product_id: $(sourceElem).attr("product-id")
+                product_id: $(sourceElem).attr("product-id"),
+                description: $(descElem).val()
             }).done(function(response) {
                 $(destElem).text(response['text']);
                 $(invElem).text(`Current Inventory Level: ${response['quantity']}`);
