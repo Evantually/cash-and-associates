@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="panel statistic bar" position="2" style="margin-bottom: 19px; overflow: hidden;">
+                <div class="panel statistic bar" position="2" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
                             <div class="flex-sub icon">
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="panel statistic bar" position="3" style="margin-bottom: 0px; overflow: hidden;">
+                <div class="panel statistic bar" position="3" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
                             <div class="flex-sub icon">
@@ -41,8 +41,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row statistics">
+        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
             <div class="col-md-12">
-                <div class="panel statistic bar" position="4" style="margin-bottom: 0px; overflow: hidden;">
+                <div class="panel statistic bar" position="4" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
                             <div class="flex-sub icon">
@@ -54,25 +58,78 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="panel statistic bar" position="5" style="margin-bottom: 0px; overflow: hidden;">
+                <div class="panel statistic bar" position="5" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
                             <div class="flex-sub icon">
                                 <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Total Earnings">                               
                             </div>
-                            <div class="flex-sub value" style="width: 190px;">${{ output.total }}</div>
+                            <div class="flex-sub value" style="width: 190px;">${{ output.total_currency }}</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="panel statistic bar" position="6" style="margin-bottom: 0px; overflow: hidden;">
+                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
                             <div class="flex-sub icon">
                                 <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Hourly Earnings">                                                                                            
                             </div>
                             <div class="flex-sub value" style="width: 190px;">${{ output.total_hour }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row statistics">
+        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub value" style="width: 190px;">You killed an average of {{ (output['kill_count'] * 60) / output['total_time'] }} animals per minute.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub value" style="width: 190px;">Your kills yielded an average of {{ output['meat']  / output['kill_count'] }} meat.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub value" style="width: 190px;">Your kills yielded an average of ${{ output['total']  / output['kill_count'] }}.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row statistics">
+        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub value" style="width: 190px;">{{ output['nothing']  / output['kill_count'] }}% of your kills yielded nothing.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub value" style="width: 190px;">{{ output['perfect'] }} kills were perfectly harvested (2 cuts of meat and a large pelt).</div>
                         </div>
                     </div>
                 </div>
