@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Fishing Tracker</h1>
+    <div class="row" id="trip{{ job.id }}">
+    </div>
+    <div id="output"></div>
+{% endblock %}

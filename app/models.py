@@ -21,6 +21,8 @@ class User(UserMixin, db.Model):
     company = db.Column(db.Integer, db.ForeignKey('company.id'))
     dark_mode = db.Column(db.Boolean)
     sub_expiration = db.Column(db.DateTime, default=datetime.utcnow)
+    hunter = db.Column(db.Boolean, default=False)
+    fisher = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '{}'.format(self.username)

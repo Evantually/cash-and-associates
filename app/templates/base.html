@@ -38,6 +38,15 @@
                             {% endif %}
                         </ul>
                     </li>
+                    {% if current_user.access_level == 'admin' or current_user.username == 'Luca Pacioli' %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Tools
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('main.manage_subscriptions') }}">Manage Subscriptions</a></li>                           
+                        </ul>
+                    </li>
+                    {% endif %}
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Job Trackers
                         <span class="caret"></span></a>

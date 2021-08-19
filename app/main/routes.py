@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import render_template, flash, redirect, url_for, request, g, \
     jsonify, current_app
 from flask_login import current_user, login_required, login_user
@@ -7,7 +7,7 @@ from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm, 
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
-    AddJobForm)
+    AddJobForm, ManageSubscriptionForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry)
 from app.translate import translate
@@ -151,6 +151,26 @@ def add_company():
         return redirect(url_for('main.add_company'))
     return render_template('add_product.html', title=_('Add Company'),
                            form=form)
+
+# Subscription Management
+
+@bp.route('/manage_subscriptions', methods=['GET','POST'])
+@login_required
+def manage_subscriptions():
+    if current_user.access_level == 'admin' or current_user.username == 'Luca Pacioli':
+        form = ManageSubscriptionForm()
+        if form.validate_on_submit():
+            user = User.query.filter_by(id=form.user.data.id).first()
+            user.hunter = form.hunter.data
+            user.fisher = form.fisher.data
+            user.sub_expiration = datetime.utcnow() + timedelta(days=7)
+            db.session.commit()
+            flash(f'Subscription info updated for {user.username}')
+            return redirect(url_for('main.manage_subscriptions'))
+        return render_template('add_product.html', title='Manage Subscriptions', form=form)
+    else:
+        flash('You do not have access to this page.')
+        return redirect(url_for('main.index'))
 
 # END ADMIN AREA
 # BEGIN BUSINESS MANAGER AREA
@@ -330,30 +350,50 @@ def fetch_info(company_id, access_token):
 
 # Job tracking section
 @bp.route('/jobs', methods=['GET','POST'])
+@login_required
 def jobs():
-    form = AddJobForm()
-    if form.validate_on_submit():
-        job = Job(name=form.name.data, job_type=form.trip_type.data, user_id=current_user.id)
-        db.session.add(job)
-        db.session.commit()
-        flash(f'{job.name} has been added.')
-        if job.job_type == 'Hunting':
-            return redirect(url_for('main.hunting_tracker', job_id=job.id))
-        elif job.job_type == 'Fishing':
-            return redirect(url_for('main.fishing_tracker', job_id=job.id))
-    return render_template('add_product.html',title='Start Job', form=form)
+    try:
+        current_user.sub_expiration > datetime.utcnow()
+    except:
+        current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
+    if current_user.sub_expiration > datetime.utcnow() and (current_user.fisher or current_user.hunter):
+        form = AddJobForm()
+        if form.validate_on_submit():
+            job = Job(name=form.name.data, job_type=form.trip_type.data, user_id=current_user.id)
+            db.session.add(job)
+            db.session.commit()
+            flash(f'{job.name} has been added.')
+            if job.job_type == 'Hunting':
+                return redirect(url_for('main.hunting_tracker', job_id=job.id))
+            elif job.job_type == 'Fishing':
+                return redirect(url_for('main.fishing_tracker', job_id=job.id))
+        return render_template('add_product.html',title='Start Job', form=form)
+    else:
+        flash('Please renew your subscription to keep using this service!')
+        return redirect(url_for('main.index'))
 
 @bp.route('/jobs/hunting/tracker/<job_id>')
+@login_required
 def hunting_tracker(job_id):
-    job = Job.query.filter_by(id=job_id).first()
-    return render_template('hunting_tracker.html', job=job)
+    try:
+        current_user.sub_expiration > datetime.utcnow()
+    except:
+        current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
+    if current_user.sub_expiration > datetime.utcnow() and (current_user.fisher or current_user.hunter):
+        job = Job.query.filter_by(id=job_id).first()
+        return render_template('hunting_tracker.html', job=job)
+    else:
+        flash('Please renew your subscription to keep using this service!')
+        return redirect(url_for('main.index'))
 
 @bp.route('/jobs/hunting/view')
+@login_required
 def hunting_jobs():
     jobs = Job.query.filter_by(user_id=current_user.id).all()
     return render_template('jobs_overview.html', jobs=jobs)
 
 @bp.route('/jobs/hunting/view/<job_id>')
+@login_required
 def hunting_view(job_id):
     entries = HuntingEntry.query.filter_by(job=job_id).all()
     output = summarize_job(entries)
@@ -364,11 +404,13 @@ def hunting_view(job_id):
     return render_template('job_view.html', output=output, entries=entries)
 
 @bp.route('/jobs/fishing/tracker/<job_id>')
+@login_required
 def fishing_tracker(job_id):
     job = Job.query.filter_by(id=job_id).first()
     return render_template('fishing_tracker.html', job=job)
 
 @bp.route('/jobs/hunting/tracker/add_entry', methods=['POST'])
+@login_required
 def add_hunting_entry():
     job = Job.query.filter_by(id=request.form['job_id']).first()
     if request.form['coll'] == 0:
@@ -387,3 +429,4 @@ def dashboard():
     return render_template('dashboard.html')
 
 # Casino section
+

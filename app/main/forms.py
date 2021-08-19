@@ -73,3 +73,9 @@ class AddJobForm(FlaskForm):
     name = StringField(_l('Name of trip'))
     trip_type = SelectField(_l('Trip Type'), choices=[('Hunting','Hunting'), ('Fishing','Fishing')])
     submit = SubmitField(_l('Submit'))
+
+class ManageSubscriptionForm(FlaskForm):
+    user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').all())
+    hunter = BooleanField('Hunting Subscription')
+    fisher = BooleanField('Fishing Subscription')
+    submit = SubmitField(_l('Submit'))
