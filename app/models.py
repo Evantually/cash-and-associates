@@ -114,6 +114,9 @@ class Job(db.Model):
     job_type = db.Column(db.String(64))
     name = db.Column(db.String(64))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    total_earnings = db.Column(db.String(64))
+    hourly_earnings = db.Column(db.String(64))
 
 class HuntingEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)

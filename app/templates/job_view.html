@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="statistics-section-title">Job Statistics</div>
+    <div class="row statistics">
+        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="1" style="margin-bottom: 20px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub icon">
+                                <img src="{{ url_for('static', filename='images/meat.png') }}" width="50px" height="50px" alt="Meat Harvested">
+                            </div>
+                            <div class="flex-sub value" style="width: 190px;">{{ output.meat }}</div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="2" style="margin-bottom: 19px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub icon">
+                                <img src="{{ url_for('static', filename='images/smpelt.png') }}" width="50px" height="50px" alt="Small Pelts Harvested">
+                            </div>
+                            <div class="flex-sub value" style="width: 190px;">{{ output.smpelt }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="3" style="margin-bottom: 0px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub icon">
+                                <img src="{{ url_for('static', filename='images/medpelt.png') }}" width="50px" height="50px" alt="Medium Pelts Harvested">
+                            </div>
+                            <div class="flex-sub value" style="width: 190px;">{{ output.medpelt }}</div>                                                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="4" style="margin-bottom: 0px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub icon">
+                                <img src="{{ url_for('static', filename='images/lgpelt.png') }}" width="50px" height="50px" alt="Large Pelts Harvested">                                
+                            </div>
+                            <div class="flex-sub value" style="width: 190px;">{{ output.lgpelt }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="5" style="margin-bottom: 0px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub icon">
+                                <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Total Earnings">                               
+                            </div>
+                            <div class="flex-sub value" style="width: 190px;">${{ output.total }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel statistic bar" position="6" style="margin-bottom: 0px; overflow: hidden;">
+                    <div class="panel-body">
+                        <div class="flex">
+                            <div class="flex-sub icon">
+                                <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Hourly Earnings">                                                                                            
+                            </div>
+                            <div class="flex-sub value" style="width: 190px;">${{ output.total_hour }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p><a href="{{ url_for('main.hunting_jobs') }}">Return to jobs</a></p>
+{% endblock %}

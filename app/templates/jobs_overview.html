@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="statistics-section-title">Jobs Overview</div>
+    {% for job in jobs %}
+    <a href="{{ url_for('main.hunting_view', job_id=job.id) }}">
+        <div class="row">
+            <div class="col-md-3">
+                Name: {{ job.name }}
+            </div>
+            <div class="col-md-3">
+                Date: {{ moment(job.timestamp).fromNow() }}
+            </div>
+            <div class="col-md-3">
+                Earnings: ${{ job.total_earnings }}
+            </div>
+            <div class="col-md-3">
+                Hourly Earnings: ${{ job.hourly_earnings }}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+{% endblock %}

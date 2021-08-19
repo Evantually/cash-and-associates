@@ -12,7 +12,8 @@ from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry)
 from app.translate import translate
 from app.main import bp
-from app.main.utils import organize_data_by_date, summarize_data, format_currency, setup_company
+from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
+                            summarize_job)
 
 @bp.before_app_request
 def before_request():
@@ -331,7 +332,6 @@ def fetch_info(company_id, access_token):
 @bp.route('/jobs', methods=['GET','POST'])
 def jobs():
     form = AddJobForm()
-    jobs = Job.query.filter_by(user_id=current_user.id)
     if form.validate_on_submit():
         job = Job(name=form.name.data, job_type=form.trip_type.data, user_id=current_user.id)
         db.session.add(job)
@@ -341,12 +341,29 @@ def jobs():
             return redirect(url_for('main.hunting_tracker', job_id=job.id))
         elif job.job_type == 'Fishing':
             return redirect(url_for('main.fishing_tracker', job_id=job.id))
-    return render_template('add_product.html',title='Start Job', jobs=jobs, form=form)
+    return render_template('add_product.html',title='Start Job', form=form)
 
 @bp.route('/jobs/hunting/tracker/<job_id>')
 def hunting_tracker(job_id):
     job = Job.query.filter_by(id=job_id).first()
     return render_template('hunting_tracker.html', job=job)
+
+@bp.route('/jobs/hunting/view')
+def hunting_jobs():
+    jobs = Job.query.filter_by(user_id=current_user.id).all()
+    return render_template('jobs_overview.html', jobs=jobs)
+
+@bp.route('/jobs/hunting/view/<job_id>')
+def hunting_view(job_id):
+    entries = HuntingEntry.query.filter_by(job=job_id).all()
+    output = summarize_job(entries)
+    job = Job.query.filter_by(id=job_id).first()
+    if job.total_earnings is None:
+        job.total_earnings = output['total']
+    if job.hourly_earnings is None:
+        job.hourly_earnings = output['total_hour']
+    db.session.commit()
+    return render_template('job_view.html', output=output)
 
 @bp.route('/jobs/fishing/tracker/<job_id>')
 def fishing_tracker(job_id):
@@ -366,3 +383,5 @@ def add_hunting_entry():
     db.session.add(entry)
     db.session.commit()
     return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})
+
+# Casino section

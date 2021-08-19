@@ -172,3 +172,36 @@ def clear_temps():
         db.session.delete(comp)
         db.session.commit()
     db.session.commit()
+
+def summarize_job(entries):
+    output = {
+        'meat': 0,
+        'smpelt': 0,
+        'medpelt': 0,
+        'lgpelt': 0,
+        'total': 0,
+        'total_hour': 0
+    }
+    sell_values = {
+        'meat': 65,
+        'smpelt': 100,
+        'medpelt': 110,
+        'lgpelt': 170
+    }
+    start_timestamp = entries[0].timestamp
+    end_timestamp = entries[0].timestamp
+    for entry in entries:
+        if entry.timestamp < start_timestamp:
+            start_timestamp = entry.timestamp
+        if entry.timestamp > end_timestamp:
+            end_timestamp = entry.timestamp
+        output['meat'] += entry.meat
+        output['smpelt'] += entry.small_pelt
+        output['medpelt'] += entry.med_pelt
+        output['lgpelt'] += entry.large_pelt
+    for key in sell_values:
+        output['total'] += output[key] * sell_values[key]
+    output['total_hour'] = format_currency(output['total'] / ((end_timestamp - start_timestamp).seconds / 3600))
+    output['total'] = format_currency(output['total'])
+    return output
+
