@@ -120,7 +120,7 @@
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{{ output['nothing']  / output['kill_count'] }}% of your kills yielded nothing.</div>
+                            <div class="flex-sub value" style="width: 190px;">{{ (output['nothing']  / output['kill_count']) * 100 }}% of your kills yielded nothing.</div>
                         </div>
                     </div>
                 </div>
