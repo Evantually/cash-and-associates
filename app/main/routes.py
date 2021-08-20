@@ -400,7 +400,7 @@ def hunting_tracker(job_id):
 @bp.route('/jobs/hunting/view')
 @login_required
 def hunting_jobs():
-    jobs = Job.query.filter_by(user_id=current_user.id).all()
+    jobs = Job.query.filter_by(user_id=current_user.id).order_by(Job.timestamp.desc()).all()
     return render_template('jobs_overview.html', jobs=jobs)
 
 @bp.route('/jobs/hunting/view/<job_id>')
