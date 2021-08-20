@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block metas %}
+{{ super() }}
+<meta id="my-data" data-values="{{ values }}" data-labels="{{ labels }}" data-label=" {{ label }}">
+{% endblock %}
+
 {% block app_content %}
     <div class="statistics-section-title"><h1>Job Statistics</h1></div>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+    </div>
     <div class="row statistics">
         <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="panel statistic bar" position="1" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -17,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="panel statistic bar" position="2" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -29,7 +37,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+        </div>
+    </div>
+    <div class="row statistics">
+        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+            <div class="col-md-6">
                 <div class="panel statistic bar" position="3" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -41,11 +53,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row statistics">
-        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="panel statistic bar" position="4" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -57,6 +65,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row statistics">
+        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
             <div class="col-md-12">
                 <div class="panel statistic bar" position="5" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
@@ -69,6 +81,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row statistics">
+        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
             <div class="col-md-12">
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
@@ -85,7 +101,7 @@
     </div>
     <div class="row statistics">
         <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -94,7 +110,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -103,7 +119,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -116,7 +132,7 @@
     </div>
     <div class="row statistics">
         <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -125,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
@@ -137,4 +153,45 @@
         </div>
     </div>
     <p><a href="{{ url_for('main.hunting_jobs') }}">Return to jobs</a></p>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    
+    <script>
+        full_data = $('#my-data').data();
+        console.log(full_data);
+
+        const labels = full_data.labels;
+        const data = {
+        labels: labels,
+            datasets: [{
+                label: full_data.label,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: full_data.values,
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'second'
+                        }
+                    }
+                }
+            }
+        };
+    
+        var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+        );
+    </script>
+
 {% endblock %}

@@ -13,7 +13,7 @@ from app.models import (User, Transaction, Product, Category, Company,
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
-                            summarize_job)
+                            summarize_job, moving_average)
 
 @bp.before_app_request
 def before_request():
@@ -407,12 +407,14 @@ def hunting_jobs():
 @login_required
 def hunting_view(job_id):
     entries = HuntingEntry.query.filter_by(job=job_id).all()
+    ma_data, time_data = moving_average(entries)
     output = summarize_job(entries)
     job = Job.query.filter_by(id=job_id).first()
     job.total_earnings = output['total']
     job.hourly_earnings = output['total_hour']
     db.session.commit()
-    return render_template('job_view.html', output=output, entries=entries)
+    return render_template('job_view.html', output=output, entries=entries, 
+                            values=ma_data, labels=time_data, label='Average yield ($)')
 
 @bp.route('/jobs/hunting/tracker/add_entry', methods=['POST'])
 @login_required
@@ -422,9 +424,11 @@ def add_hunting_entry():
         coll = False
     else:
         coll = True
+    sell_value = (int(request.form['meat']) * 65) + (int(request.form['smpelt']) * 100) + (int(request.form['medpelt']) * 110) + (int(request.form['lgpelt']) * 170)
     entry = HuntingEntry(job=job.id, user_id=current_user.id, collateral=coll,
                         meat=request.form['meat'], small_pelt=request.form['smpelt'],
-                        med_pelt=request.form['medpelt'], large_pelt=request.form['lgpelt'])
+                        med_pelt=request.form['medpelt'], large_pelt=request.form['lgpelt'],
+                        sell_value=sell_value)
     db.session.add(entry)
     db.session.commit()
     return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})

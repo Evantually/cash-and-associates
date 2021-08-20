@@ -131,6 +131,7 @@ class HuntingEntry(db.Model):
     small_pelt = db.Column(db.Integer)
     med_pelt = db.Column(db.Integer)
     large_pelt = db.Column(db.Integer)
+    sell_value = db.Column(db.Integer)
 
 class FishingEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
