@@ -406,7 +406,7 @@ def hunting_jobs():
 @bp.route('/jobs/hunting/view/<job_id>')
 @login_required
 def hunting_view(job_id):
-    entries = HuntingEntry.query.filter_by(job=job_id).all()
+    entries = HuntingEntry.query.filter_by(job=job_id).order_by(HuntingEntry.timestamp).all()
     ma_data, time_data = moving_average(entries)
     output = summarize_job(entries)
     job = Job.query.filter_by(id=job_id).first()
