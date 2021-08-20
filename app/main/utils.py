@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from app.models import User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry
 from app import db
+from sqlalchemy.sql import func
 
 def organize_data_by_date(data):
     output = {}
@@ -235,4 +236,5 @@ def summarize_job(entries):
 def moving_average(entries):
     moving_average_data = {}
     for entry in entries:
+        # avg_entries = HuntingEntry.query.filter((HuntingEntry.timestamp >= entry.timestamp - timedelta(minutes=2, seconds=30), HuntingEntry.timestamp <= entry.timestamp + timedelta(minutes=2, seconds=30)).all()
         pass

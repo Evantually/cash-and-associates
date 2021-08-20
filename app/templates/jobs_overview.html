@@ -20,5 +20,7 @@
             </div>
         </div>
     </a>
+    <p><a href="{{ url_for('main.hunting_tracker', job_id=job.id) }}">Return to this job</a></p>
+    <hr>
     {% endfor %}
 {% endblock %}

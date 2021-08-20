@@ -357,7 +357,7 @@ def fetch_info(company_id, access_token):
         return jsonify()
     return 'Incorrect access token. Please check with your manager or C&A staff.'
 
-# Job tracking section
+# START JOB SECTION
 @bp.route('/jobs', methods=['GET','POST'])
 @login_required
 def jobs():
@@ -380,6 +380,8 @@ def jobs():
     else:
         flash('Please renew your subscription to keep using this service!')
         return redirect(url_for('main.index'))
+
+# HUNTING
 
 @bp.route('/jobs/hunting/tracker/<job_id>')
 @login_required
@@ -412,12 +414,6 @@ def hunting_view(job_id):
     db.session.commit()
     return render_template('job_view.html', output=output, entries=entries)
 
-@bp.route('/jobs/fishing/tracker/<job_id>')
-@login_required
-def fishing_tracker(job_id):
-    job = Job.query.filter_by(id=job_id).first()
-    return render_template('fishing_tracker.html', job=job)
-
 @bp.route('/jobs/hunting/tracker/add_entry', methods=['POST'])
 @login_required
 def add_hunting_entry():
@@ -433,9 +429,20 @@ def add_hunting_entry():
     db.session.commit()
     return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})
 
+# END HUNTING
+# FISHING
+
+@bp.route('/jobs/fishing/tracker/<job_id>')
+@login_required
+def fishing_tracker(job_id):
+    job = Job.query.filter_by(id=job_id).first()
+    return render_template('fishing_tracker.html', job=job)
+
+# END FISHING
+
 @bp.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
 
-# Casino section
-
+# END JOB SECTION
+# START CASINO SECTION
