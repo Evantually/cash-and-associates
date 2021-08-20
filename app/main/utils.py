@@ -243,5 +243,5 @@ def moving_average(entries):
     for entry in entries:
         avg_value = HuntingEntry.query.with_entities(func.avg(HuntingEntry.sell_value).label('average')).filter((HuntingEntry.timestamp >= entry.timestamp - timedelta(minutes=2, seconds=30)), (HuntingEntry.timestamp <= entry.timestamp + timedelta(minutes=2, seconds=30))).first()
         moving_average_data.append(round(float(avg_value[0]),2))
-        timestamp_data.append((entry.timestamp + (entry.timestamp - start_time)).timestamp())
+        timestamp_data.append((entry.timestamp + (entry.timestamp - start_time)).timestamp() * 1000)
     return moving_average_data, timestamp_data
