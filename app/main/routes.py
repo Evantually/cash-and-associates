@@ -401,6 +401,7 @@ def hunting_tracker(job_id):
 @login_required
 def hunting_jobs():
     jobs = Job.query.filter_by(user_id=current_user.id).order_by(Job.timestamp.desc()).all()
+    entries = HuntingEntry.query.filter_by(user_id=current_user.id)
     ma_data, time_data = moving_average(entries, 2, 30)
     return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data)
 
