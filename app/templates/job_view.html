@@ -136,7 +136,7 @@
                 <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
                     <div class="panel-body">
                         <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}{{ ((output['nothing']  / output['kill_count']) * 100)|round(2) }}% of your kills yielded nothing.{% endif %}</div>
+                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}{{ output['nothing'] }} of {{ output['total_kills'] }} ({{ ((output['nothing']  / output['kill_count']) * 100)|round(2) }}%) of your kills yielded nothing.{% endif %}</div>
                         </div>
                     </div>
                 </div>
