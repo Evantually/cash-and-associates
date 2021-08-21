@@ -402,8 +402,8 @@ def hunting_tracker(job_id):
 def hunting_jobs():
     jobs = Job.query.filter_by(user_id=current_user.id).order_by(Job.timestamp.desc()).all()
     entries = HuntingEntry.query.filter_by(user_id=current_user.id).all()
-    ma_data, time_data = moving_average(entries, 2, 30)
-    return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data)
+    ma_data, time_data, yield_data = moving_average(entries, 2, 30)
+    return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data)
 
 @bp.route('/jobs/hunting/view/<job_id>')
 @login_required
@@ -416,7 +416,7 @@ def hunting_view(job_id):
     job.hourly_earnings = output['total_hour']
     db.session.commit()
     return render_template('job_view.html', output=output, entries=entries, 
-                            values=ma_data, labels=time_data, yield_data=yield_data label=f'5 minute earnings ($)')
+                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)', label2='% Kills Yielding')
 
 @bp.route('/jobs/hunting/tracker/add_entry', methods=['POST'])
 @login_required

@@ -250,6 +250,6 @@ def moving_average(entries, minutes, seconds):
         if entry.sell_value == 0:
             no_yield += 1
         counter += 1
-        ratio = 1 - (no_yield/counter)
+        ratio = round((1 - (no_yield/counter)) * 100,2)
         yield_data.append(ratio)
     return moving_average_data, timestamp_data, yield_data
