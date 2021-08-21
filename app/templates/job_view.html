@@ -3,7 +3,7 @@
 
 {% block metas %}
 {{ super() }}
-<meta id="my-data" data-values="{{ values }}" data-labels="{{ labels }}" data-label=" {{ label }}">
+<meta id="my-data" data-values="{{ values }}" data-labels="{{ labels }}" data-yield="{{ yield_data }}" data-label=" {{ label }}">
 {% endblock %}
 
 {% block app_content %}

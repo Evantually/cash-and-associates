@@ -235,7 +235,10 @@ def summarize_job(entries):
 
 def moving_average(entries, minutes, seconds):
     moving_average_data = []
+    yield_data = []
     timestamp_data = []
+    counter = 0
+    no_yield = 0
     try:
         start_time = entries[0].timestamp
     except:
@@ -244,4 +247,9 @@ def moving_average(entries, minutes, seconds):
         avg_value = HuntingEntry.query.with_entities(func.sum(HuntingEntry.sell_value).label('sum')).filter((HuntingEntry.timestamp >= entry.timestamp - timedelta(minutes=minutes, seconds=seconds)), (HuntingEntry.timestamp <= entry.timestamp + timedelta(minutes=minutes, seconds=seconds))).first()
         moving_average_data.append(round(float(avg_value[0]),2))
         timestamp_data.append((entry.timestamp - start_time).total_seconds() * 1000)
-    return moving_average_data, timestamp_data
+        if entry.sell_value == 0:
+            no_yield += 1
+        counter += 1
+        ratio = 1 - (no_yield/counter)
+        yield_data.append(ratio)
+    return moving_average_data, timestamp_data, yield_data
