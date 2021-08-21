@@ -233,7 +233,7 @@ def summarize_job(entries):
         output['total_currency'] = format_currency(output['total'])
     return output
 
-def moving_average(entries):
+def moving_average(entries, minutes, seconds):
     moving_average_data = []
     timestamp_data = []
     try:
@@ -241,7 +241,7 @@ def moving_average(entries):
     except:
         start_time = datetime.utcnow()
     for entry in entries:
-        avg_value = HuntingEntry.query.with_entities(func.avg(HuntingEntry.sell_value).label('average')).filter((HuntingEntry.timestamp >= entry.timestamp - timedelta(minutes=2, seconds=30)), (HuntingEntry.timestamp <= entry.timestamp + timedelta(minutes=2, seconds=30))).first()
+        avg_value = HuntingEntry.query.with_entities(func.sum(HuntingEntry.sell_value).label('sum')).filter((HuntingEntry.timestamp >= entry.timestamp - timedelta(minutes=minutes, seconds=seconds)), (HuntingEntry.timestamp <= entry.timestamp + timedelta(minutes=minutes, seconds=seconds))).first()
         moving_average_data.append(round(float(avg_value[0]),2))
         timestamp_data.append((entry.timestamp - start_time).total_seconds() * 1000)
     return moving_average_data, timestamp_data
