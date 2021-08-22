@@ -7,13 +7,13 @@ from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm, 
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
-    AddJobForm, ManageSubscriptionForm)
+    AddJobForm, ManageSubscriptionForm, ManageUserForm)
 from app.models import (User, Transaction, Product, Category, Company,
-                        Inventory, Job, HuntingEntry, FishingEntry)
+                        Inventory, Job, HuntingEntry, FishingEntry, PostalEntry)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
-                            summarize_job, moving_average)
+                            summarize_job, moving_average, clear_temps)
 
 @bp.before_app_request
 def before_request():
@@ -156,17 +156,32 @@ def add_company():
 
 @bp.route('/manage_subscriptions', methods=['GET','POST'])
 @login_required
-def manage_subscriptions():
+def manage_user():
     if current_user.access_level == 'admin' or current_user.company == 1:
-        form = ManageSubscriptionForm()
+        form = ManageUserForm()
         if form.validate_on_submit():
-            user = User.query.filter_by(id=form.user.data.id).first()
+            user_id = form.user.data.id
+            return redirect(url_for('main.manage_subscriptions', user_id=user_id))
+        return render_template('add_product.html', title='Manage Subscriptions', form=form)
+    else:
+        flash('You do not have access to this page.')
+        return redirect(url_for('main.index'))
+    
+
+@bp.route('/manage_subscriptions/<user_id>', methods=['GET','POST'])
+@login_required
+def manage_subscriptions(user_id):
+    if current_user.access_level == 'admin' or current_user.company == 1:
+        user = User.query.filter_by(id=user_id).first()
+        form = ManageSubscriptionForm(hunter=user.hunter, fisher=user.fisher, postal=user.postal)
+        if form.validate_on_submit():
             user.hunter = form.hunter.data
             user.fisher = form.fisher.data
+            user.postal = form.postal.data
             user.sub_expiration = datetime.utcnow() + timedelta(days=7)
             db.session.commit()
             flash(f'Subscription info updated for {user.username}')
-            return redirect(url_for('main.manage_subscriptions'))
+            return redirect(url_for('main.manage_user'))
         return render_template('add_product.html', title='Manage Subscriptions', form=form)
     else:
         flash('You do not have access to this page.')
@@ -176,7 +191,7 @@ def manage_subscriptions():
 @login_required
 def active_subscriptions():
     if current_user.access_level == 'admin' or current_user.company == 1:
-        active_subs = User.query.filter((User.hunter == True) | (User.fisher == True)).filter(User.sub_expiration >= datetime.utcnow()).order_by(User.sub_expiration).all()
+        active_subs = User.query.filter((User.hunter == True) | (User.fisher == True) | (User.postal == True)).filter(User.sub_expiration >= datetime.utcnow()).order_by(User.sub_expiration).all()
         return render_template('active_subscriptions.html',active_subs=active_subs)
     else:
         flash('You do not have access to this page.')
@@ -365,7 +380,7 @@ def jobs():
         current_user.sub_expiration > datetime.utcnow()
     except:
         current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
-    if current_user.sub_expiration > datetime.utcnow() and (current_user.fisher or current_user.hunter):
+    if current_user.sub_expiration > datetime.utcnow() and (current_user.fisher or current_user.hunter or current_user.postal):
         form = AddJobForm()
         if form.validate_on_submit():
             job = Job(name=form.name.data, job_type=form.trip_type.data, user_id=current_user.id)
@@ -376,6 +391,8 @@ def jobs():
                 return redirect(url_for('main.hunting_tracker', job_id=job.id))
             elif job.job_type == 'Fishing':
                 return redirect(url_for('main.fishing_tracker', job_id=job.id))
+            elif job.job_type == 'Postal':
+                return redirect(url_for('main.postal_tracker', job_id=job.id))
         return render_template('add_product.html',title='Start Job', form=form)
     else:
         flash('Please renew your subscription to keep using this service!')
@@ -390,7 +407,7 @@ def hunting_tracker(job_id):
         current_user.sub_expiration > datetime.utcnow()
     except:
         current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
-    if current_user.sub_expiration > datetime.utcnow() and (current_user.fisher or current_user.hunter):
+    if current_user.sub_expiration > datetime.utcnow() and current_user.hunter:
         job = Job.query.filter_by(id=job_id).first()
         return render_template('hunting_tracker.html', job=job)
     else:
@@ -400,23 +417,24 @@ def hunting_tracker(job_id):
 @bp.route('/jobs/hunting/view')
 @login_required
 def hunting_jobs():
-    jobs = Job.query.filter_by(user_id=current_user.id).order_by(Job.timestamp.desc()).all()
+    jobs = Job.query.filter_by(user_id=current_user.id).filter_by(job_type='Hunting').order_by(Job.timestamp.desc()).all()
     entries = HuntingEntry.query.filter_by(user_id=current_user.id).all()
-    ma_data, time_data, yield_data = moving_average(entries, 2, 30)
+    ma_data, time_data, yield_data = moving_average(entries, 60, 0, HuntingEntry)
     return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data)
 
 @bp.route('/jobs/hunting/view/<job_id>')
 @login_required
 def hunting_view(job_id):
     entries = HuntingEntry.query.filter_by(job=job_id).order_by(HuntingEntry.timestamp).all()
-    ma_data, time_data, yield_data = moving_average(entries, 2, 30)
-    output = summarize_job(entries)
+    ma_data, time_data, yield_data = moving_average(entries, 2, 30, HuntingEntry)
+    output = summarize_job(entries, 'Hunting')
     job = Job.query.filter_by(id=job_id).first()
     job.total_earnings = output['total']
     job.hourly_earnings = output['total_hour']
     db.session.commit()
     return render_template('job_view.html', output=output, entries=entries, 
-                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)', label2='% Kills Yielding')
+                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)',
+                            label2='% Kills Yielding', job_type='Hunting')
 
 @bp.route('/jobs/hunting/tracker/add_entry', methods=['POST'])
 @login_required
@@ -438,13 +456,104 @@ def add_hunting_entry():
 # END HUNTING
 # FISHING
 
+@bp.route('/jobs/fishing/view')
+@login_required
+def fishing_jobs():
+    jobs = Job.query.filter_by(user_id=current_user.id).filter_by(job_type='Fishing').order_by(Job.timestamp.desc()).all()
+    entries = FishingEntry.query.filter_by(user_id=current_user.id).all()
+    ma_data, time_data, yield_data = moving_average(entries, 60, 0, FishingEntry)
+    return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data)
+
 @bp.route('/jobs/fishing/tracker/<job_id>')
 @login_required
 def fishing_tracker(job_id):
+    try:
+        current_user.sub_expiration > datetime.utcnow()
+    except:
+        current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
+    if current_user.sub_expiration > datetime.utcnow() and current_user.fisher:
+        job = Job.query.filter_by(id=job_id).first()
+        return render_template('fishing_tracker.html', job=job)
+    else:
+        flash('Please renew your subscription to keep using this service!')
+        return redirect(url_for('main.index'))
+
+@bp.route('/jobs/fishing/view/<job_id>')
+@login_required
+def fishing_view(job_id):
+    entries = FishingEntry.query.filter_by(job=job_id).order_by(FishingEntry.timestamp).all()
+    ma_data, time_data, yield_data = moving_average(entries, 2, 30, FishingEntry)
+    output = summarize_job(entries, 'Fishing')
     job = Job.query.filter_by(id=job_id).first()
-    return render_template('fishing_tracker.html', job=job)
+    job.total_earnings = output['total']
+    job.hourly_earnings = output['total_hour']
+    db.session.commit()
+    return render_template('job_view.html', output=output, entries=entries, 
+                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)', label2='% Caught Fish')
+
+@bp.route('/jobs/fishing/tracker/add_entry', methods=['POST'])
+@login_required
+def add_fishing_entry():
+    job = Job.query.filter_by(id=request.form['job_id']).first()
+    sell_value = (int(request.form['fish']) * 115)
+    entry = FishingEntry(job=job.id, user_id=current_user.id,
+                        fish=request.form['fish'], misc=request.form['misc'],
+                        sell_value=sell_value)
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})
 
 # END FISHING
+# START GOPOSTAL
+
+@bp.route('/jobs/postal/view')
+@login_required
+def postal_jobs():
+    jobs = Job.query.filter_by(user_id=current_user.id).filter_by(job_type='Postal').order_by(Job.timestamp.desc()).all()
+    entries = PostalEntry.query.filter_by(user_id=current_user.id).all()
+    ma_data, time_data, yield_data = moving_average(entries, 60, 0, PostalEntry)
+    return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data)
+
+@bp.route('/jobs/postal/tracker/<job_id>')
+@login_required
+def postal_tracker(job_id):
+    try:
+        current_user.sub_expiration > datetime.utcnow()
+    except:
+        current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
+    if current_user.sub_expiration > datetime.utcnow() and current_user.postal:
+        job = Job.query.filter_by(id=job_id).first()
+        return render_template('postal_tracker.html', job=job)
+    else:
+        flash('Please renew your subscription to keep using this service!')
+        return redirect(url_for('main.index'))
+
+@bp.route('/jobs/postal/view/<job_id>')
+@login_required
+def postal_view(job_id):
+    entries = PostalEntry.query.filter_by(job=job_id).order_by(PostalEntry.timestamp).all()
+    ma_data, time_data, yield_data = moving_average(entries, 2, 30, PostalEntry)
+    output = summarize_job(entries, 'Postal')
+    job = Job.query.filter_by(id=job_id).first()
+    job.total_earnings = output['total']
+    job.hourly_earnings = output['total_hour']
+    db.session.commit()
+    return render_template('job_view.html', output=output, entries=entries, 
+                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)', label2='% Packages Accepted')
+
+@bp.route('/jobs/postal/tracker/add_entry', methods=['POST'])
+@login_required
+def add_postal_entry():
+    job = Job.query.filter_by(id=int(request.form['job_id'])).first()
+    sell_value = int(request.form['pay'])
+    entry = PostalEntry(job=job.id, user_id=current_user.id,
+                        no_pay= (request.form['no_pay'] == 'true'),
+                        sell_value=sell_value)
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})
+
+# END GOPOSTAL
 
 @bp.route('/dashboard')
 def dashboard():

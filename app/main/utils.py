@@ -189,8 +189,9 @@ def clear_temps():
         db.session.commit()
     db.session.commit()
 
-def summarize_job(entries):
+def summarize_job(entries, job_type):
     output = {
+        'fish': 0,
         'meat': 0,
         'smpelt': 0,
         'medpelt': 0,
@@ -200,13 +201,16 @@ def summarize_job(entries):
         'total_time': 0,
         'kill_count': 0,
         'nothing': 0,
-        'perfect': 0
+        'perfect': 0,
+        'pay': 0
     }
     sell_values = {
+        'fish': 115,
         'meat': 65,
         'smpelt': 100,
         'medpelt': 110,
-        'lgpelt': 170
+        'lgpelt': 170,
+        'pay': 1
     }
     if len(entries) > 0:
         start_timestamp = entries[0].timestamp
@@ -216,15 +220,24 @@ def summarize_job(entries):
                 start_timestamp = entry.timestamp
             if entry.timestamp > end_timestamp:
                 end_timestamp = entry.timestamp
-            if entry.meat == 0 and entry.small_pelt == 0 and entry.med_pelt == 0 and entry.large_pelt == 0:
-                output['nothing'] += 1
-            if entry.meat == 2 and entry.large_pelt == 1:
-                output['perfect'] += 1
-            output['meat'] += entry.meat
-            output['smpelt'] += entry.small_pelt
-            output['medpelt'] += entry.med_pelt
-            output['lgpelt'] += entry.large_pelt
-            output['kill_count'] += 1
+            if job_type == 'Hunting':
+                if entry.meat == 0 and entry.small_pelt == 0 and entry.med_pelt == 0 and entry.large_pelt == 0:
+                    output['nothing'] += 1
+                if entry.meat == 2 and entry.large_pelt == 1:
+                    output['perfect'] += 1
+                output['meat'] += entry.meat
+                output['smpelt'] += entry.small_pelt
+                output['medpelt'] += entry.med_pelt
+                output['lgpelt'] += entry.large_pelt
+                output['kill_count'] += 1
+            elif job_type == 'Fishing':
+                if entry.misc == 0 and entry.fish == 0:
+                    output['nothing'] += 1
+                output['fish'] += entry.fish
+            elif job_type == 'Postal':
+                if entry.no_pay:
+                    output['nothing'] += 1
+                output['pay'] += entry.sell_value
         for key in sell_values:
             output['total'] += output[key] * sell_values[key]
         total_time = (end_timestamp - start_timestamp).seconds
@@ -233,7 +246,7 @@ def summarize_job(entries):
         output['total_currency'] = format_currency(output['total'])
     return output
 
-def moving_average(entries, minutes, seconds):
+def moving_average(entries, minutes, seconds, job_entry):
     moving_average_data = []
     yield_data = []
     timestamp_data = []
@@ -244,7 +257,7 @@ def moving_average(entries, minutes, seconds):
     except:
         start_time = datetime.utcnow()
     for entry in entries:
-        avg_value = HuntingEntry.query.with_entities(func.sum(HuntingEntry.sell_value).label('sum')).filter((HuntingEntry.timestamp >= entry.timestamp - timedelta(minutes=minutes, seconds=seconds)), (HuntingEntry.timestamp <= entry.timestamp + timedelta(minutes=minutes, seconds=seconds))).first()
+        avg_value = job_entry.query.with_entities(func.sum(job_entry.sell_value).label('sum')).filter((job_entry.timestamp >= entry.timestamp - timedelta(minutes=minutes, seconds=seconds)), (job_entry.timestamp <= entry.timestamp + timedelta(minutes=minutes, seconds=seconds))).first()
         moving_average_data.append(round(float(avg_value[0]),2))
         timestamp_data.append((entry.timestamp - start_time).total_seconds() * 1000)
         if entry.sell_value == 0:

@@ -71,11 +71,16 @@ class AddInventoryForm(FlaskForm):
 
 class AddJobForm(FlaskForm):
     name = StringField(_l('Name of trip'))
-    trip_type = SelectField(_l('Trip Type'), choices=[('Hunting','Hunting'), ('Fishing','Fishing')])
+    trip_type = SelectField(_l('Trip Type'), choices=[('Hunting','Hunting'), ('Fishing','Fishing'), ('Postal', 'GoPostal')])
+    submit = SubmitField(_l('Submit'))
+
+class ManageUserForm(FlaskForm):
+    user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').order_by(User.username).all())
     submit = SubmitField(_l('Submit'))
 
 class ManageSubscriptionForm(FlaskForm):
     user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').order_by(User.username).all())
     hunter = BooleanField('Hunting Subscription')
     fisher = BooleanField('Fishing Subscription')
+    postal = BooleanField('GoPostal Subscription')
     submit = SubmitField(_l('Submit'))

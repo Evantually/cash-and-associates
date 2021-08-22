@@ -11,148 +11,150 @@
     <div class="container">
         <canvas id="myChart"></canvas>
     </div>
-    <div class="row statistics">
-        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-6">
-                <div class="panel statistic bar" position="1" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub icon">
-                                <img src="{{ url_for('static', filename='images/meat.png') }}" width="50px" height="50px" alt="Meat Harvested">
+    {% if job_type == 'Hunting' %}
+        <div class="row statistics">
+            <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+                <div class="col-md-6">
+                    <div class="panel statistic bar" position="1" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub icon">
+                                    <img src="{{ url_for('static', filename='images/meat.png') }}" width="50px" height="50px" alt="Meat Harvested">
+                                </div>
+                                <div class="flex-sub value" style="width: 190px;">{{ output.meat }}</div>                            
                             </div>
-                            <div class="flex-sub value" style="width: 190px;">{{ output.meat }}</div>                            
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel statistic bar" position="2" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub icon">
-                                <img src="{{ url_for('static', filename='images/smpelt.png') }}" width="50px" height="50px" alt="Small Pelts Harvested">
+                <div class="col-md-6">
+                    <div class="panel statistic bar" position="2" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub icon">
+                                    <img src="{{ url_for('static', filename='images/smpelt.png') }}" width="50px" height="50px" alt="Small Pelts Harvested">
+                                </div>
+                                <div class="flex-sub value" style="width: 190px;">{{ output.smpelt }}</div>
                             </div>
-                            <div class="flex-sub value" style="width: 190px;">{{ output.smpelt }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row statistics">
-        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-6">
-                <div class="panel statistic bar" position="3" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub icon">
-                                <img src="{{ url_for('static', filename='images/medpelt.png') }}" width="50px" height="50px" alt="Medium Pelts Harvested">
+        <div class="row statistics">
+            <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+                <div class="col-md-6">
+                    <div class="panel statistic bar" position="3" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub icon">
+                                    <img src="{{ url_for('static', filename='images/medpelt.png') }}" width="50px" height="50px" alt="Medium Pelts Harvested">
+                                </div>
+                                <div class="flex-sub value" style="width: 190px;">{{ output.medpelt }}</div>                                                            
                             </div>
-                            <div class="flex-sub value" style="width: 190px;">{{ output.medpelt }}</div>                                                            
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel statistic bar" position="4" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub icon">
-                                <img src="{{ url_for('static', filename='images/lgpelt.png') }}" width="50px" height="50px" alt="Large Pelts Harvested">                                
+                <div class="col-md-6">
+                    <div class="panel statistic bar" position="4" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub icon">
+                                    <img src="{{ url_for('static', filename='images/lgpelt.png') }}" width="50px" height="50px" alt="Large Pelts Harvested">                                
+                                </div>
+                                <div class="flex-sub value" style="width: 190px;">{{ output.lgpelt }}</div>
                             </div>
-                            <div class="flex-sub value" style="width: 190px;">{{ output.lgpelt }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row statistics">
-        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-12">
-                <div class="panel statistic bar" position="5" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub icon">
-                                <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Total Earnings">                               
+        <div class="row statistics">
+            <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+                <div class="col-md-12">
+                    <div class="panel statistic bar" position="5" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub icon">
+                                    <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Total Earnings">                               
+                                </div>
+                                <div class="flex-sub value" style="width: 190px;">${{ output.total_currency }}</div>
                             </div>
-                            <div class="flex-sub value" style="width: 190px;">${{ output.total_currency }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row statistics">
-        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-12">
-                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub icon">
-                                <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Hourly Earnings">                                                                                            
+        <div class="row statistics">
+            <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+                <div class="col-md-12">
+                    <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub icon">
+                                    <img src="{{ url_for('static', filename='images/random.png') }}" width="50px" height="50px" alt="Hourly Earnings">                                                                                            
+                                </div>
+                                <div class="flex-sub value" style="width: 190px;">${{ output.total_hour }}</div>
                             </div>
-                            <div class="flex-sub value" style="width: 190px;">${{ output.total_hour }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row statistics">
-        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-4">
-                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['total_time'] == 0 %}{% else %}You killed an average of {{ ((output['kill_count'] * 60) / output['total_time'])|round(2) }} animals per minute.{% endif %}</div>
+        <div class="row statistics">
+            <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+                <div class="col-md-4">
+                    <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub value" style="width: 190px;">{% if output['total_time'] == 0 %}{% else %}You killed an average of {{ ((output['kill_count'] * 60) / output['total_time'])|round(2) }} animals per minute.{% endif %}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of {{ (output['meat']  / output['kill_count'])|round(2) }} meat.{% endif %}</div>
+                <div class="col-md-4">
+                    <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of {{ (output['meat']  / output['kill_count'])|round(2) }} meat.{% endif %}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of ${{ (output['total']  / output['kill_count'])|round(2) }}.{% endif %}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row statistics">
-        <div class="col-md-6 col-sm-12 col-xs-12" position="0">
-            <div class="col-md-6">
-                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}{{ output['nothing'] }} of {{ output['kill_count'] }} ({{ ((output['nothing']  / output['kill_count']) * 100)|round(2) }}%) of your kills yielded nothing.{% endif %}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
-                    <div class="panel-body">
-                        <div class="flex">
-                            <div class="flex-sub value" style="width: 190px;">{{ output['perfect'] }} kills were perfectly harvested (2 cuts of meat and a large pelt).</div>
+                <div class="col-md-4">
+                    <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}Your kills yielded an average of ${{ (output['total']  / output['kill_count'])|round(2) }}.{% endif %}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <p><a href="{{ url_for('main.hunting_jobs') }}">Return to jobs</a></p>
+        <div class="row statistics">
+            <div class="col-md-6 col-sm-12 col-xs-12" position="0">
+                <div class="col-md-6">
+                    <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub value" style="width: 190px;">{% if output['kill_count'] == 0 %}{% else %}{{ output['nothing'] }} of {{ output['kill_count'] }} ({{ ((output['nothing']  / output['kill_count']) * 100)|round(2) }}%) of your kills yielded nothing.{% endif %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel statistic bar" position="6" style="margin-bottom: 20px; overflow: hidden;">
+                        <div class="panel-body">
+                            <div class="flex">
+                                <div class="flex-sub value" style="width: 190px;">{{ output['perfect'] }} kills were perfectly harvested (2 cuts of meat and a large pelt).</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p><a href="{{ url_for('main.hunting_jobs') }}">Return to jobs</a></p>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
@@ -193,7 +195,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Earnings and Yield - Hunting'
+                        text: 'Earnings and Yield'
                     }
                 },
                 scales: {

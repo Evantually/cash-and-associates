@@ -4,7 +4,13 @@
 {% block app_content %}
     <div class="statistics-section-title"><h1>Jobs Overview</h1></div>
     {% for job in jobs %}
+    {% if job.job_type == 'Hunting' %}
     <a href="{{ url_for('main.hunting_view', job_id=job.id) }}">
+    {% elif job.job_type == 'Fishing' %}
+    <a href="{{ url_for('main.fishing_view', job_id=job.id) }}">
+    {% elif job.job_type == 'Postal' %}
+    <a href="{{ url_for('main.postal_view', job_id=job.id) }}">
+    {% endif %}
         <div class="row">
             <div class="col-md-3">
                 Name: {{ job.name }}
@@ -20,7 +26,13 @@
             </div>
         </div>
     </a>
+    {% if job.job_type == 'Hunting' %}
     <p><a href="{{ url_for('main.hunting_tracker', job_id=job.id) }}">Return to this job</a></p>
+    {% elif job.job_type == 'Fishing' %}
+    <p><a href="{{ url_for('main.fishing_tracker', job_id=job.id) }}">Return to this job</a></p>
+    {% elif job.job_type == 'Postal' %}
+    <p><a href="{{ url_for('main.postal_tracker', job_id=job.id) }}">Return to this job</a></p>
+    {% endif %}
     <hr>
     {% endfor %}
 {% endblock %}

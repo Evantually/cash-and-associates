@@ -4,6 +4,10 @@
 {% block app_content %}
     <h1>Fishing Tracker</h1>
     <div class="row" id="trip{{ job.id }}">
+        <div class="col-md-12"><a href="javascript:set_active('onefish{{ job.id }}',{{ job.id }});" role="button"><button id="onefish{{ job.id }}"class="btn btn-danger btn-lg">1 Fish</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('twofish{{ job.id }}', {{ job.id }});" role="button"><button id="twofish{{ job.id }}"class="btn btn-danger btn-lg">2 Fish</button></a></div>
+        <div class="col-md-12"><a href="javascript:set_active('misc{{ job.id }}', {{ job.id }});" role="button"><button id="misc{{ job.id }}"class="btn btn-danger btn-lg">Misc (Anything Else)</button></a></div>
+        <div class="col-md-12"><a href="javascript:add_fishing_entry('output', {{ job.id }});" role="button"><button class="btn btn-primary btn-lg">Submit Entry</button></a></div>
     </div>
     <div id="output"></div>
 {% endblock %}

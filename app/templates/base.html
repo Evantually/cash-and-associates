@@ -43,7 +43,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Tools
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('main.manage_subscriptions') }}">Manage Subscriptions</a></li>                           
+                            <li><a href="{{ url_for('main.manage_user') }}">Manage Subscriptions</a></li>                           
                             <li><a href="{{ url_for('main.active_subscriptions') }}">Active Subscriptions</a></li>                           
                         </ul>
                     </li>
@@ -54,6 +54,8 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ url_for('main.jobs') }}">New Job</a></li>
                             <li><a href="{{ url_for('main.hunting_jobs') }}">Hunting Jobs</a></li>
+                            <li><a href="{{ url_for('main.fishing_jobs') }}">Fishing Jobs</a></li>
+                            <li><a href="{{ url_for('main.postal_jobs') }}">GoPostal Jobs</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
@@ -166,6 +168,59 @@
                 fail_audio.play();
             });
         }
+        function add_fishing_entry(destElem, jobId) {
+            $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+            testing_array_pre = ['onefish', 'twofish', 'misc'];
+            testing_array = [];
+            for (i=0;i<testing_array_pre.length;i++) {
+                testing_array.push(testing_array_pre[i]+String(jobId));
+            }
+            output_obj = {
+                fish: 0,
+                misc: 0,
+                job_id: jobId
+            }
+            for (i=0;i<testing_array.length;i++) {
+                test_elem = document.getElementById(testing_array[i]);
+                if (test_elem.classList.contains('btn-success')) {
+                     output_item = testing_array[i].replace(/[0-9]/g, '');
+                     console.log(output_item);
+                     if (output_item === 'onefish') {
+                        output_obj['fish'] = 1
+                     } else if (output_item === 'twofish') {
+                        output_obj['fish'] = 2
+                     } else {
+                        output_obj[output_item] = 1
+                     }
+                }
+                set_class_danger(`#${testing_array[i]}`)
+            }
+            
+            $.post('/jobs/fishing/tracker/add_entry', output_obj)
+            .done(function(response) {
+                $(`#${destElem}`).text(response['text'])
+                success_audio.play();
+            }).fail(function() {
+                $(`#${destElem}`).text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+            });
+        }
+        function add_postal_entry(destElem, jobId) {
+            $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+            output_obj = {
+                pay: $(`#pay${jobId}`).val(),
+                no_pay: ($(`#pay${jobId}`).val() === 0 || $(`#pay${jobId}`).val() === ''),
+                job_id: jobId
+            };
+            $.post('/jobs/postal/tracker/add_entry', output_obj)
+            .done(function(response) {
+                $(`#${destElem}`).text(response['text'])
+                success_audio.play();
+            }).fail(function() {
+                $(`#${destElem}`).text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+            });
+        }
         function set_class_danger(elem_id) {
             other_elem = $(elem_id);
             other_elem.removeClass('btn-success');
@@ -189,7 +244,12 @@
             } else if (elem === 'lgpelt' + String(jobID)) {
                 set_class_danger('#smpelt' + String(jobID));
                 set_class_danger('#medpelt' + String(jobID));
+            } else if (elem === 'onefish' + String(jobID)) {
+                set_class_danger('#twofish' + String(jobID));
+            } else if (elem === 'twofish' + String(jobID)) {
+                set_class_danger('#onefish' + String(jobID));
             }
+
             if (change_elem.classList.contains('btn-danger')) {
                 jq_elem.removeClass('btn-danger');
                 jq_elem.addClass('btn-success');

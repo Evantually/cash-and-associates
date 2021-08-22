@@ -11,6 +11,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Hunting Subscription</th>
                 <th scope="col">Fishing Subscription</th>
+                <th scope="col">GoPostal Subscription</th>
                 <th scope="col">Sub Expiration Date</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                     <td>{{ sub.username }}</td>
                     <td>{{ sub.hunter }}</td>
                     <td>{{ sub.fisher }}</td>
+                    <td>{{ sub.postal }}</td>
                     <td>{{ moment(sub.sub_expiration).calendar() }}</td>                    
                 </tr>
             {% endfor %}

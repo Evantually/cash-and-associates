@@ -23,6 +23,8 @@ class User(UserMixin, db.Model):
     sub_expiration = db.Column(db.DateTime, default=datetime.utcnow)
     hunter = db.Column(db.Boolean, default=False)
     fisher = db.Column(db.Boolean, default=False)
+    postal = db.Column(db.Boolean, default=False)
+    miner = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '{}'.format(self.username)
@@ -140,3 +142,12 @@ class FishingEntry(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     misc = db.Column(db.Integer)
     fish = db.Column(db.Integer)
+    sell_value = db.Column(db.Integer)
+
+class PostalEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job = db.Column(db.Integer, db.ForeignKey('job.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    no_pay = db.Column(db.Boolean)
+    sell_value = db.Column(db.Integer)
