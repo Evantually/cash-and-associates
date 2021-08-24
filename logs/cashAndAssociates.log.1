@@ -1,4 +1,4 @@
-2021-08-21 19:57:56,201 ERROR: Exception on /jobs/postal/tracker/add_entry [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-08-21 19:59:44,570 ERROR: Exception on /jobs/postal/tracker/add_entry [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1670, in _execute_context
     context = constructor(
@@ -76,8 +76,9 @@ Traceback (most recent call last):
     raise TypeError("Not a boolean value: %r" % value)
 sqlalchemy.exc.StatementError: (builtins.TypeError) Not a boolean value: 'false'
 [SQL: INSERT INTO postal_entry (job, user_id, timestamp, no_pay, sell_value) VALUES (%(job)s, %(user_id)s, %(timestamp)s, %(no_pay)s, %(sell_value)s) RETURNING postal_entry.id]
-[parameters: [{'sell_value': 10, 'no_pay': 'false', 'user_id': 2, 'job': 37}]]
-2021-08-21 19:59:36,058 ERROR: Exception on /jobs/postal/tracker/add_entry [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+[parameters: [{'sell_value': 0, 'no_pay': 'false', 'user_id': 2, 'job': 37}]]
+2021-08-21 20:02:10,747 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-21 20:02:58,828 ERROR: Exception on /jobs/postal/view/37 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -89,6 +90,10 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 548, in add_postal_entry
-    sell_value = int(request.form['pay'])
-ValueError: invalid literal for int() with base 10: ''
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 536, in postal_view
+    output = summarize_job(entries, 'Postal')
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 240, in summarize_job
+    output['pay'] += entry.pay
+AttributeError: 'PostalEntry' object has no attribute 'pay'
+2021-08-21 20:03:36,380 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-08-23 20:46:12,842 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

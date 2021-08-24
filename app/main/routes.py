@@ -489,7 +489,8 @@ def fishing_view(job_id):
     job.hourly_earnings = output['total_hour']
     db.session.commit()
     return render_template('job_view.html', output=output, entries=entries, 
-                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)', label2='% Caught Fish')
+                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)', label2='% Caught Fish',
+                            job_type='Fishing')
 
 @bp.route('/jobs/fishing/tracker/add_entry', methods=['POST'])
 @login_required

@@ -192,6 +192,7 @@ def clear_temps():
 def summarize_job(entries, job_type):
     output = {
         'fish': 0,
+        'misc': 0,
         'meat': 0,
         'smpelt': 0,
         'medpelt': 0,
@@ -234,6 +235,8 @@ def summarize_job(entries, job_type):
                 if entry.misc == 0 and entry.fish == 0:
                     output['nothing'] += 1
                 output['fish'] += entry.fish
+                output['misc'] += entry.misc
+                output['kill_count'] += 1
             elif job_type == 'Postal':
                 if entry.no_pay:
                     output['nothing'] += 1

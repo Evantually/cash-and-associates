@@ -21,10 +21,13 @@ class User(UserMixin, db.Model):
     company = db.Column(db.Integer, db.ForeignKey('company.id'))
     dark_mode = db.Column(db.Boolean)
     sub_expiration = db.Column(db.DateTime, default=datetime.utcnow)
+    auto_renew = db.Column(db.Boolean, default=False)
     hunter = db.Column(db.Boolean, default=False)
     fisher = db.Column(db.Boolean, default=False)
     postal = db.Column(db.Boolean, default=False)
     miner = db.Column(db.Boolean, default=False)
+    personal = db.Column(db.Boolean, default=False)
+    business = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '{}'.format(self.username)
@@ -74,6 +77,8 @@ class Transaction(db.Model):
     total = db.Column(db.Integer)
     details = db.Column(db.String(512))
     category = db.Column(db.String(64))
+    personal = db.Column(db.Boolean, default=False)
+    business = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<Transaction {}>'.format(self.product)
