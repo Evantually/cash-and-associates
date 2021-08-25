@@ -83,4 +83,8 @@ class ManageSubscriptionForm(FlaskForm):
     hunter = BooleanField('Hunting Subscription')
     fisher = BooleanField('Fishing Subscription')
     postal = BooleanField('GoPostal Subscription')
+    blackjack = BooleanField('Blackjack Subscription')
+    personal = BooleanField('Personal Subscription')
+    business = BooleanField('Business Subscription')
+    extend = BooleanField('Extend Subscription')
     submit = SubmitField(_l('Submit'))

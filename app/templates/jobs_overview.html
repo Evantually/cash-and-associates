@@ -32,6 +32,8 @@
     <p><a href="{{ url_for('main.fishing_tracker', job_id=job.id) }}">Return to this job</a></p>
     {% elif job.job_type == 'Postal' %}
     <p><a href="{{ url_for('main.postal_tracker', job_id=job.id) }}">Return to this job</a></p>
+    {% elif job.job_type == 'Blackjack' %}
+    <p><a href="{{ url_for('main.blackjack_tracker', job_id=job.id) }}">Return to this job</a></p>
     {% endif %}
     <hr>
     {% endfor %}

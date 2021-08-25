@@ -56,6 +56,9 @@
                             <li><a href="{{ url_for('main.hunting_jobs') }}">Hunting Jobs</a></li>
                             <li><a href="{{ url_for('main.fishing_jobs') }}">Fishing Jobs</a></li>
                             <li><a href="{{ url_for('main.postal_jobs') }}">GoPostal Jobs</a></li>
+                            {% if current_user.blackjack %}
+                            <li><a href="{{ url_for('main.blackjack_jobs') }}">Blackjack Jobs</a></li>
+                            {% endif %}
                         </ul>
                     </li>
                     <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>

@@ -174,12 +174,17 @@ def manage_user():
 def manage_subscriptions(user_id):
     if current_user.access_level == 'admin' or current_user.company == 1:
         user = User.query.filter_by(id=user_id).first()
-        form = ManageSubscriptionForm(hunter=user.hunter, fisher=user.fisher, postal=user.postal)
+        form = ManageSubscriptionForm(hunter=user.hunter, fisher=user.fisher, postal=user.postal,
+                                    blackjack=user.blackjack, personal=user.personal, business=user.business)
         if form.validate_on_submit():
             user.hunter = form.hunter.data
             user.fisher = form.fisher.data
             user.postal = form.postal.data
-            user.sub_expiration = datetime.utcnow() + timedelta(days=7)
+            user.personal = form.personal.data
+            user.business = form.business.data
+            user.blackjack = form.blackjack.data
+            if form.extend.data:
+                user.sub_expiration = datetime.utcnow() + timedelta(days=7)
             db.session.commit()
             flash(f'Subscription info updated for {user.username}')
             return redirect(url_for('main.manage_user'))
@@ -565,11 +570,26 @@ def dashboard():
 
 # END JOB SECTION
 # START CASINO SECTION
+
+@bp.route('/jobs/blackjack/view')
+@login_required
+def blackjack_jobs():
+    jobs = Job.query.filter_by(user_id=current_user.id).filter_by(job_type='Blackjack').order_by(Job.timestamp.desc()).all()
+    return render_template('jobs_overview.html', jobs=jobs)
+
 @bp.route('/blackjack_tracker/<job_id>', methods=['GET'])
 @login_required
 def blackjack_tracker(job_id):
-    cards = blackjack_cards()
-    return render_template('blackjack_tracker.html', cards=cards, job_id=job_id, user_id=current_user.id)
+    try:
+        current_user.sub_expiration > datetime.utcnow()
+    except:
+        current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
+    if current_user.sub_expiration > datetime.utcnow() and current_user.blackjack:
+        cards = blackjack_cards()
+        return render_template('blackjack_tracker.html', cards=cards, job_id=job_id, user_id=current_user.id)
+    else:
+        flash('Please renew your subscription to keep using this service!')
+        return redirect(url_for('main.index'))
 
 @bp.route('/blackjack_checker/<entry>', methods=['GET'])
 @login_required

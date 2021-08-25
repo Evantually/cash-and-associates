@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     miner = db.Column(db.Boolean, default=False)
     personal = db.Column(db.Boolean, default=False)
     business = db.Column(db.Boolean, default=False)
+    blackjack = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '{}'.format(self.username)
