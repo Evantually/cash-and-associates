@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Blackjack Tracker</h1>
+    <h3>Dealer</h3>
+    <table class="table table-dark table-hover" id="trip">
+        {% for card, value in cards.items() %}
+        {% if loop.index % 13 == 1 %}
+        <tr>
+            <td bgcolor="#dc3545" class="unselected-card" id="dealercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                <a href="javascript:SelectCard('dealercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+            </td>
+        {% elif loop.index % 13 == 0 %}
+            <td bgcolor="#dc3545" class="unselected-card" id="dealercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                <a href="javascript:SelectCard('dealercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+            </td>
+        </tr>
+        {% else %}
+            <td bgcolor="#dc3545" class="unselected-card" id="dealercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                <a href="javascript:SelectCard('dealercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+            </td>
+        {% endif %}
+        {% endfor %}
+    </table>
+    <h3>Player</h3>
+    <table class="table table-dark table-hover" id="trip">
+        {% for card, value in cards.items() %}
+            {% if loop.index % 13 == 1 %}
+            <tr>
+                <td bgcolor="#dc3545" class="unselected-card" id="playercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                    <a href="javascript:SelectCard('playercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+                </td>
+            {% elif loop.index % 13 == 0 %}
+                <td bgcolor="#dc3545" class="unselected-card" id="playercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                    <a href="javascript:SelectCard('playercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+                </td>
+            </tr>
+            {% else %}
+                <td bgcolor="#dc3545" class="unselected-card" id="playercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                    <a href="javascript:SelectCard('playercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+                </td>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <div class="col-md-1"><a href="javascript:add_blackjack_entry('output', {{ job_id }}, {{ user_id }});" role="button"><button class="btn btn-primary btn-lg">Submit Entry</button></a></div>
+    <div id="output"></div>
+{% endblock %}

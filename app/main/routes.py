@@ -9,11 +9,12 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm)
 from app.models import (User, Transaction, Product, Category, Company,
-                        Inventory, Job, HuntingEntry, FishingEntry, PostalEntry)
+                        Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
+                        BlackjackHand, BlackjackEntry)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
-                            summarize_job, moving_average, clear_temps)
+                            summarize_job, moving_average, clear_temps, blackjack_cards, subset_sum)
 
 @bp.before_app_request
 def before_request():
@@ -393,6 +394,8 @@ def jobs():
                 return redirect(url_for('main.fishing_tracker', job_id=job.id))
             elif job.job_type == 'Postal':
                 return redirect(url_for('main.postal_tracker', job_id=job.id))
+            elif job.job_type == 'Blackjack':
+                return redirect(url_for('main.blackjack_tracker', job_id=job.id))
         return render_template('add_product.html',title='Start Job', form=form)
     else:
         flash('Please renew your subscription to keep using this service!')
@@ -548,7 +551,7 @@ def add_postal_entry():
     job = Job.query.filter_by(id=int(request.form['job_id'])).first()
     sell_value = int(request.form['pay'])
     entry = PostalEntry(job=job.id, user_id=current_user.id,
-                        no_pay= (request.form['no_pay'] == 'true'),
+                        no_pay=(request.form['no_pay'] == 'true'),
                         sell_value=sell_value)
     db.session.add(entry)
     db.session.commit()
@@ -562,3 +565,34 @@ def dashboard():
 
 # END JOB SECTION
 # START CASINO SECTION
+@bp.route('/blackjack_tracker/<job_id>', methods=['GET'])
+@login_required
+def blackjack_tracker(job_id):
+    cards = blackjack_cards()
+    return render_template('blackjack_tracker.html', cards=cards, job_id=job_id, user_id=current_user.id)
+
+@bp.route('/blackjack_checker/<entry>', methods=['GET'])
+@login_required
+def blackjack_checker(entry):
+    cards = blackjack_cards()
+    entries = BlackjackHand.query.filter_by(blackjack_entry=entry).all()
+    return render_template('blackjack_checker.html', cards=cards, entries=entries)
+
+@bp.route('/blackjack/add_entry', methods=['POST'])
+@login_required
+def add_blackjack_entry():
+    job = Job.query.filter_by(id=int(request.form['job_id'])).first()
+    entry = BlackjackEntry(user_id=int(request.form['user_id']), job=int(request.form['job_id']))
+    db.session.add(entry)
+    player_hand = BlackjackHand(blackjack_entry=entry.id, player_hand=True)
+    dealer_hand = BlackjackHand(blackjack_entry=entry.id)
+    player_cards = request.form.getlist('player_cards[]')
+    dealer_cards = request.form.getlist('dealer_cards[]')
+    for card in player_cards:
+        setattr(player_hand, card, True)
+    for card in dealer_cards:
+        setattr(dealer_hand, card, True)
+    db.session.add(player_hand)
+    db.session.add(dealer_hand)
+    db.session.commit()
+    return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})

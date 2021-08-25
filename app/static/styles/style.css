@@ -3257,3 +3257,13 @@ p.form-message.success, p.form-message.error {
   opacity: 0;
   transition: opacity .2s ease-out;
 }
+
+.selected-card {
+  background-color: #28a745;
+  color: #28a745;
+}
+
+.unselected-card {
+  background-color: #dc3545;
+  color: #dc3545;
+}

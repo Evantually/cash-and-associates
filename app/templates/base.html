@@ -221,6 +221,45 @@
                 fail_audio.play();
             });
         }
+
+        function add_blackjack_entry(destElem, jobId, userId) {
+            $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+            player_cards = []
+            dealer_cards = []
+            selected_cards = document.getElementsByClassName('selected-card');
+            console.log(selected_cards);
+            for (i=0;i<selected_cards.length;i++) {
+                console.log(selected_cards[i]);
+                c = $(selected_cards[i]);
+                if (c.attr("id").includes("dealer")) {
+                    dealer_cards.push(c.attr("card-id"));
+                } else {
+                    player_cards.push(c.attr("card-id"));
+                }
+            }
+            output_obj = {
+                player_cards: player_cards,
+                dealer_cards: dealer_cards,
+                job_id: jobId,
+                user_id: userId
+            };
+            while (selected_cards.length > 0) {
+                selected_cards = document.getElementsByClassName('selected-card');
+                for (i=0;i<selected_cards.length;i++) {
+                    SelectCard(selected_cards[i].id);
+                }
+            }
+            console.log(output_obj);
+            $.post('/blackjack/add_entry', output_obj)
+            .done(function(response) {
+                $(`#${destElem}`).text(response['text'])
+                success_audio.play();
+            }).fail(function() {
+                $(`#${destElem}`).text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+            });
+        }
+
         function set_class_danger(elem_id) {
             other_elem = $(elem_id);
             other_elem.removeClass('btn-success');
@@ -229,8 +268,6 @@
         function set_active(elem, jobID) {
             change_elem = document.getElementById(elem);
             jq_elem = $('#' + elem);
-            console.log(elem);
-            console.log(change_elem.classList.contains('btn-danger'));
             if (elem === 'onemeat' + String(jobID) && change_elem.classList.contains('btn-danger')) {
                 set_class_danger('#twomeat' + String(jobID));
             } else if (elem === 'twomeat'  + String(jobID) && change_elem.classList.contains('btn-danger')) {
@@ -257,7 +294,22 @@
                 jq_elem.removeClass('btn-success');
                 jq_elem.addClass('btn-danger');
             }
-        }       
+        }
+
+        function SelectCard(elem) {
+            class_elem = document.getElementById(elem);
+            jq_elem = $('#' + elem);
+            if (class_elem.classList.contains('unselected-card')) {
+                jq_elem.removeClass('unselected-card');
+                jq_elem.addClass('selected-card');
+                jq_elem.attr("bgcolor", "#28a745")
+            } else {
+                jq_elem.removeClass('selected-card');
+                jq_elem.addClass('unselected-card');
+                jq_elem.attr("bgcolor", "#dc3545")
+            }
+        }
+
         function create_graph(data){
             data.dates.forEach(d => {
                 d.formatted_date = d3.timeParse("%Y-%m-%d")(d.date)

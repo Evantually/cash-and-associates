@@ -234,6 +234,8 @@ def summarize_job(entries, job_type):
             elif job_type == 'Fishing':
                 if entry.misc == 0 and entry.fish == 0:
                     output['nothing'] += 1
+                if entry.fish == 2:
+                    output['perfect'] += 1
                 output['fish'] += entry.fish
                 output['misc'] += entry.misc
                 output['kill_count'] += 1
@@ -269,3 +271,69 @@ def moving_average(entries, minutes, seconds, job_entry):
         ratio = round((1 - (no_yield/counter)) * 100,2)
         yield_data.append(ratio)
     return moving_average_data, timestamp_data, yield_data
+
+def blackjack_cards():
+    cards = {
+        's_2': 2,
+        's_3': 3,
+        's_4': 4,
+        's_5': 5,
+        's_6': 6,
+        's_7': 7,
+        's_8': 8,
+        's_9': 9,
+        's_t': 10,
+        's_j': 10,
+        's_q': 10,
+        's_k': 10,
+        's_a': 11,
+        'c_2': 2,
+        'c_3': 3,
+        'c_4': 4,
+        'c_5': 5,
+        'c_6': 6,
+        'c_7': 7,
+        'c_8': 8,
+        'c_9': 9,
+        'c_t': 10,
+        'c_j': 10,
+        'c_q': 10,
+        'c_k': 10,
+        'c_a': 11,
+        'd_2': 2,
+        'd_3': 3,
+        'd_4': 4,
+        'd_5': 5,
+        'd_6': 6,
+        'd_7': 7,
+        'd_8': 8,
+        'd_9': 9,
+        'd_t': 10,
+        'd_j': 10,
+        'd_q': 10,
+        'd_k': 10,
+        'd_a': 11,
+        'h_2': 2,
+        'h_3': 3,
+        'h_4': 4,
+        'h_5': 5,
+        'h_6': 6,
+        'h_7': 7,
+        'h_8': 8,
+        'h_9': 9,
+        'h_t': 10,
+        'h_j': 10,
+        'h_q': 10,
+        'h_k': 10,
+        'h_a': 11
+    }
+    return cards
+
+def subset_sum(numbers, target, partial=[], partial_sum=0):
+    if partial_sum <= target:
+        yield partial
+    if partial_sum > target:
+        return
+    for i, n in enumerate(numbers):
+        remaining = numbers[i + 1:]
+        yield from subset_sum(remaining, target, partial + [n], partial_sum + n)
