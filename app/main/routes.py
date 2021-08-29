@@ -14,7 +14,7 @@ from app.models import (User, Transaction, Product, Category, Company,
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
-                            summarize_job, moving_average, clear_temps, blackjack_cards, subset_sum)
+                            summarize_job, moving_average, clear_temps, blackjack_cards)
 
 @bp.before_app_request
 def before_request():
@@ -184,7 +184,10 @@ def manage_subscriptions(user_id):
             user.business = form.business.data
             user.blackjack = form.blackjack.data
             if form.extend.data:
-                user.sub_expiration = datetime.utcnow() + timedelta(days=7)
+                if user.sub_expiration > datetime.utcnow():
+                    user.sub_expiration = user.sub_expiration + timedelta(days=7)
+                else:
+                    user.sub_expiration = datetime.utcnow() + timedelta(days=7)
             db.session.commit()
             flash(f'Subscription info updated for {user.username}')
             return redirect(url_for('main.manage_user'))
@@ -197,8 +200,9 @@ def manage_subscriptions(user_id):
 @login_required
 def active_subscriptions():
     if current_user.access_level == 'admin' or current_user.company == 1:
+        expired_subs = User.query.filter((User.hunter == True) | (User.fisher == True) | (User.postal == True)).filter(User.sub_expiration < datetime.utcnow()).order_by(User.sub_expiration).all() 
         active_subs = User.query.filter((User.hunter == True) | (User.fisher == True) | (User.postal == True)).filter(User.sub_expiration >= datetime.utcnow()).order_by(User.sub_expiration).all()
-        return render_template('active_subscriptions.html',active_subs=active_subs)
+        return render_template('active_subscriptions.html',active_subs=active_subs, expired_subs=expired_subs)
     else:
         flash('You do not have access to this page.')
         return redirect(url_for('main.index'))
@@ -597,6 +601,11 @@ def blackjack_checker(entry):
     cards = blackjack_cards()
     entries = BlackjackHand.query.filter_by(blackjack_entry=entry).all()
     return render_template('blackjack_checker.html', cards=cards, entries=entries)
+
+@bp.route('/blackjack_decision', methods=['POST'])
+@login_required
+def blackjack_decision():
+    pass
 
 @bp.route('/blackjack/add_entry', methods=['POST'])
 @login_required

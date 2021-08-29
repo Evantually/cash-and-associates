@@ -3,7 +3,7 @@
 
 {% block app_content %}
     <h1>Blackjack Tracker</h1>
-    <h3>Dealer</h3>
+    <h3>Dealer Hand</h3>
     <table class="table table-dark table-hover" id="trip">
         {% for card, value in cards.items() %}
         {% if loop.index % 13 == 1 %}
@@ -23,7 +23,7 @@
         {% endif %}
         {% endfor %}
     </table>
-    <h3>Player</h3>
+    <h3>Your Hand</h3>
     <table class="table table-dark table-hover" id="trip">
         {% for card, value in cards.items() %}
             {% if loop.index % 13 == 1 %}
@@ -39,6 +39,26 @@
             {% else %}
                 <td bgcolor="#dc3545" class="unselected-card" id="playercard{{ loop.index - 1 }}" card-id="{{ card }}">
                     <a href="javascript:SelectCard('playercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+                </td>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <h3>Other Players</h3>
+    <table class="table table-dark table-hover" id="trip">
+        {% for card, value in cards.items() %}
+            {% if loop.index % 13 == 1 %}
+            <tr>
+                <td bgcolor="#dc3545" class="unselected-card" id="playercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                    <a href="javascript:SelectCard('otherplayercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+                </td>
+            {% elif loop.index % 13 == 0 %}
+                <td bgcolor="#dc3545" class="unselected-card" id="playercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                    <a href="javascript:SelectCard('otherplayercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
+                </td>
+            </tr>
+            {% else %}
+                <td bgcolor="#dc3545" class="unselected-card" id="playercard{{ loop.index - 1 }}" card-id="{{ card }}">
+                    <a href="javascript:SelectCard('otherplayercard{{ loop.index - 1 }}');"><img src="{{ url_for('static', filename='imgs/' + card) }}.svg" width="50px" value="{{ value }}"></a>
                 </td>
             {% endif %}
         {% endfor %}

@@ -33,4 +33,33 @@
             {% endfor %}
         </tbody>
     </table>
+    <h3>Expired Subs</h3>
+    <table id="tr-history" class="table table-stripeda table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Hunting Subscription</th>
+                <th scope="col">Fishing Subscription</th>
+                <th scope="col">GoPostal Subscription</th>
+                <th scope="col">Blackjack Subscription</th>
+                <th scope="col">Personal Subscription</th>
+                <th scope="col">Business Subscription</th>
+                <th scope="col">Sub Expiration Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in expired_subs %}
+                <tr>
+                    <td>{{ sub.username }}</td>
+                    <td>{{ sub.hunter }}</td>
+                    <td>{{ sub.fisher }}</td>
+                    <td>{{ sub.postal }}</td>
+                    <td>{{ sub.blackjack }}</td>
+                    <td>{{ sub.personal }}</td>
+                    <td>{{ sub.business }}</td>
+                    <td>{{ moment(sub.sub_expiration).calendar() }}</td>                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from app.models import User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry
 from app import db
 from sqlalchemy.sql import func
+import itertools
 
 def organize_data_by_date(data):
     output = {}
@@ -329,11 +330,100 @@ def blackjack_cards():
     }
     return cards
 
-def subset_sum(numbers, target, partial=[], partial_sum=0):
-    if partial_sum <= target:
-        yield partial
-    if partial_sum > target:
-        return
-    for i, n in enumerate(numbers):
-        remaining = numbers[i + 1:]
-        yield from subset_sum(remaining, target, partial + [n], partial_sum + n)
+def dealer_probability():
+    pass
+
+def determine_probability(starting_amount, remaining_cards):
+    card_counts = {
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+        '6': 0,
+        '7': 0,
+        '8': 0,
+        '9': 0,
+        '10': 0,
+        '11': 0
+    }
+    max_counts = {
+        '2': 4,
+        '3': 4,
+        '4': 4,
+        '5': 4,
+        '6': 4,
+        '7': 4,
+        '8': 4,
+        '9': 4,
+        '10': 16,
+        '11': 4
+    }
+    percentages = {
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+        '6': 0,
+        '7': 0,
+        '8': 0,
+        '9': 0,
+        '10': 0,
+        '11': 0
+    }
+    for c in remaining_cards:
+        card_counts[f'{c}'] += 1
+    for key, value in card_counts.items():
+        percentages[key] = card_counts[key] / max_counts[key]
+    outcome_totals = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+    outcomes = {
+        '17': 0,
+        '18': 0,
+        '19': 0,
+        '20': 0,
+        '21': 0,
+        'bust': 0
+    }
+    shown_card = {
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+        '6': 0,
+        '7': 0,
+        '8': 0,
+        '9': 0,
+        '10': 0,
+        '11': 0
+    }
+    actual_dealer_outcome = {
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+        '6': 0,
+        '7': 0,
+        '8': 0,
+        '9': 0,
+        '10': 0,
+        '11': 0,
+        '12': 0,
+        '13': 0,
+        '14': 0,
+        '15': 0,
+        '16': 0,
+        '17': 0,
+        '18': 0,
+        '19': 0,
+        '20': 0,
+        '21': 0,
+        '22': 0,
+        '23': 0,
+        '24': 0,
+        '25': 0,
+        '26': 0,
+        '27': 0,
+        '28': 0,
+        '29': 0,
+        '30': 0,
+        '31': 0
+    }
