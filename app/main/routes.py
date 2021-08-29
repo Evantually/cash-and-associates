@@ -191,7 +191,7 @@ def manage_subscriptions(user_id):
                     user.sub_expiration = datetime.utcnow() + timedelta(days=form.sub_length.data)
             db.session.commit()
             flash(f'Subscription info updated for {user.username}')
-            return redirect(url_for('main.manage_user'))
+            return redirect(url_for('main.active_subscriptions'))
         return render_template('add_product.html', title=f'Manage Subscriptions - {user.username}', form=form)
     else:
         flash('You do not have access to this page.')
