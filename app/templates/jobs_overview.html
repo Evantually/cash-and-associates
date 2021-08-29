@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block metas %}
+{{ super() }}
+<meta id="my-data" data-values="{{ values }}" data-labels="{{ labels }}" data-yield="{{ yield_data }}" data-label=" {{ label }}" data-label2="{{ label2 }}">
+{% endblock %}
+
 {% block app_content %}
     <div class="statistics-section-title"><h1>Jobs Overview</h1></div>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+    </div>
     {% for job in jobs %}
     {% if job.job_type == 'Hunting' %}
     <a href="{{ url_for('main.hunting_view', job_id=job.id) }}">
@@ -37,4 +45,76 @@
     {% endif %}
     <hr>
     {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    
+    <script>
+        full_data = $('#my-data').data();
+        console.log(full_data);
+
+        const labels = full_data.labels;
+        const data = {
+        labels: labels,
+            datasets: [{
+                label: full_data.label,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: full_data.values,
+                yAxisID: 'y'
+            },{
+                label: full_data.label2,
+                backgroundColor: 'rgb(54, 162, 235)',
+                borderColor: 'rgb(54, 162, 235)',
+                data: full_data.yield,
+                yAxisID: 'y1'
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                stacked: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Earnings and Yield'
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'time',
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        };
+    
+        var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+        );
+    </script>
+
 {% endblock %}

@@ -16,19 +16,21 @@
                 <th scope="col">Personal Subscription</th>
                 <th scope="col">Business Subscription</th>
                 <th scope="col">Sub Expiration Date</th>
+                <th scope="col">Auto Renew</th>
             </tr>
         </thead>
         <tbody>
             {% for sub in active_subs %}
                 <tr>
-                    <td>{{ sub.username }}</td>
+                    <td><a href="{{ url_for('main.manage_subscriptions', user_id=sub.id) }}">{{ sub.username }}</a></td>
                     <td>{{ sub.hunter }}</td>
                     <td>{{ sub.fisher }}</td>
                     <td>{{ sub.postal }}</td>
                     <td>{{ sub.blackjack }}</td>
                     <td>{{ sub.personal }}</td>
                     <td>{{ sub.business }}</td>
-                    <td>{{ moment(sub.sub_expiration).calendar() }}</td>                    
+                    <td>{{ moment(sub.sub_expiration).calendar() }}</td>
+                    <td>{{ sub.auto_renew }}</td>                    
                 </tr>
             {% endfor %}
         </tbody>
@@ -45,20 +47,22 @@
                 <th scope="col">Personal Subscription</th>
                 <th scope="col">Business Subscription</th>
                 <th scope="col">Sub Expiration Date</th>
+                <th scope="col">Auto Renew</th>
             </tr>
         </thead>
         <tbody>
-            {% for sub in expired_subs %}
-                <tr>
-                    <td>{{ sub.username }}</td>
-                    <td>{{ sub.hunter }}</td>
-                    <td>{{ sub.fisher }}</td>
-                    <td>{{ sub.postal }}</td>
-                    <td>{{ sub.blackjack }}</td>
-                    <td>{{ sub.personal }}</td>
-                    <td>{{ sub.business }}</td>
-                    <td>{{ moment(sub.sub_expiration).calendar() }}</td>                    
-                </tr>
+            {% for sub in expired_subs %}                
+                    <tr>
+                        <td><a href="{{ url_for('main.manage_subscriptions', user_id=sub.id) }}">{{ sub.username }}</a></td>
+                        <td>{{ sub.hunter }}</td>
+                        <td>{{ sub.fisher }}</td>
+                        <td>{{ sub.postal }}</td>
+                        <td>{{ sub.blackjack }}</td>
+                        <td>{{ sub.personal }}</td>
+                        <td>{{ sub.business }}</td>
+                        <td>{{ moment(sub.sub_expiration).calendar() }}</td>   
+                        <td>{{ sub.auto_renew }}</td>                 
+                    </tr>                
             {% endfor %}
         </tbody>
     </table>

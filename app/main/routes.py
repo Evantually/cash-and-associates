@@ -183,15 +183,16 @@ def manage_subscriptions(user_id):
             user.personal = form.personal.data
             user.business = form.business.data
             user.blackjack = form.blackjack.data
+            user.auto_renew = form.auto_renew.data
             if form.extend.data:
                 if user.sub_expiration > datetime.utcnow():
-                    user.sub_expiration = user.sub_expiration + timedelta(days=7)
+                    user.sub_expiration = user.sub_expiration + timedelta(days=form.sub_length.data)
                 else:
-                    user.sub_expiration = datetime.utcnow() + timedelta(days=7)
+                    user.sub_expiration = datetime.utcnow() + timedelta(days=form.sub_length.data)
             db.session.commit()
             flash(f'Subscription info updated for {user.username}')
             return redirect(url_for('main.manage_user'))
-        return render_template('add_product.html', title='Manage Subscriptions', form=form)
+        return render_template('add_product.html', title=f'Manage Subscriptions - {user.username}', form=form)
     else:
         flash('You do not have access to this page.')
         return redirect(url_for('main.index'))
@@ -206,6 +207,16 @@ def active_subscriptions():
     else:
         flash('You do not have access to this page.')
         return redirect(url_for('main.index'))
+
+@bp.route('/clear_temps', methods=['GET'])
+@login_required
+def clear_temps():
+    if current_user.access_level == 'admin' or current_user.company == 1:
+        clear_temps()
+        flash('Temporary accounts have been successfully cleared.')
+        return redirect(url_for('main.index'))
+    flash('You do not have access to this page.')
+    return redirect(url_for('main.index'))
 # END ADMIN AREA
 # BEGIN BUSINESS MANAGER AREA
 
@@ -431,8 +442,9 @@ def hunting_tracker(job_id):
 def hunting_jobs():
     jobs = Job.query.filter_by(user_id=current_user.id).filter_by(job_type='Hunting').order_by(Job.timestamp.desc()).all()
     entries = HuntingEntry.query.filter_by(user_id=current_user.id).all()
-    ma_data, time_data, yield_data = moving_average(entries, 60, 0, HuntingEntry)
-    return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data)
+    ma_data, time_data, yield_data = moving_average(entries, 1440, 0, HuntingEntry)
+    return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data,
+                            label=f'Daily Earnings ($)', label2='% Kills Yielding', job_type='Hunting')
 
 @bp.route('/jobs/hunting/view/<job_id>')
 @login_required
@@ -473,7 +485,7 @@ def add_hunting_entry():
 def fishing_jobs():
     jobs = Job.query.filter_by(user_id=current_user.id).filter_by(job_type='Fishing').order_by(Job.timestamp.desc()).all()
     entries = FishingEntry.query.filter_by(user_id=current_user.id).all()
-    ma_data, time_data, yield_data = moving_average(entries, 60, 0, FishingEntry)
+    ma_data, time_data, yield_data = moving_average(entries, 1440, 0, FishingEntry)
     return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data)
 
 @bp.route('/jobs/fishing/tracker/<job_id>')

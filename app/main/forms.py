@@ -79,12 +79,13 @@ class ManageUserForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class ManageSubscriptionForm(FlaskForm):
-    user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').order_by(User.username).all())
     hunter = BooleanField('Hunting Subscription')
     fisher = BooleanField('Fishing Subscription')
     postal = BooleanField('GoPostal Subscription')
     blackjack = BooleanField('Blackjack Subscription')
     personal = BooleanField('Personal Subscription')
     business = BooleanField('Business Subscription')
+    sub_length = IntegerField(_l('Subscription Length (Days)'))
     extend = BooleanField('Extend Subscription')
+    auto_renew = BooleanField('Automatically Renew')
     submit = SubmitField(_l('Submit'))
