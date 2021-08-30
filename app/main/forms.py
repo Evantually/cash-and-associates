@@ -71,7 +71,7 @@ class AddInventoryForm(FlaskForm):
 
 class AddJobForm(FlaskForm):
     name = StringField(_l('Name of trip'))
-    trip_type = SelectField(_l('Trip Type'), choices=[('Hunting','Hunting'), ('Fishing','Fishing'), ('Postal', 'GoPostal'), ('Blackjack', 'Blackjack')])
+    trip_type = SelectField(_l('Trip Type'), choices=[('Hunting','Hunting'), ('Fishing','Fishing'), ('Postal', 'GoPostal')])
     submit = SubmitField(_l('Submit'))
 
 class ManageUserForm(FlaskForm):

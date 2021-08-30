@@ -158,6 +158,14 @@ class PostalEntry(db.Model):
     no_pay = db.Column(db.Boolean)
     sell_value = db.Column(db.Integer)
 
+class MiningEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job = db.Column(db.Integer, db.ForeignKey('job.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    no_pay = db.Column(db.Boolean)
+    sell_value = db.Column(db.Integer)
+
 class BlackjackEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

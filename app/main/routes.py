@@ -579,6 +579,56 @@ def add_postal_entry():
     return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})
 
 # END GOPOSTAL
+# START MINING 
+
+@bp.route('/jobs/mining/view')
+@login_required
+def mining_jobs():
+    jobs = Job.query.filter_by(user_id=current_user.id).filter_by(job_type='Mining').order_by(Job.timestamp.desc()).all()
+    entries = MiningEntry.query.filter_by(user_id=current_user.id).all()
+    ma_data, time_data, yield_data = moving_average(entries, 60, 0, MiningEntry)
+    return render_template('jobs_overview.html', jobs=jobs, values=ma_data, labels=time_data, yield_data=yield_data)
+
+@bp.route('/jobs/mining/tracker/<job_id>')
+@login_required
+def mining_tracker(job_id):
+    try:
+        current_user.sub_expiration > datetime.utcnow()
+    except:
+        current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
+    if current_user.sub_expiration > datetime.utcnow() and current_user.mining:
+        job = Job.query.filter_by(id=job_id).first()
+        return render_template('mining_tracker.html', job=job)
+    else:
+        flash('Please renew your subscription to keep using this service!')
+        return redirect(url_for('main.index'))
+
+@bp.route('/jobs/mining/view/<job_id>')
+@login_required
+def mining_view(job_id):
+    entries = MiningEntry.query.filter_by(job=job_id).order_by(MiningEntry.timestamp).all()
+    ma_data, time_data, yield_data = moving_average(entries, 2, 30, MiningEntry)
+    output = summarize_job(entries, 'mining')
+    job = Job.query.filter_by(id=job_id).first()
+    job.total_earnings = output['total']
+    job.hourly_earnings = output['total_hour']
+    db.session.commit()
+    return render_template('job_view.html', output=output, entries=entries, 
+                            values=ma_data, labels=time_data, yield_data=yield_data, label=f'5 Minute Earnings ($)', label2='% Packages Accepted')
+
+@bp.route('/jobs/mining/tracker/add_entry', methods=['POST'])
+@login_required
+def add_mining_entry():
+    job = Job.query.filter_by(id=int(request.form['job_id'])).first()
+    sell_value = int(request.form['pay'])
+    entry = MiningEntry(job=job.id, user_id=current_user.id,
+                        no_pay=(request.form['no_stone'] == 'true'),
+                        sell_value=sell_value)
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify({'text': f'This entry has been recorded at {entry.timestamp}.'})
+
+# END FISHING
 
 @bp.route('/dashboard')
 def dashboard():
