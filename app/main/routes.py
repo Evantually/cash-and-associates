@@ -294,8 +294,12 @@ def delete_transaction(transaction_id):
 @bp.route('/point_of_sale')
 @login_required
 def point_of_sale():
-    products = Product.query.filter_by(company_id=current_user.company).filter_by(sales_item=True).order_by(Product.name).all()
-    inventory = Inventory.query.filter_by(company_id=current_user.company).all()
+    if current_user.company == None:
+        products = Product.query.filter_by(user_id=current_user.id).filter_by(sales_item=True).order_by(Product.name).all()
+        inventory = Inventory.query.filter_by(company_id=current_user.company).all()
+    else:
+        products = Product.query.filter_by(company_id=current_user.company).filter_by(sales_item=True).order_by(Product.name).all()
+        inventory = Inventory.query.filter_by(company_id=current_user.company).all()
     return render_template('point_of_sale.html', products=products, inventory=inventory, user=current_user)
 
 
