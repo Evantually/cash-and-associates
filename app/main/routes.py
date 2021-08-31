@@ -201,8 +201,8 @@ def manage_subscriptions(user_id):
 @login_required
 def active_subscriptions():
     if current_user.access_level == 'admin' or current_user.company == 1:
-        expired_subs = User.query.filter((User.hunter == True) | (User.fisher == True) | (User.postal == True)).filter(User.sub_expiration < datetime.utcnow()).order_by(User.sub_expiration).all() 
-        active_subs = User.query.filter((User.hunter == True) | (User.fisher == True) | (User.postal == True)).filter(User.sub_expiration >= datetime.utcnow()).order_by(User.sub_expiration).all()
+        expired_subs = User.query.filter(User.sub_expiration < datetime.utcnow()).order_by(User.sub_expiration).all() 
+        active_subs = User.query.filter(User.sub_expiration >= datetime.utcnow()).order_by(User.sub_expiration).all()
         return render_template('active_subscriptions.html',active_subs=active_subs, expired_subs=expired_subs)
     else:
         flash('You do not have access to this page.')
