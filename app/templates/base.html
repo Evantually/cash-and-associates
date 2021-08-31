@@ -63,7 +63,7 @@
                     </li>
                     <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
                     {% endif %}
-                    {% if (current_user.access_level in ('admin', 'manager','temp')) or current_user.company is None %}
+                    {% if (current_user.access_level in ('admin', 'manager','temp')) or (current_user.company is None) %}
                     <li><a href="{{ url_for('main.transaction_history') }}">{{ _('Dashboard') }}</a></li>
                     {% endif %}
                     {% if current_user.access_level == 'admin' %}
