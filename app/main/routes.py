@@ -851,7 +851,7 @@ def setup_race():
                 track.times_ran = 1
             db.session.commit()
             flash(f'{race.name} has been setup.')
-            return redirect(url_for('main.upcoming_races'))
+            return redirect(url_for('main.manage_race', race_id=race.id))
     else:
         flash('You do not have access to setup races.')
         return redirect(url_for('main.index'))
