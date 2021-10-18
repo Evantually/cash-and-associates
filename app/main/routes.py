@@ -741,6 +741,33 @@ def add_track():
         return redirect(url_for('main.index'))
     return render_template('add_product.html', title=_('Add Track'),
                            form=form)
+
+@bp.route('/race/set_start_order', methods=['POST'])
+@login_required
+def set_start_order():
+    race_info = request.get_json()
+    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+        racers = race_info['racer_order']
+        for index, racer in enumerate(racers):
+            rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            rp.start_position = index + 1
+            db.session.commit()
+        return jsonify({'text': "Starting positions have saved successfully."})
+    return jsonify({'text': "You don't have sufficient privileges to set this information."})
+
+@bp.route('/race/set_end_order', methods=['POST'])
+@login_required
+def set_end_order():
+    race_info = request.get_json()
+    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+        racers = race_info['racer_order']
+        for index, racer in enumerate(racers):
+            rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            rp.end_position = index + 1
+            db.session.commit()
+        return jsonify({'text': "Ending positions have saved successfully."})
+    return jsonify({'text': "You don't have sufficient privileges to set this information."})
+
         # END ADD STUFF
         # START MANAGE STUFF
 
@@ -861,6 +888,16 @@ def manage_racers(user_id):
     else:
         flash('You do not have access to this page.')
         return redirect(url_for('main.index'))
+
+@bp.route('/manage_race/<race_id>', methods=['GET','POST'])
+@login_required
+def manage_race(race_id):
+    if current_user.race_lead:
+        race = Race.query.filter_by(id=race_id).first()
+        racers = RacePerformance.query.filter_by(race_id=race.id).all()
+        return render_template('race_manager.html', racers=racers, title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
+    flash('You do not have access to this page.')
+    return redirect(url_for('main.index'))
         # END MANAGE STUFF
     # END RACE LEAD SECTION
     # START RACER SECTION

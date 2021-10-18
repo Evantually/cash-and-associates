@@ -16,21 +16,23 @@
             </td>
         </tr>
     </table>
-    <h2>Products</h2>
-    {% if products|length > 0 %}
-    <div class="row">
-        {% for product in products %}
-            {% include '_product.html' %}
-        {% endfor %}
-    </div>
-    {% endif %}
-    <hr>
-    <h2>Transactions</h2>
-    {% if transactions|length > 0 %}
-        {% for transaction in transactions %}
-            {% include '_transaction.html' %}
-        {% endfor %}
-    {% else %}
-        <div>There are no transactions at this time. Better get selling!</div>
+    {% if user == current_user %}
+        <h2>Products</h2>
+        {% if products|length > 0 %}
+        <div class="row">
+            {% for product in products %}
+                {% include '_product.html' %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <hr>
+        <h2>Transactions</h2>
+        {% if transactions|length > 0 %}
+            {% for transaction in transactions %}
+                {% include '_transaction.html' %}
+            {% endfor %}
+        {% else %}
+            <div>There are no transactions at this time. Better get selling!</div>
+        {% endif %}
     {% endif %}
 {% endblock %}

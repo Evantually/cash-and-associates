@@ -2,36 +2,128 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h1 id="user" auth-id="{{ current_user.id }}"">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>{{ title }}</h2>
+    {% if current_user.race_lead %}
+    <div class="row"><div class="col-md-12"><p id="response"></p></div></div>
+    <div class="row">
+        <div class="col-md-3"><a href="javascript:SetStartPosition();" role="button"><button class="btn btn-primary btn-lg">Set Starting Positions</button></a></div>
+        <div class="col-md-3"><a href="javascript:SetEndPosition();" role="button"><button class="btn btn-primary btn-lg">Set Ending Positions</button></a></div>
+    </div>
+    {% endif %}
     <h3>Registered Racers ({{ racers | length }})</h3>
-    <table class="table table-hover">
-        <tr>
-            <th></th>
-            <th>Car Class</th>
-            <th>Car Model</th>
-            <th>Racer</th>
-            <th>Car Name</th>
-        </tr>
+    <ol id="racers" style="padding: 10px;">
         {% for racer in racers %}
-        <tr>
-            <td>
-                {% if racer.car_info.image %}
-                <img height="128px" src="{{ racer.car_info.image }}">
-                {% else %}
-                <img height="128px" src="{{ racer.car_stock.image }}">
-                {% endif %}
-            </td>
-            <td>{{ racer.car_stock.car_class }}</td>
-            <td>{{ racer.car_stock.name }}</td>
-            <td>{{ racer.user_info.username }}</td>
-            <td>{{ racer.car_info.name }}</td>
-        </tr>
+        <li style="padding: 5px;" racer-id="{{ racer.id }}" user-id="{{ racer.user_info.id }}" car-id="{{ racer.car_info.id }}">
+            <div class="row hover">
+                <div class="col-md-3">
+                    {% if racer.car_info.image %}
+                    <img height="128px" src="{{ racer.car_info.image }}">
+                    {% else %}
+                    <img height="128px" src="{{ racer.car_stock.image }}">
+                    {% endif %}
+                </div>
+                <div class="col-md-3">
+                    <td>Car Class: {{ racer.car_stock.car_class }}</td>
+                </div>
+                <div class="col-md-3">
+                    <td>Car: {{ racer.car_stock.name }}</td>
+                </div>
+                <div class="col-md-3">
+                    <td>Name: {{ racer.user_info.username }}</td>
+                </div>
+            </div>
+            <hr>
+        </li>
         {% endfor %}
-    </table>
+    </ol>
+    <h3>DNF Section</h3>
+    <ol id="dnf" style="padding: 10px;">
+
+    </ol>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    Sortable.create(racers, {
+        group: {
+            name: 'racers',
+            put: ['dnf']
+        },
+        animation: 100
+    });
+    Sortable.create(dnf, {
+        group: {
+            name: 'dnf',
+            put: ['racers']
+        },
+        animation: 100
+    });
+    function SetStartPosition() {
+        racer_order = [];
+        $("#racers li").each(function(index, elem) {
+            let racer_info = $(elem);
+            racer_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id'))
+            ]);
+        });
+        race_info = {
+            racer_order: racer_order,
+            auth_id: parseInt($("#user").attr('auth-id'))
+        }
+        console.log(race_info);
+        $.ajax(
+            {
+                url: '/race/set_start_order' ,
+                type: 'POST',
+                data: JSON.stringify(race_info),
+                contentType: "application/json; charset=utf-8"
+            }
+        )
+        .done(function(response) {
+            $("#response").text(response['text'])
+            success_audio.play();
+        })
+        .fail(function() {
+            $("#response").text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+        })
+    }
+    function SetEndPosition() {
+        racer_order = [];
+        $("#racers li").each(function(index, elem) {
+            let racer_info = $(elem);
+            racer_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id'))
+            ]);
+        });
+        race_info = {
+            racer_order: racer_order,
+            auth_id: parseInt($("#user").attr('auth-id'))
+        }
+        console.log(race_info);
+        $.ajax(
+            {
+                url: '/race/set_end_order' ,
+                type: 'POST',
+                data: JSON.stringify(race_info),
+                contentType: "application/json; charset=utf-8"
+            }
+        )
+        .done(function(response) {
+            $("#response").text(response['text'])
+            success_audio.play();
+        })
+        .fail(function() {
+            $("#response").text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+        })
+    }
+</script>
 {% endblock %}
