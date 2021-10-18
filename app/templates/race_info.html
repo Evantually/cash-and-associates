@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>{{ title }}</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ race.track_info.track_map}}" target="_blank"><img width="100%" src="{{ race.track_info.track_map }}"></a>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if race.track_info.embed_link %}
+                    <iframe width="560" height="315" src="{{ race.track_info.embed_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <td scope="col"><h3>{{ race.track_info.name }} - Top Racer</h3></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><img src="{{ top_racer.avatar(128) }}"></td>
+                        <td>
+                            <table class="table">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Wins</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ top_racer.username }}</td>
+                                    <td>{{ racer_wins }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col"><h3>{{ race.track_info.name }} - Top Car</h3></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><img src="{{ top_car.image }}" height="128px"></td>
+                        <td>
+                            <table class="table">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Wins</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ top_car.name }}</td>
+                                    <td>{{ car_wins }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <h3>Registered Racers ({{ racers | length }})</h3>
+    <table class="table table-hover">
+        <tr>
+            <th></th>
+            <th>Car Class</th>
+            <th>Car Model</th>
+            <th>Racer</th>
+            <th>Car Name</th>
+        </tr>
+        {% for racer in racers %}
+        <tr>
+            <td>
+                {% if racer.car_info.image %}
+                <img height="128px" src="{{ racer.car_info.image }}">
+                {% else %}
+                <img height="128px" src="{{ racer.car_stock.image }}">
+                {% endif %}
+            </td>
+            <td>{{ racer.car_stock.car_class }}</td>
+            <td>{{ racer.car_stock.name }}</td>
+            <td>{{ racer.user_info.username }}</td>
+            <td>{{ racer.car_info.name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}

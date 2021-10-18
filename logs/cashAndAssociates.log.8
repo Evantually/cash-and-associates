@@ -1,16 +1,10 @@
-2021-08-21 19:59:44,570 ERROR: Exception on /jobs/postal/tracker/add_entry [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-17 02:42:16,816 ERROR: Exception on /add_owned_car [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1670, in _execute_context
-    context = constructor(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 1073, in _init_compiled
-    param = {
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 1074, in <dictcomp>
-    key: processors[key](compiled_params[key])
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 1983, in process
-    value = _strict_as_bool(value)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 1958, in _strict_as_bool
-    raise TypeError("Not a boolean value: %r" % value)
-TypeError: Not a boolean value: 'false'
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.ProgrammingError: can't adapt type 'Car'
 
 The above exception was the direct cause of the following exception:
 
@@ -25,7 +19,7 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 553, in add_postal_entry
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 826, in add_owned_car
     db.session.commit()
   File "<string>", line 2, in commit
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1428, in commit
@@ -58,27 +52,54 @@ Traceback (most recent call last):
     return connection._execute_clauseelement(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
     ret = self._execute_context(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1676, in _execute_context
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
     self._handle_dbapi_exception(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
     util.raise_(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
     raise exception
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1670, in _execute_context
-    context = constructor(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 1073, in _init_compiled
-    param = {
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 1074, in <dictcomp>
-    key: processors[key](compiled_params[key])
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 1983, in process
-    value = _strict_as_bool(value)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 1958, in _strict_as_bool
-    raise TypeError("Not a boolean value: %r" % value)
-sqlalchemy.exc.StatementError: (builtins.TypeError) Not a boolean value: 'false'
-[SQL: INSERT INTO postal_entry (job, user_id, timestamp, no_pay, sell_value) VALUES (%(job)s, %(user_id)s, %(timestamp)s, %(no_pay)s, %(sell_value)s) RETURNING postal_entry.id]
-[parameters: [{'sell_value': 0, 'no_pay': 'false', 'user_id': 2, 'job': 37}]]
-2021-08-21 20:02:10,747 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-21 20:02:58,828 ERROR: Exception on /jobs/postal/view/37 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: <unprintable ProgrammingError object>
+2021-10-17 02:42:49,304 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 02:52:07,717 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 03:09:52,908 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 03:10:24,497 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 03:10:45,031 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 03:11:06,579 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 03:13:26,903 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:07:59,799 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:08:36,468 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:08:50,919 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:09:24,136 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:09:52,718 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:10:43,585 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:11:15,627 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:11:46,435 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:12:00,962 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:12:52,313 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:13:11,820 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:14:31,356 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:14:48,262 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:15:12,404 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:15:41,542 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:37:40,079 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:39:00,753 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:39:28,256 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:39:45,765 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:40:58,883 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:41:17,899 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:48:51,173 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:58:23,914 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 05:59:35,087 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 06:01:35,758 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 06:03:08,164 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 06:03:26,630 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 06:03:46,866 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 06:06:46,285 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 06:14:05,459 ERROR: Exception on /race_signup/1 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -90,10 +111,6 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 536, in postal_view
-    output = summarize_job(entries, 'Postal')
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 240, in summarize_job
-    output['pay'] += entry.pay
-AttributeError: 'PostalEntry' object has no attribute 'pay'
-2021-08-21 20:03:36,380 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-23 20:46:12,842 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 873, in race_signup
+    classes = get_available_classes(race.highest_class)
+AttributeError: 'NoneType' object has no attribute 'highest_class'

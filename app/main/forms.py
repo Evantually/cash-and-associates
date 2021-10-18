@@ -4,8 +4,9 @@ from flask_login import current_user
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, DecimalField, BooleanField, SelectField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import ValidationError, DataRequired, Length
+from wtforms.fields.html5 import DateTimeLocalField
 from flask_babel import _, lazy_gettext as _l
-from app.models import User, Product, Category
+from app.models import User, Product, Category, Car, Track
 
 
 class EditProfileForm(FlaskForm):
@@ -88,4 +89,61 @@ class ManageSubscriptionForm(FlaskForm):
     sub_length = IntegerField(_l('Subscription Length (Days)'))
     extend = BooleanField('Extend Subscription')
     auto_renew = BooleanField('Automatically Renew')
+    submit = SubmitField(_l('Submit'))
+
+class AddCarForm(FlaskForm):
+    name = StringField(_l('Name'))
+    make = StringField(_l('Make'))
+    model = StringField(_l('Model'))
+    car_class = StringField(_l('Car Class'))
+    drivetrain = SelectField(_l('Drivetrain'), choices=[('AWD','AWD'), ('FWD','FWD'), ('RWD', 'RWD')])
+    image = StringField(_l('Image Link'))
+    submit = SubmitField(_l('Submit'))
+
+class AddOwnedCarForm(FlaskForm):
+    name = StringField(_l('Name (Optional)'))
+    car = QuerySelectField(query_factory=lambda: Car.query.all())
+    engine_level = SelectField('Engine Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
+    transmission_level = SelectField('Transmission Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
+    turbo_level = SelectField('Turbo Level', choices=[(0,'0'),(1,'1')])
+    brakes_level = SelectField('Brakes Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
+    suspension_level = SelectField('Suspension Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
+    image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'))
+    submit = SubmitField(_l('Submit'))
+
+class AddTrackForm(FlaskForm):
+    name = StringField(_l('Name'))
+    track_map = StringField(_l('Map'))
+    track_video = StringField(_l('Video'))
+    embed_link = StringField(_l('Embed Link'))
+    lap_race = BooleanField('Lap Race?')
+    submit = SubmitField(_l('Submit'))
+
+class SetupRaceForm(FlaskForm):
+    name = StringField(_l('Name'))
+    start_time = DateTimeLocalField('Start time', format='%Y-%m-%dT%H:%M')
+    utc_time = StringField('UTC Adjusted Time (Let Auto-Fill by re-clicking start time when finished)')
+    track = QuerySelectField(query_factory=lambda: Track.query.all())
+    laps = IntegerField(_l('Laps'))
+    highest_class = StringField(_l('Highest Class Allowed'))
+    crew_race = BooleanField('Crew Race?')
+    submit = SubmitField(_l('Submit'))
+
+class ManageRacerForm(FlaskForm):
+    racer = BooleanField('Racer')
+    race_lead = BooleanField('Race Lead')
+    submit = SubmitField(_l('Submit'))
+
+class RaceSignupForm(FlaskForm):
+    car = SelectField('Car')
+    submit = SubmitField(_l('Submit'))
+
+class EditOwnedCarForm(FlaskForm):
+    name = StringField(_l('Name (Optional)'))
+    engine_level = IntegerField(_l('Engine Level'))
+    transmission_level = IntegerField(_l('Transmission Level'))
+    turbo_level = IntegerField(_l('Turbo Level'))
+    brakes_level = IntegerField(_l('Brakes Level'))
+    suspension_level = IntegerField(_l('Suspension Level'))
+    image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'))
     submit = SubmitField(_l('Submit'))

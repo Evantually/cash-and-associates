@@ -427,3 +427,19 @@ def determine_probability(starting_amount, remaining_cards):
         '30': 0,
         '31': 0
     }
+    probability_table_hard = {
+
+    }
+    probability_table_soft = {
+        
+    }
+
+def get_available_classes(highest_car_class):
+    class_hierarchy = ['D','C','B','A','A+','S','X']
+    available_classes = []
+    for c in class_hierarchy:
+        if highest_car_class == c:
+            available_classes.append(c)
+            return available_classes
+        else:
+            available_classes.append(c)

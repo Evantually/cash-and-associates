@@ -1,0 +1,43 @@
+<table class="table table-hover">
+    <tr>
+        {% if car.image %}
+        <td width="128px"><img src="{{ car.image }}" width="320px"><br></td>
+        {% else %}
+        <td width="128px"><img src="{{ car.car_info.image }}" width="320px"><br></td>
+        {% endif %}
+        <td>
+            <table class="table">
+                <tr>
+                    <th>Name: {{ car.name }}</th>
+                    <th>Placements</th>
+                    <th>Performance Details:</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>{{ car.car_info.name }}</td>
+                    <td>1st: </td>
+                    <td><img src="{{ url_for('static', filename='imgs/engine.svg') }}" width="36px" height="36px"> Engine {{ car.engine_level }}</td>
+                    <td><img src="{{ url_for('static', filename='imgs/gear.png') }}" width="36px" height="36px"> Transmission {{ car.transmission_level }}</td>
+                </tr>
+                <tr>
+                    <td>Car Class: {{ car.car_info.car_class }}</td>
+                    <td>2nd: </td>
+                    <td><img src="{{ url_for('static', filename='imgs/turbo.png') }}" width="36px" height="36px"> Turbo {{ car.turbo_level }}</td>
+                    <td><img src="{{ url_for('static', filename='imgs/suspension.png') }}" width="36px" height="36px"> Suspension {{ car.suspension_level }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Drivetrain: {{ car.car_info.drivetrain }}</td>
+                    <td>3rd: </td>
+                    <td><img src="{{ url_for('static', filename='imgs/brakes.png') }}" width="36px" height="36px"> Brakes {{ car.brakes_level }}</td>
+                    <td></td>
+                </tr>      
+                <tr>
+                    <td><a href="{{ url_for('main.edit_owned_car', car_id=car.id) }}">Edit this car</a></td>
+                    <td>Total Races: </td>
+                    <td></td>
+                    <td></td>
+                </tr>         
+            </table>
+    </tr>
+</table>

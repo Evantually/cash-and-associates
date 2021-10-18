@@ -61,6 +61,25 @@
                             {% endif %}
                         </ul>
                     </li>
+                    {% if current_user.racer %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Racing
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% if current_user.race_lead %}
+                            <li><a href="{{ url_for('main.setup_race') }}">Setup Race</a></li>
+                            <li><a href="{{ url_for('main.manage_racer_perms') }}">Manage Racers</a></li>
+                            <li><a href="{{ url_for('main.add_car') }}">Add Car</a></li>
+                            <li><a href="{{ url_for('main.manage_cars') }}">Manage Cars</a></li>
+                            <li><a href="{{ url_for('main.add_track') }}">Add Track</a></li>
+                            <li><a href="{{ url_for('main.manage_tracks') }}">Manage Tracks</a></li>
+                            {% endif %}
+                            <li><a href="{{ url_for('main.upcoming_races') }}">Upcoming Races</a></li>
+                            <li><a href="{{ url_for('main.add_owned_car') }}">Add Owned Car</a></li>
+                            <li><a href="{{ url_for('main.my_cars') }}">My Cars</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
                     <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
                     {% endif %}
                     {% if (current_user.access_level in ('admin', 'manager','temp')) or (current_user.company is none) %}
@@ -112,6 +131,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
     <script>
+        $("#start_time").on("change", function() {
+            console.log('The time has changed');
+            var datetimeLocal = new Date($("#start_time").val());
+            console.log(datetimeLocal);
+            var datetimeUTC = new moment(datetimeLocal).utc().format();
+            console.log(datetimeUTC);
+            $("#utc_time").val(datetimeUTC);
+        });
         var fail_audio = new Audio("{{ url_for('static', filename='audio/failure.mp3') }}")
         var success_audio = new Audio("{{ url_for('static', filename='audio/success.mp3') }}")
         function post_sale(sourceElem, destElem, costElem, quantElem, invElem, descElem) {

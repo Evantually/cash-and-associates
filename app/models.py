@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     company = db.Column(db.Integer, db.ForeignKey('company.id'))
     dark_mode = db.Column(db.Boolean)
     sub_expiration = db.Column(db.DateTime, default=datetime.utcnow)
+    racer_updated = db.Column(db.DateTime, default=datetime.utcnow)
     auto_renew = db.Column(db.Boolean, default=False)
     hunter = db.Column(db.Boolean, default=False)
     fisher = db.Column(db.Boolean, default=False)
@@ -29,6 +30,11 @@ class User(UserMixin, db.Model):
     personal = db.Column(db.Boolean, default=False)
     business = db.Column(db.Boolean, default=False)
     blackjack = db.Column(db.Boolean, default=False)
+    race_lead = db.Column(db.Boolean, default=False)
+    racer = db.Column(db.Boolean, default=False)
+    race_crew = db.Column(db.String(120))
+    race_points = db.Column(db.Integer)
+
 
     def __repr__(self):
         return '{}'.format(self.username)
@@ -117,6 +123,7 @@ class Inventory(db.Model):
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 # Job Tracking
 class Job(db.Model):
@@ -224,3 +231,71 @@ class BlackjackHand(db.Model):
     h_j = db.Column(db.Boolean)
     h_q = db.Column(db.Boolean)
     h_k = db.Column(db.Boolean)
+
+class Car(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    car_class = db.Column(db.String(4))
+    name = db.Column(db.String(64))
+    make = db.Column(db.String(64))
+    model = db.Column(db.String(64))
+    drivetrain = db.Column(db.String(64))
+    image = db.Column(db.String(256))
+
+    def __repr__(self):
+        return f'{self.name}'
+    
+class OwnedCar(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
+    car_info = db.relationship('Car')
+    engine_level = db.Column(db.Integer)
+    transmission_level = db.Column(db.Integer)
+    turbo_level = db.Column(db.Integer)
+    brakes_level = db.Column(db.Integer)
+    suspension_level = db.Column(db.Integer)
+    image = db.Column(db.String(64))
+    first = db.Column(db.Integer)
+    second = db.Column(db.Integer)
+    third = db.Column(db.Integer)
+    races = db.Column(db.Integer)
+
+class Track(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    track_map = db.Column(db.String(256))
+    track_video = db.Column(db.String(256))
+    embed_link = db.Column(db.String(256))
+    lap_race = db.Column(db.Boolean)
+    record_time = db.Column(db.Integer)
+    record_holder = db.Column(db.Integer, db.ForeignKey('user.id'))
+    times_ran = db.Column(db.Integer, default=0)
+
+    def __repr__(self):
+        return f'{self.name}'
+
+class Race(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    name = db.Column(db.String(64))
+    start_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    laps = db.Column(db.Integer)
+    track = db.Column(db.Integer, db.ForeignKey('track.id'))
+    track_info = db.relationship('Track')
+    crew_race = db.Column(db.Boolean)
+    highest_class = db.Column(db.String(4))
+    participants = db.relationship('RacePerformance', backref='race', lazy='dynamic')
+
+class RacePerformance(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_info = db.relationship('User')
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
+    car_stock = db.relationship('Car')
+    car_details = db.Column(db.Integer, db.ForeignKey('owned_car.id'))
+    car_info = db.relationship('OwnedCar')
+    track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
+    race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
+    start_position = db.Column(db.Integer, default=0)
+    end_position = db.Column(db.Integer, default=0)

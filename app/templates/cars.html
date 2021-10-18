@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+        {% if personal %}
+        <h2>My Cars</h2>
+            {% for car in cars %}
+                {% include '_personal_car_info.html' %}
+            {% endfor %}
+        {% else %}
+        <h2>Cars</h2>
+            {% for car in cars %}
+                {% include '_car_info.html' %}
+            {% endfor %}
+        {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}

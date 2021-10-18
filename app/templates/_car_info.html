@@ -1,0 +1,23 @@
+<table class="table table-hover">
+    <tr>
+        <td width="128px">
+                <img src="{{ car.image }}" width="320px"><br>
+        </td>
+        <td>
+            <table class="table">
+                <tr>
+                    <td>Name: {{ car.name }}</td>
+                </tr>
+                <tr>
+                    <td>Car Class: {{ car.car_class }}</td>
+                </tr>
+                <tr>
+                    <td>Drivetrain: {{ car.drivetrain }}</td>
+                </tr>
+                <tr>
+                    <td><a href="{{ url_for('main.edit_car', car_id=car.id) }}">Edit this car</a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

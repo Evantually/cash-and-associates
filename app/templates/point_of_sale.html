@@ -15,4 +15,17 @@
             {% endif %}
         {% endfor %}
     {% endif %}
+    <div id="cart" class="cart">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script>
+        function AddToCart() {
+            cart_div = $('#cart');
+            console.log(cart_div);
+        }
+        AddToCart();
+    </script>
 {% endblock %}

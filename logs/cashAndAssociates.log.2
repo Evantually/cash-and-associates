@@ -1,11 +1,11 @@
-2021-08-25 10:38:58,100 ERROR: Exception on /favicon.ico [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-17 19:59:53,428 ERROR: Exception on /race_info/8 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-psycopg2.errors.UndefinedColumn: column user.blackjack does not exist
-LINE 1: ... user_personal, "user".business AS user_business, "user".bla...
+psycopg2.errors.UndefinedColumn: column track.embed_link does not exist
+LINE 1: ...rack_map, track.track_video AS track_track_video, track.embe...
                                                              ^
 
 
@@ -16,40 +16,55 @@ Traceback (most recent call last):
     response = self.full_dispatch_request()
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 21, in before_request
-    if current_user.is_authenticated:
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 422, in __get__
-    obj = instance._get_current_object()
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 544, in _get_current_object
-    return self.__local()  # type: ignore
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 346, in _get_user
-    current_app.login_manager._load_user()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
-    user = self._user_callback(user_id)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\models.py", line 64, in load_user
-    return User.query.get(int(id))
-  File "<string>", line 2, in get
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\deprecations.py", line 390, in warned
-    return fn(*args, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 942, in get
-    return self._get_impl(ident, loading.load_on_pk_identity)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 946, in _get_impl
-    return self.session._get_impl(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2839, in _get_impl
-    return db_load_fn(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 950, in race_info
+    return render_template('race_info.html', title=f'Race - {race.name}', race=race, racers=racers)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_info.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 117, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_info.html", line 9, in block 'app_content'
+    <a href="{{ race.track_info.track_map}}" target="_blank"><img width="100%" src="{{ race.track_info.track_map }}"></a>
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
+    return getattr(obj, attribute)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 480, in __get__
+    return self.impl.get(state, dict_)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 931, in get
+    value = self.callable_(state, passive)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 879, in _load_for_state
+    return self._emit_lazyload(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 982, in _emit_lazyload
+    return loading.load_on_pk_identity(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
     session.execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
     result = conn._execute_20(statement, params or {}, execution_options)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
     return meth(self, args_10style, kwargs_10style, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\lambdas.py", line 481, in _execute_on_connection
     return connection._execute_clauseelement(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
     ret = self._execute_context(
@@ -63,39 +78,15 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column user.blackjack does not exist
-LINE 1: ... user_personal, "user".business AS user_business, "user".bla...
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column track.embed_link does not exist
+LINE 1: ...rack_map, track.track_video AS track_track_video, track.embe...
                                                              ^
 
-[SQL: SELECT "user".id AS user_id, "user".username AS user_username, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".about_me AS user_about_me, "user".last_seen AS user_last_seen, "user".access_level AS user_access_level, "user".company AS user_company, "user".dark_mode AS user_dark_mode, "user".sub_expiration AS user_sub_expiration, "user".auto_renew AS user_auto_renew, "user".hunter AS user_hunter, "user".fisher AS user_fisher, "user".postal AS user_postal, "user".miner AS user_miner, "user".personal AS user_personal, "user".business AS user_business, "user".blackjack AS user_blackjack 
-FROM "user" 
-WHERE "user".id = %(pk_1)s]
+[SQL: SELECT track.id AS track_id, track.name AS track_name, track.track_map AS track_track_map, track.track_video AS track_track_video, track.embed_link AS track_embed_link, track.lap_race AS track_lap_race, track.record_time AS track_record_time, track.record_holder AS track_record_holder, track.times_ran AS track_times_ran 
+FROM track 
+WHERE track.id = %(pk_1)s]
 [parameters: {'pk_1': 2}]
 (Background on this error at: http://sqlalche.me/e/14/f405)
-2021-08-25 10:39:06,867 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 10:39:08,839 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 10:39:11,234 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 10:39:55,262 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 10:40:02,200 ERROR: Exception on /manage_subscriptions/2 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 183, in manage_subscriptions
-    user.personal = form.persona.data
-AttributeError: 'ManageSubscriptionForm' object has no attribute 'persona'
-2021-08-25 10:40:16,119 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 10:41:32,726 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 10:47:15,454 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 10:48:50,973 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-25 11:42:37,434 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-28 23:17:25,960 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-29 00:34:54,021 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-08-29 00:39:22,376 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:05,943 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:11,487 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:16,986 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

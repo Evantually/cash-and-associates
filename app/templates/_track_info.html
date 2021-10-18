@@ -1,0 +1,15 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Map</th>
+        <th>Video</th>
+        <th>Times Ran</th>
+    </tr>
+    <tr>
+        <td>{{ track.name }}</td>
+        <td><a href="{{ track.map }}">Map</a></td>
+        <td><a href="{{ track.video }}">Video</a></td>
+        <td>{{ track.times_ran }}</td>
+    </tr>
+    <tr><a href="{{ url_for('main.edit_track', track_id=track.id) }}">Edit this track</a></tr>
+</table>

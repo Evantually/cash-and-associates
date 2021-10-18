@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>Tracks</h2>
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Name</th>
+            <th>Map</th>
+            <th>Video</th>
+            <th>Times Ran</th>
+        </tr>
+    {% for track in tracks %}
+        <tr>
+            <td><a href="{{ url_for('main.edit_track', track_id=track.id) }}">{{ track.name }}</a></td>
+            <td><a href="{{ track.track_map }}" target="_blank">Map</a></td>
+            <td><a href="{{ track.track_video }}" target="_blank">Video</a></td>
+            <td>{{ track.times_ran }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}
