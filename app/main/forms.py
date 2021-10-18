@@ -132,18 +132,20 @@ class SetupRaceForm(FlaskForm):
 class ManageRacerForm(FlaskForm):
     racer = BooleanField('Racer')
     race_lead = BooleanField('Race Lead')
+    crew =  StringField(_l('Crew'))
     submit = SubmitField(_l('Submit'))
 
 class RaceSignupForm(FlaskForm):
     car = SelectField('Car')
+    leave_race = BooleanField('Leave Race (Check if withdrawing).')
     submit = SubmitField(_l('Submit'))
 
 class EditOwnedCarForm(FlaskForm):
     name = StringField(_l('Name (Optional)'))
-    engine_level = IntegerField(_l('Engine Level'))
-    transmission_level = IntegerField(_l('Transmission Level'))
-    turbo_level = IntegerField(_l('Turbo Level'))
-    brakes_level = IntegerField(_l('Brakes Level'))
-    suspension_level = IntegerField(_l('Suspension Level'))
+    engine_level = SelectField('Engine Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
+    transmission_level = SelectField('Transmission Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
+    turbo_level = SelectField('Turbo Level', choices=[(0,'0'),(1,'1')])
+    brakes_level = SelectField('Brakes Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
+    suspension_level = SelectField('Suspension Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'))
     submit = SubmitField(_l('Submit'))

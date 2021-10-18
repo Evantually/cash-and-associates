@@ -949,7 +949,39 @@ def race_signup(race_id):
             return redirect(url_for('main.race_info', race_id=race.id))
         return render_template('add_product.html', title=f'Sign Up - {race.name}', form=form)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
-    return redirect(url_for('main.index'))   
+    return redirect(url_for('main.index'))
+
+@bp.route('/change_registration/<race_id>', methods=['GET', 'POST'])
+@login_required
+def change_registration(race_id):
+    if current_user.racer:
+        race = Race.query.filter_by(id=race_id).first()
+        rp = RacePerformance.query.filter_by(race_id=race.id).filter_by(user_id=current_user.id).first()
+        classes = get_available_classes(race.highest_class)
+        form = RaceSignupForm()
+        form.car.choices = [(c.id, c.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(OwnedCar.id != rp.car_details).filter(Car.car_class.in_(classes)).all()]
+        if len(form.car.choices) == 0:
+            db.session.delete(rp)
+            db.session.commit()
+            flash("You don't have any other cars to enter the race with. Removing you from registered racers.")
+            return redirect(url_for('main.upcoming_races'))
+        if form.validate_on_submit():
+            if form.leave_race.data:
+                db.session.delete(rp)
+                db.session.commit()
+                flash(f"You have been removed from {race.name}.")
+                return redirect(url_for('main.upcoming_races'))
+            car = OwnedCar.query.filter_by(id=form.car.data).first()
+            rp.car_id = car.car_id
+            rp.car_details = car.id
+            db.session.commit()
+            flash(f'{car.name} has been chosen as your car for {race.name}!')
+            return redirect(url_for('main.race_info', race_id=race_id))
+        return render_template('add_product.html', title=f'Change Registration - {race.name}', form=form)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
+
+        
 
 @bp.route('/race_info/<race_id>', methods=['GET', 'POST'])
 @login_required

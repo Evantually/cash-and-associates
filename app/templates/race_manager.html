@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>{{ title }}</h2>
+    <h3>Registered Racers ({{ racers | length }})</h3>
+    <table class="table table-hover">
+        <tr>
+            <th></th>
+            <th>Car Class</th>
+            <th>Car Model</th>
+            <th>Racer</th>
+            <th>Car Name</th>
+        </tr>
+        {% for racer in racers %}
+        <tr>
+            <td>
+                {% if racer.car_info.image %}
+                <img height="128px" src="{{ racer.car_info.image }}">
+                {% else %}
+                <img height="128px" src="{{ racer.car_stock.image }}">
+                {% endif %}
+            </td>
+            <td>{{ racer.car_stock.car_class }}</td>
+            <td>{{ racer.car_stock.name }}</td>
+            <td>{{ racer.user_info.username }}</td>
+            <td>{{ racer.car_info.name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+{% endblock %}

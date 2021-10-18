@@ -443,3 +443,46 @@ def get_available_classes(highest_car_class):
             return available_classes
         else:
             available_classes.append(c)
+
+def determine_crew_points(crew1, crew2):
+    scores = {
+        '1': 10,
+        '2': 6,
+        '3': 3,
+        '4': 1,
+        '0': 0
+    }
+    total_points = sum(scores.values())
+    crew_1_dnfs = 0
+    crew_2_dnfs = 0
+    crew_1_points = 0
+    crew_2_points = 0
+    for c in crew1:
+        if c.end_position == 0:
+            crew_1_dnfs += 1
+        crew_1_points += scores[str(c.end_position)]
+    for c in crew2:
+        if c.end_position == 0:
+            crew_2_dnfs += 1
+        crew_2_points += scores[str(c.end_position)]
+    total_dnfs = crew_1_dnfs + crew_2_dnfs
+    total_score = crew_1_points + crew_2_points
+    if total_dnfs == 1:
+        if crew_1_dnfs == 1:
+            crew_2_points += (total_points - total_score)
+        else:
+            crew_1_points += (total_points - total_score)
+    elif total_dnfs == 2:
+        if crew_1_dnfs == 2:
+            crew_2_points += (total_points - total_score)
+        elif crew_2_dnfs == 2:
+            crew_1_points += (total_points - total_score)
+        else:
+            crew_1_points += ((total_points - total_score)/2)
+            crew_2_points += ((total_points - total_score)/2)
+    elif total_dnfs == 3:
+        if crew_1_points > 0:
+            crew_1_points = total_points
+        else:
+            crew_2_points = total_points
+    return crew_1_points, crew_2_points
