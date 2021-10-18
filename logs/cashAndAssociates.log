@@ -49,3 +49,4 @@ Traceback (most recent call last):
 AttributeError: 'NoneType' object has no attribute 'id'
 2021-10-17 22:26:44,961 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
 2021-10-17 22:28:50,416 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 23:28:41,261 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

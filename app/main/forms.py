@@ -102,7 +102,7 @@ class AddCarForm(FlaskForm):
 
 class AddOwnedCarForm(FlaskForm):
     name = StringField(_l('Name (Optional)'))
-    car = QuerySelectField(query_factory=lambda: Car.query.all())
+    car = QuerySelectField(query_factory=lambda: Car.query.order_by(Car.name).all())
     engine_level = SelectField('Engine Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     transmission_level = SelectField('Transmission Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     turbo_level = SelectField('Turbo Level', choices=[(0,'0'),(1,'1')])
