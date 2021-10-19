@@ -19,7 +19,7 @@ from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
-                            get_available_classes)
+                            get_available_classes, determine_crew_points)
 
 @bp.before_app_request
 def before_request():
@@ -742,32 +742,6 @@ def add_track():
     return render_template('add_product.html', title=_('Add Track'),
                            form=form)
 
-@bp.route('/race/set_start_order', methods=['POST'])
-@login_required
-def set_start_order():
-    race_info = request.get_json()
-    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
-        racers = race_info['racer_order']
-        for index, racer in enumerate(racers):
-            rp = RacePerformance.query.filter_by(id=racer[0]).first()
-            rp.start_position = index + 1
-            db.session.commit()
-        return jsonify({'text': "Starting positions have saved successfully."})
-    return jsonify({'text': "You don't have sufficient privileges to set this information."})
-
-@bp.route('/race/set_end_order', methods=['POST'])
-@login_required
-def set_end_order():
-    race_info = request.get_json()
-    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
-        racers = race_info['racer_order']
-        for index, racer in enumerate(racers):
-            rp = RacePerformance.query.filter_by(id=racer[0]).first()
-            rp.end_position = index + 1
-            db.session.commit()
-        return jsonify({'text': "Ending positions have saved successfully."})
-    return jsonify({'text': "You don't have sufficient privileges to set this information."})
-
         # END ADD STUFF
         # START MANAGE STUFF
 
@@ -851,6 +825,8 @@ def setup_race():
                 track.times_ran = 1
             db.session.commit()
             flash(f'{race.name} has been setup.')
+            if race.crew_race:
+                return redirect(url_for('main.manage_crew_race', race_id=race.id))
             return redirect(url_for('main.manage_race', race_id=race.id))
     else:
         flash('You do not have access to setup races.')
@@ -881,6 +857,7 @@ def manage_racers(user_id):
             user.racer = form.racer.data
             user.race_lead = form.race_lead.data
             user.racer_updated = datetime.utcnow()
+            user.race_crew = form.crew.data
             db.session.commit()
             flash(f'Racer info updated for {user.username}')
             return redirect(url_for('main.manage_racer_perms'))
@@ -898,7 +875,86 @@ def manage_race(race_id):
         return render_template('race_manager.html', racers=racers, title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
     flash('You do not have access to this page.')
     return redirect(url_for('main.index'))
+
+@bp.route('/manage_crew_race/<race_id>', methods=['GET','POST'])
+@login_required
+def manage_crew_race(race_id):
+    if current_user.race_lead:
+        race = Race.query.filter_by(id=race_id).first()
+        racers = RacePerformance.query.filter_by(race_id=race.id).all()
+        crew_names = []
+        for racer in racers:
+            if racer.user_info.race_crew not in crew_names:
+                crew_names.append(racer.user_info.race_crew)
+        return render_template('crew_race_manager.html', racers=racers, 
+                            crew_names=crew_names, 
+                            title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
+    flash('You do not have access to this page.')
+    return redirect(url_for('main.index'))
         # END MANAGE STUFF
+        # START API CALLS
+
+@bp.route('/race/set_start_order', methods=['POST'])
+@login_required
+def set_start_order():
+    race_info = request.get_json()
+    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+        racers = race_info['racer_order']
+        for index, racer in enumerate(racers):
+            rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            rp.start_position = index + 1
+            db.session.commit()
+        return jsonify({'text': "Starting positions have saved successfully."})
+    return jsonify({'text': "You don't have sufficient privileges to set this information."})
+
+@bp.route('/race/set_end_order', methods=['POST'])
+@login_required
+def set_end_order():
+    race_info = request.get_json()
+    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+        racers = race_info['racer_order']
+        for index, racer in enumerate(racers):
+            rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            rp.end_position = index + 1
+            db.session.commit()
+        return jsonify({'text': "Ending positions have saved successfully."})
+    return jsonify({'text': "You don't have sufficient privileges to set this information."})
+
+@bp.route('/get_crew_scores', methods=['POST'])
+@login_required
+def get_crew_scores():
+    race_info = request.get_json()
+    racers = race_info['racer_order']
+    dnfs = race_info['dnf_order']
+    crews = []
+    crew1 = []
+    crew2 = []
+    for racer in racers:
+        if racer[3] not in crews:
+            crews.append(racer[3])
+    for racer in dnfs:
+        if racer[3] not in crews:
+            crews.append(racer[3])
+    for index, racer in enumerate(racers):
+        rp = RacePerformance.query.filter_by(id=racer[0]).first()
+        rp.end_position = index + 1
+        db.session.commit()
+        if racer[3] == crews[0]:
+            crew1.append(rp)
+        else:
+            crew2.append(rp)
+    for index, racer in enumerate(dnfs):
+        rp = RacePerformance.query.filter_by(id=racer[0]).first()
+        rp.end_position = 0
+        db.session.commit()
+        if racer[3] == crews[0]:
+            crew1.append(rp)
+        else:
+            crew2.append(rp)
+    crew1_score, crew2_score = determine_crew_points(crew1, crew2)
+    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
+
+        #END API CALLS
     # END RACE LEAD SECTION
     # START RACER SECTION
 

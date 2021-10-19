@@ -1,4 +1,16 @@
-2021-10-17 19:32:41,958 ERROR: Exception on /race_info/8 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-17 19:59:53,428 ERROR: Exception on /race_info/8 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column track.embed_link does not exist
+LINE 1: ...rack_map, track.track_video AS track_track_video, track.embe...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -10,8 +22,8 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 947, in race_info
-    return render_template('race_info.html', title=f'Race - {race.name}', racers=racers)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 950, in race_info
+    return render_template('race_info.html', title=f'Race - {race.name}', race=race, racers=racers)
   File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
     return _render(
   File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
@@ -35,20 +47,46 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 117, in block 'content'
     {% block app_content %}{% endblock %}
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_info.html", line 9, in block 'app_content'
-    <a href="{{ race.track_info.track_map}}" target="_blank"><img src="{{ race.track_info.track_map }}"></a>
+    <a href="{{ race.track_info.track_map}}" target="_blank"><img width="100%" src="{{ race.track_info.track_map }}"></a>
   File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
     return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'race' is undefined
-2021-10-17 19:33:03,849 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:33:52,342 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:34:17,148 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:40:00,686 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:41:50,682 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:42:53,476 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:43:31,545 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:44:54,807 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:51:32,770 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:54:14,902 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:55:46,701 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:57:00,108 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 19:59:52,319 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 480, in __get__
+    return self.impl.get(state, dict_)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 931, in get
+    value = self.callable_(state, passive)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 879, in _load_for_state
+    return self._emit_lazyload(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 982, in _emit_lazyload
+    return loading.load_on_pk_identity(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
+    session.execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\lambdas.py", line 481, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
+    ret = self._execute_context(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
+    self._handle_dbapi_exception(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
+    util.raise_(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column track.embed_link does not exist
+LINE 1: ...rack_map, track.track_video AS track_track_video, track.embe...
+                                                             ^
+
+[SQL: SELECT track.id AS track_id, track.name AS track_name, track.track_map AS track_track_map, track.track_video AS track_track_video, track.embed_link AS track_embed_link, track.lap_race AS track_lap_race, track.record_time AS track_record_time, track.record_holder AS track_record_holder, track.times_ran AS track_times_ran 
+FROM track 
+WHERE track.id = %(pk_1)s]
+[parameters: {'pk_1': 2}]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+2021-10-17 20:00:05,943 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:11,487 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:16,986 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

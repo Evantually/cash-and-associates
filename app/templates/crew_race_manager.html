@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1 id="user" auth-id="{{ current_user.id }}"">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>{{ title }}</h2>
+    {% if current_user.race_lead %}
+    <div class="row"><div class="col-md-12"><p id="response"></p></div></div>
+    <div class="row">
+        <div class="col-md-3"><a href="javascript:SetStartPosition();" role="button"><button class="btn btn-primary btn-lg">Set Starting Positions</button></a></div>
+        <div class="col-md-3"><a href="javascript:SetEndPosition();" role="button"><button class="btn btn-primary btn-lg">Set Ending Positions</button></a></div>
+    </div>
+    <div id="info" crew1="{{ crew_names[0].replace(' ','') }}" crew2="{{ crew_names[1].replace(' ','') }}" style="visibility: hidden;"></div>
+    {% endif %}
+    <h3>Registered Racers (<span id="num_racers">{{ racers | length }})</span></h3>
+    <div class="row">
+        <div class="col-md-3"><h2>{{ crew_names[0] }}</h2></div>
+        <div class="col-md-3"><h2>VS</h2></div>
+        <div class="col-md-3"><h2>{{ crew_names[1] }}</h2></div>
+        <div class="col-md-3"><h3>Placements</h3></div>
+    </div>
+    <div class="row">
+        {% for crew_name in crew_names %}
+        <div class="col-md-4">
+            <ol id="{{ crew_name.replace(' ','') }}" style="padding: 10px;">
+                {% for racer in racers if racer.user_info.race_crew == crew_name %}
+                <li style="padding: 5px;" crew-name="{{ racer.user_info.race_crew }}" racer-id="{{ racer.id }}" user-id="{{ racer.user_info.id }}" car-id="{{ racer.car_info.id }}">
+                    <table class="table">
+                        <tr>
+                            <td>
+                                {% if racer.car_info.image %}
+                                <img height="128px" src="{{ racer.car_info.image }}">
+                                {% else %}
+                                <img height="128px" src="{{ racer.car_stock.image }}">
+                                {% endif %}
+                            </td>
+                            <td>
+                                <table class="table">
+                                    <tr>
+                                        <td>{{ racer.user_info.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ crew_name }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+        {% endfor %}
+        <div class="col-md-4">
+            <ol id="placements" race-id="{{ race.id }}" style="padding: 10px;">
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>DNF Section <span id="num_dnf"></span></h3>
+        </div>
+        <div class="col-md-6">
+            <h3>Scoreboard</h3>
+            <table>
+                <tr>
+                    <th>Crew</th>
+                    <th>Score</th>
+                </tr>
+            {% for crew_name in crew_names %}
+            <tr>
+                <td>{{ crew_name }}</td>
+                <td id="{{ crew_name.replace(' ','') }}1"></td>
+            </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <ol id="dnf" style="padding: 10px;">
+            </ol>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    function GetCrewScores(race_id) {
+        $.post('/get_crew_scores')
+    }
+    $("#placements").on("change", function() {
+        racer_order = [];
+        dnf_order = [];
+        $('#placements li').each(function(index, elem) {
+            let racer_info = $(elem);
+            racer_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id')),
+                racer_info.attr('crew-name')
+            ]);
+        });
+        $('#dnf li').each(function(index, elem) {
+            let dnf_info = $(elem);
+            dnf_order.push([
+                parseInt(dnf_info.attr('racer-id')), 
+                parseInt(dnf_info.attr('user-id')),
+                parseInt(dnf_info.attr('car-id')),
+                dnf_info.attr('crew-name')
+            ]);
+        });
+        let data = {
+            race_id: $('#placements').attr('race-id'),
+            racer_order: racer_order,
+            dnf_order: dnf_order
+        };
+        console.log(data);
+        $.ajax({
+            url: '/get_crew_scores',
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8"
+        })
+        .done(function(response) {
+            $(`#${response['crew1name']}1`).text(response['crew1score'])
+            $(`#${response['crew2name']}1`).text(response['crew2score'])
+            // success_audio.play();
+        })
+        .fail(function() {
+            // fail_audio.play();
+        });
+    });
+    Sortable.create({{ crew_names[0].replace(' ','') }}, {
+        group: {
+            name: '{{ crew_names[0].replace(' ','') }}',
+        },
+        animation: 100
+    });
+    Sortable.create({{ crew_names[1].replace(' ','') }}, {
+        group: {
+            name: '{{ crew_names[1].replace(' ', '') }}',
+        },
+        animation: 100
+    });
+    Sortable.create(placements, {
+        group: {
+            name: 'placements',
+            put: ['{{ crew_names[0].replace(' ','') }}', '{{ crew_names[1].replace(' ', '') }}', 'dnf']
+        },
+        animation: 100
+    });
+    Sortable.create(dnf, {
+        group: {
+            name: 'dnf',
+            put: ['{{ crew_names[0].replace(' ','') }}', '{{ crew_names[1].replace(' ', '') }}', 'placements']
+        },
+        animation: 100
+    });
+    function SetStartPosition() {
+        racer_order = [];
+        $("#placements li").each(function(index, elem) {
+            let racer_info = $(elem);
+            racer_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id'))
+            ]);
+        });
+        race_info = {
+            racer_order: racer_order,
+            auth_id: parseInt($("#user").attr('auth-id'))
+        }
+        console.log(race_info);
+        $.ajax(
+            {
+                url: '/race/set_start_order' ,
+                type: 'POST',
+                data: JSON.stringify(race_info),
+                contentType: "application/json; charset=utf-8"
+            }
+        )
+        .done(function(response) {
+            $("#response").text(response['text'])
+            success_audio.play();
+        })
+        .fail(function() {
+            $("#response").text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+        })
+    }
+    function SetEndPosition() {
+        racer_order = [];
+        $("#placements li").each(function(index, elem) {
+            let racer_info = $(elem);
+            racer_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id'))
+            ]);
+        });
+        race_info = {
+            racer_order: racer_order,
+            auth_id: parseInt($("#user").attr('auth-id'))
+        }
+        console.log(race_info);
+        $.ajax(
+            {
+                url: '/race/set_end_order' ,
+                type: 'POST',
+                data: JSON.stringify(race_info),
+                contentType: "application/json; charset=utf-8"
+            }
+        )
+        .done(function(response) {
+            $("#response").text(response['text'])
+            success_audio.play();
+        })
+        .fail(function() {
+            $("#response").text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+        })
+    }
+</script>
+{% endblock %}
