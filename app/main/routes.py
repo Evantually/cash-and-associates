@@ -903,6 +903,9 @@ def edit_race(race_id):
                             highest_class=race.highest_class)
         if form.validate_on_submit():
             if form.delete_race.data:
+                track = Track.query.filter_by(id=race.track).first()
+                track.times_ran -= 1
+                db.session.commit()
                 rps = RacePerformance.query.filter_by(race_id=race.id).all()
                 for rp in rps:
                     db.session.delete(rp)
