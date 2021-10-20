@@ -1,4 +1,4 @@
-2021-10-19 23:59:19,233 ERROR: Exception on /race_info/4 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-19 23:59:29,728 ERROR: Exception on /race_info/7 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
     self.dialect.do_execute(
@@ -54,9 +54,10 @@ LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
 FROM race 
 WHERE race.id = %(id_1)s 
  LIMIT %(param_1)s]
-[parameters: {'id_1': '4', 'param_1': 1}]
+[parameters: {'id_1': '7', 'param_1': 1}]
 (Background on this error at: http://sqlalche.me/e/14/f405)
-2021-10-19 23:59:27,042 ERROR: Exception on /race_info/3 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-20 00:11:06,963 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 00:11:12,876 ERROR: Exception on /race_history [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
     self.dialect.do_execute(
@@ -80,10 +81,10 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1083, in race_info
-    race = Race.query.filter_by(id=race_id).first()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2760, in first
-    return self.limit(1)._iter().first()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1097, in race_history
+    races = Race.query.all()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2709, in all
+    return self._iter().all()
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
     result = self.session.execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
@@ -109,8 +110,8 @@ LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
                                                              ^
 
 [SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class, race.finalized AS race_finalized 
-FROM race 
-WHERE race.id = %(id_1)s 
- LIMIT %(param_1)s]
-[parameters: {'id_1': '3', 'param_1': 1}]
+FROM race]
 (Background on this error at: http://sqlalche.me/e/14/f405)
+2021-10-20 00:11:22,495 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 00:11:24,983 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 00:11:26,221 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

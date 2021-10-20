@@ -114,7 +114,7 @@
         .done(function(response) {
             $("#response").text(response['text'])
             success_audio.play();
-            $('#raceresults').
+            $('#raceresults').css('visibility', 'visible');
         })
         .fail(function() {
             $("#response").text("{{ _('Error: Could not contact server.') }}");

@@ -873,7 +873,7 @@ def manage_race(race_id):
     if current_user.race_lead:
         race = Race.query.filter_by(id=race_id).first()
         racers = RacePerformance.query.filter_by(race_id=race.id).order_by(RacePerformance.end_position).all()
-        return render_template('race_manager.html', racers=racers, title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
+        return render_template('race_manager.html', racers=racers, title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {f"{race.laps} Laps" if race.track_info.lap_race else "Sprint"}', race=race)
     flash('You do not have access to this page.')
     return redirect(url_for('main.index'))
 
@@ -901,6 +901,8 @@ def edit_race(race_id):
         form = EditRaceForm(name=race.name, crew_race=race.crew_race,
                             laps=race.laps, track=race.track,
                             highest_class=race.highest_class)
+        if request.method == 'GET':
+            form.track.data = Track.query.filter_by(id=race.track).first()
         if form.validate_on_submit():
             if form.delete_race.data:
                 track = Track.query.filter_by(id=race.track).first()
@@ -914,8 +916,14 @@ def edit_race(race_id):
                 db.session.commit()
                 flash('The race has been removed successfully.')
                 return redirect(url_for('main.upcoming_races'))
+            if form.track.data.id != race.track:
+                track = Track.query.filter_by(id=race.track).first()
+                track.times_ran -= 1
+                new_track = Track.query.filter_by(id=form.track.data.id).first()
+                new_track.times_ran += 1
+                db.session.commit()
             race.name = form.name.data
-            race.track = form.track.data
+            race.track = form.track.data.id
             race.laps = form.laps.data
             race.highest_class = form.highest_class.data
             race.crew_race = form.crew_race.data
