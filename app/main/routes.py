@@ -248,9 +248,13 @@ def set_employees():
 @bp.route('/transaction_history', methods=['GET', 'POST'])
 @login_required
 def transaction_history():
-    if current_user.access_level in ('admin', 'manager', 'temp') or current_user.company is None:
+    if current_user.access_level in ('admin', 'manager', 'temp'):
         subquery = [u.id for u in User.query.filter(User.company == current_user.company).all()]
         transactions = Transaction.query.filter(Transaction.user_id.in_(subquery)).order_by(Transaction.timestamp.desc()).all()
+        transaction_info, transactions = summarize_data(transactions)
+        return render_template('transaction_history.html', transactions=transactions, tr_info=transaction_info)
+    if current_user.company is None:
+        transactions = Transaction.query.filter_by(user_id=current_user.id).all()
         transaction_info, transactions = summarize_data(transactions)
         return render_template('transaction_history.html', transactions=transactions, tr_info=transaction_info)
     else:
