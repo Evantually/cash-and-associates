@@ -307,3 +307,4 @@ class Crew(db.Model):
     name = db.Column(db.String(64))
     points = db.Column(db.Integer)
     members = db.relationship('User', backref='crew', lazy='dynamic')
+    image = db.Column(db.String(256))

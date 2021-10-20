@@ -9,6 +9,8 @@
     <div class="row">
         <div class="col-md-3"><a href="javascript:SetStartPosition();" role="button"><button class="btn btn-primary btn-lg">Set Starting Positions</button></a></div>
         <div class="col-md-3"><a href="javascript:SetEndPosition();" role="button"><button class="btn btn-primary btn-lg">Set Ending Positions</button></a></div>
+        <div class="col-md-3"><a href="javascript:FinalizeRace();" role="button"><button class="btn btn-primary btn-lg">Finalize Race</button></a></div>
+        <div id="raceresults" class="col-md-3" style="visibility: hidden;"><a href="{{ url_for('main.race_results', race_id=race.id) }}" role="button"><button class="btn btn-primary btn-lg">Race Results</button></a></div>
     </div>
     {% endif %}
     <h3>Registered Racers ({{ racers | length }})</h3>
@@ -62,20 +64,7 @@
         animation: 100
     });
     function SetStartPosition() {
-        racer_order = [];
-        $("#racers li").each(function(index, elem) {
-            let racer_info = $(elem);
-            racer_order.push([
-                parseInt(racer_info.attr('racer-id')), 
-                parseInt(racer_info.attr('user-id')),
-                parseInt(racer_info.attr('car-id'))
-            ]);
-        });
-        race_info = {
-            racer_order: racer_order,
-            auth_id: parseInt($("#user").attr('auth-id'))
-        }
-        console.log(race_info);
+        race_info = CollectRacerPositions();
         $.ajax(
             {
                 url: '/race/set_start_order' ,
@@ -94,20 +83,7 @@
         })
     }
     function SetEndPosition() {
-        racer_order = [];
-        $("#racers li").each(function(index, elem) {
-            let racer_info = $(elem);
-            racer_order.push([
-                parseInt(racer_info.attr('racer-id')), 
-                parseInt(racer_info.attr('user-id')),
-                parseInt(racer_info.attr('car-id'))
-            ]);
-        });
-        race_info = {
-            racer_order: racer_order,
-            auth_id: parseInt($("#user").attr('auth-id'))
-        }
-        console.log(race_info);
+        race_info = CollectRacerPositions();
         $.ajax(
             {
                 url: '/race/set_end_order' ,
@@ -124,6 +100,42 @@
             $("#response").text("{{ _('Error: Could not contact server.') }}");
                 fail_audio.play();
         })
+    }
+    function FinalizeRace() {
+        race_info = CollectRacerPositions();
+        $.ajax(
+            {
+                url: '/race/finalize_race' ,
+                type: 'POST',
+                data: JSON.stringify(race_info),
+                contentType: "application/json; charset=utf-8"
+            }
+        )
+        .done(function(response) {
+            $("#response").text(response['text'])
+            success_audio.play();
+            $('#')
+        })
+        .fail(function() {
+            $("#response").text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+        })
+    }
+    function CollectRacerPositions() {
+        racer_order = [];
+        $("#racers li").each(function(index, elem) {
+            let racer_info = $(elem);
+            racer_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id'))
+            ]);
+        });
+        race_info = {
+            racer_order: racer_order,
+            auth_id: parseInt($("#user").attr('auth-id'))
+        }
+        return race_info;
     }
 </script>
 {% endblock %}

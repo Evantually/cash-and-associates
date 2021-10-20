@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>{{ title }} | {{ race.highest_class }} Class Vehicles | {% if race.laps == 0 %}Sprint {% else %}{{ race.laps }} Laps {% endif %}</h2>
+    <h3>Race Results</h3>
+    <div class="row">
+        <div class="col-md-3">
+            <img width="100%" src="{{ url_for('static', filename='imgs/gold-trophy.png') }}">
+        </div>
+        <div class="col-md-6">
+            {% if racers[0].car_info.image %}
+            <img width="100%" src="{{ racers[0].car_info.image }}">
+            {% else %}
+            <img width=100% src="{{ racers[0].car_stock.image }}">
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            <h2>1st Place</h2>
+            <table class="table">
+                <tr>
+                    <th>Car Class</th>
+                    <th>Car Model</th>
+                    <th>Racer</th>
+                    <th>Car Name</th>
+                </tr>
+                <tr>
+                    <td>{{ racers[0].car_stock.car_class }}</td>
+                    <td>{{ racers[0].car_stock.name }}</td>
+                    <td>{{ racers[0].user_info.username }}</td>
+                    <td>{{ racers[0].car_info.name }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <br>
+    {% if racers | length > 2 %}
+    <div class="row">
+        {% if racers[1] %}
+        <div class="col-md-6">
+            <div class="col-md-3">
+                <img width="100%" src="{{ url_for('static', filename='imgs/silver-trophy.png') }}">
+            </div>
+            <div class="col-md-6">
+                {% if racers[1].car_info.image %}
+                <img width="100%" src="{{ racers[1].car_info.image }}">
+                {% else %}
+                <img width=100% src="{{ racers[1].car_stock.image }}">
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <h2>2nd Place</h2>
+                <table class="table">
+                    <tr>
+                        <th>Car Class</th>
+                        <th>Car Model</th>
+                        <th>Racer</th>
+                        <th>Car Name</th>
+                    </tr>
+                    <tr>
+                        <td>{{ racers[1].car_stock.car_class }}</td>
+                        <td>{{ racers[1].car_stock.name }}</td>
+                        <td>{{ racers[1].user_info.username }}</td>
+                        <td>{{ racers[1].car_info.name }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        {% if racers[2] %}
+        <div class="col-md-6">
+            <div class="col-md-2">
+                <img width="100%" src="{{ url_for('static', filename='imgs/bronze-trophy.png') }}">
+            </div>
+            <div class="col-md-4">
+                {% if racers[2].car_info.image %}
+                <img width="100%" src="{{ racers[2].car_info.image }}">
+                {% else %}
+                <img width=100% src="{{ racers[2].car_stock.image }}">
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <h2>3rd Place</h2>
+                <table class="table">
+                    <tr>
+                        <th>Car Class</th>
+                        <th>Car Model</th>
+                        <th>Racer</th>
+                        <th>Car Name</th>
+                    </tr>
+                    <tr>
+                        <td>{{ racers[2].car_stock.car_class }}</td>
+                        <td>{{ racers[2].car_stock.name }}</td>
+                        <td>{{ racers[2].user_info.username }}</td>
+                        <td>{{ racers[2].car_info.name }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    <table class="table table-hover">
+        <tr>
+            <th>Position</th>
+            <th></th>
+            <th>Car Class</th>
+            <th>Car Model</th>
+            <th>Racer</th>
+            <th>Car Name</th>
+        </tr>
+        {% for racer in racers %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+                {% if racer.car_info.image %}
+                <img height="128px" src="{{ racer.car_info.image }}">
+                {% else %}
+                <img height="128px" src="{{ racer.car_stock.image }}">
+                {% endif %}
+            </td>
+            <td>{{ racer.car_stock.car_class }}</td>
+            <td>{{ racer.car_stock.name }}</td>
+            <td>{{ racer.user_info.username }}</td>
+            <td>{{ racer.car_info.name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}

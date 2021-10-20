@@ -872,7 +872,7 @@ def manage_racers(user_id):
 def manage_race(race_id):
     if current_user.race_lead:
         race = Race.query.filter_by(id=race_id).first()
-        racers = RacePerformance.query.filter_by(race_id=race.id).all()
+        racers = RacePerformance.query.filter_by(race_id=race.id).order_by(RacePerformance.end_position).all()
         return render_template('race_manager.html', racers=racers, title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
     flash('You do not have access to this page.')
     return redirect(url_for('main.index'))
@@ -949,6 +949,22 @@ def set_end_order():
             rp.end_position = index + 1
             db.session.commit()
         return jsonify({'text': "Ending positions have saved successfully."})
+    return jsonify({'text': "You don't have sufficient privileges to set this information."})
+
+@bp.route('/race/finalize_race', methods=['POST'])
+@login_required
+def finalize_race():
+    race_info = request.get_json()
+    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+        racers = race_info['racer_order']
+        for index, racer in enumerate(racers):
+            rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            rp.end_position = index + 1            
+            db.session.commit()
+        race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
+        race.finalized = True
+        db.session.commit()
+        return jsonify({'text': "The race has been finalized successfully."})
     return jsonify({'text': "You don't have sufficient privileges to set this information."})
 
 @bp.route('/get_crew_scores', methods=['POST'])
@@ -1110,7 +1126,9 @@ def change_registration(race_id):
 def race_info(race_id):
     if current_user.racer:
         race = Race.query.filter_by(id=race_id).first()
-        racers = RacePerformance.query.filter_by(race_id=race.id).all()
+        if race.finalized:
+            return redirect(url_for('main.race_results', race_id=race.id))
+        racers = race.participants.order_by(RacePerformance.start_position).all()
         try:
             racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
             racer_most_wins = User.query.filter_by(id=racer_id).first()
@@ -1125,13 +1143,35 @@ def race_info(race_id):
                                 top_racer=racer_most_wins, top_car=car_most_wins, racer_wins=racer_number_wins, 
                                 car_wins=car_number_wins)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
-    return redirect(url_for('main.index'))                        
+    return redirect(url_for('main.index'))
+
+@bp.route('/race_results/<race_id>', methods=['GET', 'POST'])
+@login_required
+def race_results(race_id):
+    if current_user.racer:
+        race = Race.query.filter_by(id=race_id).first()
+        racers = race.participants.order_by(RacePerformance.end_position).all()
+        try:
+            racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
+            racer_most_wins = User.query.filter_by(id=racer_id).first()
+            car_id, car_number_wins = RacePerformance.query.with_entities(RacePerformance.car_id, func.count(RacePerformance.car_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.car_id).order_by(text('wins DESC')).first()
+            car_most_wins = Car.query.filter_by(id=car_id).first()
+        except TypeError:
+            racer_id, racer_number_wins = [None, None]
+            racer_most_wins=None
+            car_id, car_number_wins = [None, None]
+            car_most_wins = None
+        return render_template('race_results.html', title=f'Race - {race.name}', race=race, racers=racers,
+                                top_racer=racer_most_wins, top_car=car_most_wins, racer_wins=racer_number_wins, 
+                                car_wins=car_number_wins)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))               
 
 @bp.route('/race_history', methods=['GET'])
 @login_required
 def race_history():
     if current_user.racer:
-        races = Race.query.all()
+        races = Race.query.order_by(Race.start_time).all()
         return render_template('race_history.html', races=races)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))                        
