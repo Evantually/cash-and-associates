@@ -1171,7 +1171,7 @@ def race_results(race_id):
 @login_required
 def race_history():
     if current_user.racer:
-        races = Race.query.order_by(Race.start_time).all()
+        races = Race.query.order_by(Race.start_time.desc()).all()
         return render_template('race_history.html', races=races)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))                        
