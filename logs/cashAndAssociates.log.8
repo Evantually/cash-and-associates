@@ -1,11 +1,11 @@
-2021-10-17 07:16:48,708 ERROR: Exception on /race_signup/4 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-17 19:59:53,428 ERROR: Exception on /race_info/8 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-psycopg2.errors.UndefinedColumn: column owned_car.first does not exist
-LINE 1: ...ension_level, owned_car.image AS owned_car_image, owned_car....
+psycopg2.errors.UndefinedColumn: column track.embed_link does not exist
+LINE 1: ...rack_map, track.track_video AS track_track_video, track.embe...
                                                              ^
 
 
@@ -22,17 +22,49 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 875, in race_signup
-    form.car.choices = [(c.id, c.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(Car.car_class.in_(classes)).all()]
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2709, in all
-    return self._iter().all()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
-    result = self.session.execute(
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 950, in race_info
+    return render_template('race_info.html', title=f'Race - {race.name}', race=race, racers=racers)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_info.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 117, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_info.html", line 9, in block 'app_content'
+    <a href="{{ race.track_info.track_map}}" target="_blank"><img width="100%" src="{{ race.track_info.track_map }}"></a>
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
+    return getattr(obj, attribute)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 480, in __get__
+    return self.impl.get(state, dict_)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 931, in get
+    value = self.callable_(state, passive)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 879, in _load_for_state
+    return self._emit_lazyload(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 982, in _emit_lazyload
+    return loading.load_on_pk_identity(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
+    session.execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
     result = conn._execute_20(statement, params or {}, execution_options)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
     return meth(self, args_10style, kwargs_10style, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\lambdas.py", line 481, in _execute_on_connection
     return connection._execute_clauseelement(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
     ret = self._execute_context(
@@ -46,16 +78,15 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column owned_car.first does not exist
-LINE 1: ...ension_level, owned_car.image AS owned_car_image, owned_car....
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column track.embed_link does not exist
+LINE 1: ...rack_map, track.track_video AS track_track_video, track.embe...
                                                              ^
 
-[SQL: SELECT owned_car.id AS owned_car_id, owned_car.name AS owned_car_name, owned_car.user_id AS owned_car_user_id, owned_car.car_id AS owned_car_car_id, owned_car.engine_level AS owned_car_engine_level, owned_car.transmission_level AS owned_car_transmission_level, owned_car.turbo_level AS owned_car_turbo_level, owned_car.brakes_level AS owned_car_brakes_level, owned_car.suspension_level AS owned_car_suspension_level, owned_car.image AS owned_car_image, owned_car.first AS owned_car_first, owned_car.second AS owned_car_second, owned_car.third AS owned_car_third, owned_car.races AS owned_car_races 
-FROM owned_car JOIN car ON owned_car.car_id = car.id 
-WHERE owned_car.user_id = %(user_id_1)s AND car.car_class IN (%(car_class_1_1)s, %(car_class_1_2)s, %(car_class_1_3)s, %(car_class_1_4)s, %(car_class_1_5)s, %(car_class_1_6)s, %(car_class_1_7)s)]
-[parameters: {'user_id_1': 2, 'car_class_1_1': 'D', 'car_class_1_2': 'C', 'car_class_1_3': 'B', 'car_class_1_4': 'A', 'car_class_1_5': 'A+', 'car_class_1_6': 'S', 'car_class_1_7': 'X'}]
+[SQL: SELECT track.id AS track_id, track.name AS track_name, track.track_map AS track_track_map, track.track_video AS track_track_video, track.embed_link AS track_embed_link, track.lap_race AS track_lap_race, track.record_time AS track_record_time, track.record_holder AS track_record_holder, track.times_ran AS track_times_ran 
+FROM track 
+WHERE track.id = %(pk_1)s]
+[parameters: {'pk_1': 2}]
 (Background on this error at: http://sqlalche.me/e/14/f405)
-2021-10-17 07:17:25,049 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 07:17:28,105 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 07:17:30,332 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 07:37:21,235 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:05,943 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:11,487 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-17 20:00:16,986 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

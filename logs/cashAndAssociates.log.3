@@ -1,12 +1,12 @@
-2021-10-17 20:00:41,113 ERROR: Exception on /race_info/None [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-19 23:59:19,233 ERROR: Exception on /race_info/4 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
+psycopg2.errors.UndefinedColumn: column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
 
 
 The above exception was the direct cause of the following exception:
@@ -22,7 +22,7 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 948, in race_info
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1083, in race_info
     race = Race.query.filter_by(id=race_id).first()
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2760, in first
     return self.limit(1)._iter().first()
@@ -46,38 +46,25 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.DataError: (psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
 
-[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class 
+[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class, race.finalized AS race_finalized 
 FROM race 
 WHERE race.id = %(id_1)s 
  LIMIT %(param_1)s]
-[parameters: {'id_1': 'None', 'param_1': 1}]
-(Background on this error at: http://sqlalche.me/e/14/9h9h)
-2021-10-17 20:33:59,481 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:22:54,907 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:23:32,815 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:29:46,180 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:32:03,947 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:33:00,894 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:33:37,682 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:35:37,657 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:37:50,158 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:40:04,466 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:40:07,719 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:40:10,546 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:46:50,333 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:46:51,443 ERROR: Exception on /race_info/None [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+[parameters: {'id_1': '4', 'param_1': 1}]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+2021-10-19 23:59:27,042 ERROR: Exception on /race_info/3 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
+psycopg2.errors.UndefinedColumn: column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
 
 
 The above exception was the direct cause of the following exception:
@@ -93,7 +80,7 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 952, in race_info
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1083, in race_info
     race = Race.query.filter_by(id=race_id).first()
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2760, in first
     return self.limit(1)._iter().first()
@@ -117,20 +104,13 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.DataError: (psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
 
-[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class 
+[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class, race.finalized AS race_finalized 
 FROM race 
 WHERE race.id = %(id_1)s 
  LIMIT %(param_1)s]
-[parameters: {'id_1': 'None', 'param_1': 1}]
-(Background on this error at: http://sqlalche.me/e/14/9h9h)
-2021-10-17 21:49:17,797 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:49:21,613 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:49:22,760 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:50:55,615 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:51:31,115 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:51:58,702 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-17 21:55:32,925 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+[parameters: {'id_1': '3', 'param_1': 1}]
+(Background on this error at: http://sqlalche.me/e/14/f405)

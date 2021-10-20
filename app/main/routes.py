@@ -10,7 +10,8 @@ from app import db
 from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm, 
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm, ManageRacerForm, AddCarForm,
-    AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm)
+    AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm,
+    EditRaceForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
@@ -891,6 +892,36 @@ def manage_crew_race(race_id):
                             title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
     flash('You do not have access to this page.')
     return redirect(url_for('main.index'))
+
+@bp.route('/edit_race/<race_id>', methods=['GET', 'POST'])
+@login_required
+def edit_race(race_id):
+    if current_user.race_lead:
+        race = Race.query.filter_by(id=race_id).first()
+        form = EditRaceForm(name=race.name, crew_race=race.crew_race,
+                            laps=race.laps, track=race.track,
+                            highest_class=race.highest_class)
+        if form.validate_on_submit():
+            if form.delete_race.data:
+                rps = RacePerformance.query.filter_by(race_id=race.id).all()
+                for rp in rps:
+                    db.session.delete(rp)
+                    db.session.commit()
+                db.session.delete(race)
+                db.session.commit()
+                flash('The race has been removed successfully.')
+                return redirect(url_for('main.upcoming_races'))
+            race.name = form.name.data
+            race.track = form.track.data
+            race.laps = form.laps.data
+            race.highest_class = form.highest_class.data
+            race.crew_race = form.crew_race.data
+            db.session.commit()
+            flash(f'{race.name} has been updated successfully.')
+            return redirect(url_for('main.manage_race', race_id=race.id))
+        return render_template('add_product.html', form=form, title=f'Edit Race - {race.name}')
+    flash('You do not have access to this page.')
+    return redirect(url_for('main.index'))
         # END MANAGE STUFF
         # START API CALLS
 
@@ -1074,21 +1105,34 @@ def change_registration(race_id):
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 
-        
-
 @bp.route('/race_info/<race_id>', methods=['GET', 'POST'])
 @login_required
 def race_info(race_id):
     if current_user.racer:
         race = Race.query.filter_by(id=race_id).first()
         racers = RacePerformance.query.filter_by(race_id=race.id).all()
-        racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
-        racer_most_wins = User.query.filter_by(id=racer_id).first()
-        car_id, car_number_wins = RacePerformance.query.with_entities(RacePerformance.car_id, func.count(RacePerformance.car_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.car_id).order_by(text('wins DESC')).first()
-        car_most_wins = Car.query.filter_by(id=car_id).first()
+        try:
+            racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
+            racer_most_wins = User.query.filter_by(id=racer_id).first()
+            car_id, car_number_wins = RacePerformance.query.with_entities(RacePerformance.car_id, func.count(RacePerformance.car_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.car_id).order_by(text('wins DESC')).first()
+            car_most_wins = Car.query.filter_by(id=car_id).first()
+        except TypeError:
+            racer_id, racer_number_wins = [None, None]
+            racer_most_wins=None
+            car_id, car_number_wins = [None, None]
+            car_most_wins = None
         return render_template('race_info.html', title=f'Race - {race.name}', race=race, racers=racers,
                                 top_racer=racer_most_wins, top_car=car_most_wins, racer_wins=racer_number_wins, 
                                 car_wins=car_number_wins)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))                        
+
+@bp.route('/race_history', methods=['GET'])
+@login_required
+def race_history():
+    if current_user.racer:
+        races = Race.query.all()
+        return render_template('race_history.html', races=races)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))                        
 

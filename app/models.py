@@ -33,6 +33,7 @@ class User(UserMixin, db.Model):
     race_lead = db.Column(db.Boolean, default=False)
     racer = db.Column(db.Boolean, default=False)
     race_crew = db.Column(db.String(120))
+    crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
     race_points = db.Column(db.Integer)
 
 
@@ -286,6 +287,7 @@ class Race(db.Model):
     crew_race = db.Column(db.Boolean)
     highest_class = db.Column(db.String(4))
     participants = db.relationship('RacePerformance', backref='race', lazy='dynamic')
+    finalized = db.Column(db.Boolean, default=False)
 
 class RacePerformance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -299,3 +301,9 @@ class RacePerformance(db.Model):
     race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
     start_position = db.Column(db.Integer, default=0)
     end_position = db.Column(db.Integer, default=0)
+
+class Crew(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    points = db.Column(db.Integer)
+    members = db.relationship('User', backref='crew', lazy='dynamic')

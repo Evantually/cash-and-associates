@@ -129,6 +129,15 @@ class SetupRaceForm(FlaskForm):
     crew_race = BooleanField('Crew Race?')
     submit = SubmitField(_l('Submit'))
 
+class EditRaceForm(FlaskForm):
+    name = StringField(_l('Name'))
+    track = QuerySelectField(query_factory=lambda: Track.query.all())
+    laps = IntegerField(_l('Laps'))
+    highest_class = StringField(_l('Highest Class Allowed'))
+    crew_race = BooleanField('Crew Race?')
+    delete_race = BooleanField('Delete Race?')
+    submit = SubmitField(_l('Submit'))
+
 class ManageRacerForm(FlaskForm):
     racer = BooleanField('Racer')
     race_lead = BooleanField('Race Lead')

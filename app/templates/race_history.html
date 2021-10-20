@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>Race History</h2>
+    <table class="table table-hover">
+        <tr>
+            <th>Name (Click for info)</th>
+            <th>Time Ran</th>
+            <th>Track</th>
+            <th>Number of Racers</th>
+            <th>Crew Race</th>
+            {% if current_user.race_lead %}
+            <th>Edit</th>
+            <th>Manage</th>
+            {% endif %}
+        </tr>
+    {% for race in races %}
+        <tr>
+            <td><a href="{{ url_for('main.race_info', race_id=race.id) }}">{{ race.name }}</a></td>
+            <td>{{ moment(race.start_time).format('MMMM Do YYYY, h:mm:ss a') }}</td>
+            <td>{{ race.track_info.name }}</td>
+            <td>{{ race.participants.all() | length }}</td>
+            <td>{{ race.crew_race }}</td>
+            {% if current_user.race_lead %}
+            <td><a href="{{ url_for('main.edit_race', race_id=race.id) }}">Edit</a></td>
+            <td><a href="{{ url_for('main.manage_race', race_id=race.id) }}">Manage</a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+{% endblock %}
