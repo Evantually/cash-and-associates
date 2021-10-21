@@ -13,3 +13,10 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 975, in finalize_race
     race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
 IndexError: list index out of range
+2021-10-20 08:55:08,462 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:55:10,919 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 09:10:02,186 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 09:10:05,687 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 14:16:21,151 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 10:46:44,088 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 10:46:55,808 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

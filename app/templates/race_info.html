@@ -3,11 +3,11 @@
 
 {% block metas %}
 {{ super() }}
-<meta http-equiv="refresh" content="30">
 {% endblock %}
 
 {% block app_content %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <span style="visibility: hidden;" id="raceid" race-id="{{ race.id }}"></span>
     <h2>{{ title }} | {{ race.highest_class }} Class Vehicles | {% if race.track_info.lap_race %} {{ race.laps }} Laps {% else %} Sprint {% endif %}</h2>
     <div class="row">
         <div class="col-md-6">
@@ -106,5 +106,25 @@
 {% block scripts %}
 {{ super() }}
 
+<script>
+    setInterval(function() {
+        race_info = {
+                race_id: $('#raceid').attr('race-id')
+            }
+        $.ajax(
+            {
+                url: '/race/check_if_finished' ,
+                type: 'POST',
+                data: JSON.stringify(race_info),
+                contentType: "application/json; charset=utf-8"
+            }
+        )
+        .done(function(response) {
+            if (response['finalized']) {
+                location.reload(true);
+            }
+        })
+    }, 5000);
+</script>
 
 {% endblock %}

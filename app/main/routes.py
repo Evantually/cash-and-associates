@@ -1016,6 +1016,15 @@ def get_crew_scores():
     crew1_score, crew2_score = determine_crew_points(crew1, crew2)
     return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
 
+@bp.route('/race/check_if_finished', methods=['POST'])
+@login_required
+def check_race_finish():
+    race_info = request.get_json()
+    race = Race.query.filter_by(id=race_info['race_id']).first()
+    if race.finalized:
+        return jsonify({'finalized': True})
+    return jsonify({'finalized': False})
+
         #END API CALLS
     # END RACE LEAD SECTION
     # START RACER SECTION

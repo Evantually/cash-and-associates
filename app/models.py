@@ -272,6 +272,7 @@ class Track(db.Model):
     record_time = db.Column(db.Integer)
     record_holder = db.Column(db.Integer, db.ForeignKey('user.id'))
     times_ran = db.Column(db.Integer, default=0)
+    race_org = db.Column(db.String(64))
 
     def __repr__(self):
         return f'{self.name}'
@@ -308,3 +309,5 @@ class Crew(db.Model):
     points = db.Column(db.Integer)
     members = db.relationship('User', backref='crew', lazy='dynamic')
     image = db.Column(db.String(256))
+    track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
+    home_track = db.relationship('Track')
