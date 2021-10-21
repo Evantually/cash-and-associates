@@ -273,6 +273,7 @@ class Track(db.Model):
     record_holder = db.Column(db.Integer, db.ForeignKey('user.id'))
     times_ran = db.Column(db.Integer, default=0)
     race_org = db.Column(db.String(64))
+    meet_location = db.Column(db.String(256))
 
     def __repr__(self):
         return f'{self.name}'
@@ -289,6 +290,7 @@ class Race(db.Model):
     highest_class = db.Column(db.String(4))
     participants = db.relationship('RacePerformance', backref='race', lazy='dynamic')
     finalized = db.Column(db.Boolean, default=False)
+    buyin = db.Column(db.Integer)
 
 class RacePerformance(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import pytz
 from app.models import User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry
 from app import db
 from sqlalchemy.sql import func
@@ -486,3 +487,16 @@ def determine_crew_points(crew1, crew2):
         else:
             crew_2_points = total_points
     return crew_1_points, crew_2_points
+
+def get_timezones(utc_time):
+    eastern_us = pytz.timezone('America/New_York')
+    uk = pytz.timezone('Europe/London')
+    central_europe = pytz.timezone('Europe/Helsinki')
+
+    fmt = '%I:%M %p %Z'
+    utc = pytz.utc.localize(utc_time)
+    time1 = utc.astimezone(eastern_us).strftime(fmt)
+    time2 = utc.astimezone(uk).strftime(fmt)
+    time3 = utc.astimezone(central_europe).strftime(fmt)
+
+    return time1, time2, time3

@@ -20,7 +20,9 @@ from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
-                            get_available_classes, determine_crew_points)
+                            get_available_classes, determine_crew_points, get_timezones)
+import requests
+import random
 
 @bp.before_app_request
 def before_request():
@@ -736,7 +738,7 @@ def add_track():
         if form.validate_on_submit():
             track = Track(name=form.name.data, track_map=form.track_map.data,
                         track_video=form.track_video.data, lap_race=form.lap_race.data,
-                        embed_link=form.embed_link.data)
+                        embed_link=form.embed_link.data, meet_location=form.meet_location.data)
             db.session.add(track)
             db.session.commit()
             flash(f'{track.name} has been added as a track.')
@@ -797,13 +799,14 @@ def edit_track(track_id):
         track = Track.query.filter_by(id=track_id).first()
         form = AddTrackForm(name=track.name,track_map=track.track_map,
                             track_video=track.track_video, lap_race=track.lap_race,
-                            embed_link=track.embed_link)
+                            embed_link=track.embed_link, meet_location=track.meet_location)
         if form.validate_on_submit():
             track.name = form.name.data
             track.track_map = form.track_map.data
             track.track_video = form.track_video.data
             track.lap_race = form.lap_race.data
             track.embed_link = form.embed_link.data
+            track.meet_location = form.meet_location.data
             db.session.commit()
             flash(f'{track.name} has been updated successfully.')
             return redirect(url_for('main.manage_tracks'))
@@ -821,7 +824,8 @@ def setup_race():
             utc_time = utc_time_init.replace('Z','')
             race = Race(name=form.name.data, start_time=datetime.strptime(utc_time,'%Y-%m-%d %H:%M:%S'),
                         laps=form.laps.data, track=form.track.data.id,
-                        highest_class=form.highest_class.data, crew_race=form.crew_race.data)
+                        highest_class=form.highest_class.data, crew_race=form.crew_race.data,
+                        buyin=form.buyin.data)
             db.session.add(race)
             track = Track.query.filter_by(id=form.track.data.id).first()
             try:
@@ -829,6 +833,36 @@ def setup_race():
             except:
                 track.times_ran = 1
             db.session.commit()
+            time1, time2, time3 = get_timezones(race.start_time)
+            url = 'https://discord.com/api/webhooks/900817340772528179/S47e8Ar0ngjxL6cvalAuNKWTUCT2zrCekG66syDtY_9hYcQvLjpfr3CpnPJ-6OE-_Mzq'
+            data = {
+                'username': 'Encrypted',
+                'embeds': [{
+                    'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
+                                    Start time: {time1} | {time2} | {time3}\n\
+                                    ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message.)\n\
+                                    Radio: {random.randint(20, 100) + round(random.random(),2)}\n\
+                                    Buy-in: ${race.buyin}\n\
+                                    [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
+                                    :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:',
+                    'footer': {
+                        'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
+                    },
+                    'title': 'Encrypted Message',
+                    'image': {
+                        'url': f'{race.track_info.meet_location}'
+                    }
+                }],
+                'content': '@everyone',
+                "allowed_mentions": { "parse": ["everyone"] }
+            }
+            result = requests.post(url, json=data, headers={"Content-Type": "application/json"})
+            try:
+                result.raise_for_status()
+            except requests.exceptions.HTTPError as err:
+                print(err)
+            else:
+                print("Payload delivered successfully, code {}.".format(result.status_code))
             flash(f'{race.name} has been setup.')
             if race.crew_race:
                 return redirect(url_for('main.manage_crew_race', race_id=race.id))

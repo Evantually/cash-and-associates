@@ -1,16 +1,4 @@
-2021-10-20 07:07:24,872 ERROR: Exception on /race_results/None [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
-
-
-The above exception was the direct cause of the following exception:
-
+2021-10-20 08:39:38,625 ERROR: Exception on /race/finalize_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -22,53 +10,20 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1152, in race_results
-    race = Race.query.filter_by(id=race_id).first()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2760, in first
-    return self.limit(1)._iter().first()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
-    result = self.session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
-    ret = self._execute_context(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
-    self._handle_dbapi_exception(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
-    util.raise_(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
-    raise exception
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.DataError: (psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
-
-[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class, race.finalized AS race_finalized 
-FROM race 
-WHERE race.id = %(id_1)s 
- LIMIT %(param_1)s]
-[parameters: {'id_1': 'None', 'param_1': 1}]
-(Background on this error at: http://sqlalche.me/e/14/9h9h)
-2021-10-20 07:07:25,153 ERROR: Exception on /race_results/None [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
-
-
-The above exception was the direct cause of the following exception:
-
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 975, in finalize_race
+    race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
+IndexError: list index out of range
+2021-10-20 08:55:08,462 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:55:10,919 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 09:10:02,186 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 09:10:05,687 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 14:16:21,151 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 10:46:44,088 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 10:46:55,808 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 11:56:58,919 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 11:57:02,142 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 11:57:15,184 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 11:58:50,100 ERROR: Exception on /add_track [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -80,37 +35,76 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1152, in race_results
-    race = Race.query.filter_by(id=race_id).first()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2760, in first
-    return self.limit(1)._iter().first()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
-    result = self.session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
-    ret = self._execute_context(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
-    self._handle_dbapi_exception(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
-    util.raise_(
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 737, in add_track
+    track = Track(name=form.name.data, track_map=form.track_map.data,
+  File "<string>", line 4, in __init__
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\state.py", line 480, in _initialize_instance
+    manager.dispatch.init_failure(self, args, kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
     raise exception
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.DataError: (psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type integer: "None"
-LINE 3: WHERE race.id = 'None' 
-                        ^
-
-[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class, race.finalized AS race_finalized 
-FROM race 
-WHERE race.id = %(id_1)s 
- LIMIT %(param_1)s]
-[parameters: {'id_1': 'None', 'param_1': 1}]
-(Background on this error at: http://sqlalche.me/e/14/9h9h)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\state.py", line 477, in _initialize_instance
+    return manager.original_init(*mixed[1:], **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\decl_base.py", line 1142, in _declarative_constructor
+    raise TypeError(
+TypeError: 'meetup_location' is an invalid keyword argument for Track
+2021-10-21 12:00:03,931 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:01:54,563 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:02:31,873 ERROR: Exception on /setup_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 835, in setup_race
+    'content': f'Start time: {(race.start_time - datetime.utcnow()).minutes} minutes from receipt of this message.',
+AttributeError: 'datetime.timedelta' object has no attribute 'minutes'
+2021-10-21 12:07:28,659 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:08:18,055 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:08:31,708 ERROR: Exception on /setup_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 839, in setup_race
+    'title': f'Upcoming Race | {race.track_info.name} | {race.laps + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles',
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+2021-10-21 12:09:17,417 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:09:20,234 ERROR: Exception on /setup_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 846, in setup_race
+    result = requests.post(url, json=data, headers={"Content-Type": "application/json"})
+NameError: name 'requests' is not defined
+2021-10-21 12:10:01,594 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:18:39,612 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:22:10,859 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:24:43,587 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:25:11,369 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:25:26,871 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:25:43,697 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 12:26:35,480 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 13:11:57,101 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

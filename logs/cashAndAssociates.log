@@ -1,22 +1,5 @@
-2021-10-20 08:39:38,625 ERROR: Exception on /race/finalize_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 975, in finalize_race
-    race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
-IndexError: list index out of range
-2021-10-20 08:55:08,462 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 08:55:10,919 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 09:10:02,186 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 09:10:05,687 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 14:16:21,151 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-21 10:46:44,088 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-21 10:46:55,808 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 15:23:25,839 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 15:28:17,102 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 15:46:03,646 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 15:46:15,449 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-21 15:54:15,954 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

@@ -1,6 +1,4 @@
-2021-10-20 00:15:27,459 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 00:38:32,012 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 00:39:30,667 ERROR: Exception on /race_info/15 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-20 07:31:36,238 ERROR: Exception on /race_results/4 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -12,27 +10,8 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1104, in race_info
-    racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
-TypeError: cannot unpack non-iterable NoneType object
-2021-10-20 00:41:31,602 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 00:42:00,789 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 00:51:46,937 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 00:53:52,545 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 00:53:55,088 ERROR: Exception on /race_history [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1130, in race_history
-    return render_template('race_history.html', races=races)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1164, in race_results
+    return render_template('race_results.html', title=f'Race - {race.name}', race=race, racers=racers,
   File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 148, in render_template
     ctx.app.jinja_env.get_or_select_template(template_name_or_list),
   File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
@@ -47,11 +26,15 @@ Traceback (most recent call last):
     self.handle_exception(source=source_hint)
   File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
     raise rewrite_traceback_stack(source=source)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_history.html", line 21, in template
-    <td><a href="{{ url_for('main.race_info', race_id=race.id }}">{{ race.name }}</a></td>
-jinja2.exceptions.TemplateSyntaxError: unexpected '}', expected ')'
-2021-10-20 00:54:08,280 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 02:01:46,731 ERROR: Exception on /edit_race/3 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_results.html", line 104, in template
+    {% endblock %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endblock'. You probably made a nesting mistake. Jinja is expecting this tag, but currently looking for 'endfor' or 'else'. The innermost block that needs to be closed is 'for'.
+2021-10-20 07:32:17,714 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:33:35,887 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:34:20,814 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:35:00,629 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:38:54,647 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:38:55,508 ERROR: Exception on /race_results/4 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -63,13 +46,58 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 900, in edit_race
-    form = EditRaceForm(name=race.name, crew_race=race.crew_race,
-NameError: name 'EditRaceForm' is not defined
-2021-10-20 02:02:24,567 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 04:58:19,046 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 04:58:22,153 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 06:41:20,429 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 06:57:23,043 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 07:06:40,977 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-20 07:07:24,205 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1164, in race_results
+    return render_template('race_results.html', title=f'Race - {race.name}', race=race, racers=racers,
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_results.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 118, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_results.html", line 45, in block 'app_content'
+    {% if racer.car_info.image %}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'racer' is undefined
+2021-10-20 07:39:23,415 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:40:27,098 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:40:57,308 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:41:31,380 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:41:58,848 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:42:16,737 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:44:42,370 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:45:21,341 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:45:32,716 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:49:09,206 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:51:01,087 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:54:09,430 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 07:54:50,584 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:15:06,788 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:15:49,701 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:16:07,896 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:16:21,317 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:20:50,837 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:22:39,426 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:26:15,164 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:28:17,731 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:30:17,679 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:33:22,691 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:34:01,174 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:38:02,314 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 08:39:27,849 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

@@ -114,6 +114,7 @@ class AddOwnedCarForm(FlaskForm):
 class AddTrackForm(FlaskForm):
     name = StringField(_l('Name'))
     track_map = StringField(_l('Map'))
+    meet_location = StringField(_l('Meet Location Link'))
     track_video = StringField(_l('Video'))
     embed_link = StringField(_l('Embed Link'))
     lap_race = BooleanField('Lap Race?')
@@ -126,6 +127,7 @@ class SetupRaceForm(FlaskForm):
     track = QuerySelectField(query_factory=lambda: Track.query.all())
     laps = IntegerField(_l('Laps'))
     highest_class = StringField(_l('Highest Class Allowed'))
+    buyin = IntegerField(_l('Buy-in'))
     crew_race = BooleanField('Crew Race?')
     submit = SubmitField(_l('Submit'))
 

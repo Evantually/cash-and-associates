@@ -1,30 +1,16 @@
-2021-10-18 04:18:10,547 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:19:23,781 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:19:44,284 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:20:03,823 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:20:55,434 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:21:11,366 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:22:25,344 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:49:52,536 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:50:11,583 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:50:43,857 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:50:56,550 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:51:16,556 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:53:31,672 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:54:30,740 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:56:23,043 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 04:57:30,923 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:08:08,782 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:15:27,195 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:21:45,124 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:22:57,391 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:26:47,439 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:28:09,948 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:29:21,224 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:33:50,692 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:38:07,743 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:39:05,609 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:39:08,398 ERROR: Exception on /race/set_start_order [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-19 23:59:29,728 ERROR: Exception on /race_info/7 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -36,13 +22,54 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 749, in set_start_order
-    racers = request.form.getlist(['racer_order[]'], type=int)
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\datastructures.py", line 410, in getlist
-    rv = dict.__getitem__(self, key)
-TypeError: unhashable type: 'list'
-2021-10-18 05:40:50,202 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:40:53,979 ERROR: Exception on /race/set_start_order [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1083, in race_info
+    race = Race.query.filter_by(id=race_id).first()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2760, in first
+    return self.limit(1)._iter().first()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
+    result = self.session.execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
+    ret = self._execute_context(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
+    self._handle_dbapi_exception(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
+    util.raise_(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
+
+[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class, race.finalized AS race_finalized 
+FROM race 
+WHERE race.id = %(id_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'id_1': '7', 'param_1': 1}]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+2021-10-20 00:11:06,963 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 00:11:12,876 ERROR: Exception on /race_history [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -54,46 +81,37 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 749, in set_start_order
-    racers = request.form.getlist(['racer_order[]'])
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\datastructures.py", line 410, in getlist
-    rv = dict.__getitem__(self, key)
-TypeError: unhashable type: 'list'
-2021-10-18 05:41:12,097 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:41:13,990 ERROR: Exception on /race/set_start_order [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 749, in set_start_order
-    racers = request.form.getlist(['racer_order[][]'])
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\datastructures.py", line 410, in getlist
-    rv = dict.__getitem__(self, key)
-TypeError: unhashable type: 'list'
-2021-10-18 05:49:03,296 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:49:26,368 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:50:07,622 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:51:05,143 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:51:55,216 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:53:24,010 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:53:41,500 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:55:19,988 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:55:35,966 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:58:24,633 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:58:51,451 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:59:02,999 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 05:59:50,685 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 06:00:21,537 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 06:00:56,544 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 06:02:11,755 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 06:03:00,130 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 06:03:19,477 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-18 06:09:36,659 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-19 01:58:46,521 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1097, in race_history
+    races = Race.query.all()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2709, in all
+    return self._iter().all()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
+    result = self.session.execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
+    ret = self._execute_context(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
+    self._handle_dbapi_exception(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
+    util.raise_(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column race.finalized does not exist
+LINE 1: ...w_race, race.highest_class AS race_highest_class, race.final...
+                                                             ^
+
+[SQL: SELECT race.id AS race_id, race.timestamp AS race_timestamp, race.name AS race_name, race.start_time AS race_start_time, race.laps AS race_laps, race.track AS race_track, race.crew_race AS race_crew_race, race.highest_class AS race_highest_class, race.finalized AS race_finalized 
+FROM race]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+2021-10-20 00:11:22,495 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 00:11:24,983 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-20 00:11:26,221 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
