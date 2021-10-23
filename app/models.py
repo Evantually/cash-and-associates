@@ -35,6 +35,8 @@ class User(UserMixin, db.Model):
     race_crew = db.Column(db.String(120))
     crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
     race_points = db.Column(db.Integer)
+    races = db.relationship('RacePerformance', backref='user_info', lazy='dynamic')
+    cars = db.relationship('OwnedCar', backref='user_info', lazy='dynamic')
 
 
     def __repr__(self):
@@ -274,6 +276,7 @@ class Track(db.Model):
     times_ran = db.Column(db.Integer, default=0)
     race_org = db.Column(db.String(64))
     meet_location = db.Column(db.String(256))
+    crew_id =  db.Column(db.Integer, db.ForeignKey('crew.id'))
 
     def __repr__(self):
         return f'{self.name}'
@@ -295,7 +298,6 @@ class Race(db.Model):
 class RacePerformance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user_info = db.relationship('User')
     car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
     car_stock = db.relationship('Car')
     car_details = db.Column(db.Integer, db.ForeignKey('owned_car.id'))
@@ -312,4 +314,14 @@ class Crew(db.Model):
     members = db.relationship('User', backref='crew', lazy='dynamic')
     image = db.Column(db.String(256))
     track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
-    home_track = db.relationship('Track')
+
+    def __repr__(self):
+        return f'{self.name}'
+
+class CrewResults(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
+    challenging_crew = db.Column(db.Integer, db.ForeignKey('crew.id'))
+    defending_crew = db.Column(db.Integer, db.ForeignKey('crew.id'))
+    challenging_crew_points = db.Column(db.Integer)
+    defending_crew_points = db.Column(db.Integer)

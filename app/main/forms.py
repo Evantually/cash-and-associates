@@ -6,7 +6,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.fields.html5 import DateTimeLocalField
 from flask_babel import _, lazy_gettext as _l
-from app.models import User, Product, Category, Car, Track
+from app.models import User, Product, Category, Car, Track, Crew
 
 
 class EditProfileForm(FlaskForm):
@@ -124,7 +124,7 @@ class SetupRaceForm(FlaskForm):
     name = StringField(_l('Name'))
     start_time = DateTimeLocalField('Start time', format='%Y-%m-%dT%H:%M')
     utc_time = StringField('UTC Adjusted Time (Let Auto-Fill by re-clicking start time when finished)')
-    track = QuerySelectField(query_factory=lambda: Track.query.all())
+    track = QuerySelectField(query_factory=lambda: Track.query.order_by(Track.name).all())
     laps = IntegerField(_l('Laps'))
     highest_class = StringField(_l('Highest Class Allowed'))
     buyin = IntegerField(_l('Buy-in'))
@@ -133,7 +133,7 @@ class SetupRaceForm(FlaskForm):
 
 class EditRaceForm(FlaskForm):
     name = StringField(_l('Name'))
-    track = QuerySelectField(query_factory=lambda: Track.query.all())
+    track = QuerySelectField(query_factory=lambda: Track.query.order_by(Track.name).all())
     laps = IntegerField(_l('Laps'))
     highest_class = StringField(_l('Highest Class Allowed'))
     crew_race = BooleanField('Crew Race?')
@@ -143,7 +143,7 @@ class EditRaceForm(FlaskForm):
 class ManageRacerForm(FlaskForm):
     racer = BooleanField('Racer')
     race_lead = BooleanField('Race Lead')
-    crew =  StringField(_l('Crew'))
+    crew =  QuerySelectField(query_factory=lambda: Crew.query.order_by(Crew.name).all())
     submit = SubmitField(_l('Submit'))
 
 class RaceSignupForm(FlaskForm):
@@ -152,11 +152,17 @@ class RaceSignupForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class EditOwnedCarForm(FlaskForm):
-    name = StringField(_l('Name (Optional)'))
+    name = StringField(_l('Name'))
     engine_level = SelectField('Engine Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     transmission_level = SelectField('Transmission Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     turbo_level = SelectField('Turbo Level', choices=[(0,'0'),(1,'1')])
     brakes_level = SelectField('Brakes Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     suspension_level = SelectField('Suspension Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'))
+    submit = SubmitField(_l('Submit'))
+
+class AddCrewForm(FlaskForm):
+    name = StringField(_l('Name'))
+    image = StringField(_l('Crew Image'))
+    home_track = QuerySelectField(query_factory=lambda: Track.query.filter(Track.crew_id==None).all())
     submit = SubmitField(_l('Submit'))

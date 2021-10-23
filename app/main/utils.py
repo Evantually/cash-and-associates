@@ -4,6 +4,9 @@ from app.models import User, Product, Company, Inventory, Transaction, Job, Hunt
 from app import db
 from sqlalchemy.sql import func
 import itertools
+import requests
+import random
+from flask import url_for
 
 def organize_data_by_date(data):
     output = {}
@@ -500,3 +503,35 @@ def get_timezones(utc_time):
     time3 = utc.astimezone(central_europe).strftime(fmt)
 
     return time1, time2, time3
+
+def post_to_discord(race):
+    time1, time2, time3 = get_timezones(race.start_time)
+    url = 'https://discord.com/api/webhooks/900813709788737588/GNbqlBQddbpBX0_7z_6Z_uMrBgBwy9lJWP_REcO4T2XUX0QSSPl13tMUpeR8HdW04BBA'
+    data = {
+        'username': 'Encrypted',
+        'embeds': [{
+            'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
+                            Start time: {time1} | {time2} | {time3}\n\
+                            ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
+                            Radio: {random.randint(20, 100) + round(random.random(),2)}\n\
+                            Buy-in: ${race.buyin}\n\
+                            [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
+                            :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:',
+            'footer': {
+                'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
+            },
+            'title': 'Encrypted Message',
+            'image': {
+                'url': f'{race.track_info.meet_location}'
+            }
+        }],
+        'content': '@everyone',
+        "allowed_mentions": { "parse": ["everyone"] }
+    }
+    result = requests.post(url, json=data, headers={"Content-Type": "application/json"})
+    try:
+        result.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+    else:
+        print("Payload delivered successfully, code {}.".format(result.status_code))

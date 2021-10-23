@@ -11,18 +11,18 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm, ManageRacerForm, AddCarForm,
     AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm,
-    EditRaceForm)
+    EditRaceForm, AddCrewForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
-                        RacePerformance)
+                        RacePerformance, Crew)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
-                            get_available_classes, determine_crew_points, get_timezones)
-import requests
-import random
+                            get_available_classes, determine_crew_points, get_timezones,
+                            post_to_discord)
+
 
 @bp.before_app_request
 def before_request():
@@ -749,6 +749,26 @@ def add_track():
     return render_template('add_product.html', title=_('Add Track'),
                            form=form)
 
+@bp.route('/add_crew', methods=['GET', 'POST'])
+@login_required
+def add_crew():
+    if current_user.race_lead:
+        form = AddCrewForm()
+        if form.validate_on_submit():
+            crew = Crew(name=form.name.data, points=30,
+                        image=form.image.data, track_id=form.home_track.data.id)
+            db.session.add(crew)
+            db.session.commit()
+            track = Track.query.filter_by(id=crew.track_id).first()
+            track.crew_id = crew.id
+            db.session.commit()
+            flash(f'{crew.name} has been added as a crew.')
+            return redirect(url_for('main.add_crew'))
+        return render_template('add_product.html', title=_('Add Crew'),
+                           form=form)
+    flash('You do not have access to add crews.')
+    return redirect(url_for('main.index'))
+
         # END ADD STUFF
         # START MANAGE STUFF
 
@@ -833,36 +853,7 @@ def setup_race():
             except:
                 track.times_ran = 1
             db.session.commit()
-            time1, time2, time3 = get_timezones(race.start_time)
-            url = 'https://discord.com/api/webhooks/900817340772528179/S47e8Ar0ngjxL6cvalAuNKWTUCT2zrCekG66syDtY_9hYcQvLjpfr3CpnPJ-6OE-_Mzq'
-            data = {
-                'username': 'Encrypted',
-                'embeds': [{
-                    'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
-                                    Start time: {time1} | {time2} | {time3}\n\
-                                    ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message.)\n\
-                                    Radio: {random.randint(20, 100) + round(random.random(),2)}\n\
-                                    Buy-in: ${race.buyin}\n\
-                                    [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
-                                    :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:',
-                    'footer': {
-                        'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
-                    },
-                    'title': 'Encrypted Message',
-                    'image': {
-                        'url': f'{race.track_info.meet_location}'
-                    }
-                }],
-                'content': '@everyone',
-                "allowed_mentions": { "parse": ["everyone"] }
-            }
-            result = requests.post(url, json=data, headers={"Content-Type": "application/json"})
-            try:
-                result.raise_for_status()
-            except requests.exceptions.HTTPError as err:
-                print(err)
-            else:
-                print("Payload delivered successfully, code {}.".format(result.status_code))
+            post_to_discord(race)
             flash(f'{race.name} has been setup.')
             if race.crew_race:
                 return redirect(url_for('main.manage_crew_race', race_id=race.id))
@@ -896,7 +887,7 @@ def manage_racers(user_id):
             user.racer = form.racer.data
             user.race_lead = form.race_lead.data
             user.racer_updated = datetime.utcnow()
-            user.race_crew = form.crew.data
+            user.crew_id = form.crew.data.id
             db.session.commit()
             flash(f'Racer info updated for {user.username}')
             return redirect(url_for('main.manage_racer_perms'))
@@ -928,6 +919,26 @@ def manage_crew_race(race_id):
         return render_template('crew_race_manager.html', racers=racers, 
                             crew_names=crew_names, 
                             title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
+    flash('You do not have access to this page.')
+    return redirect(url_for('main.index'))
+
+@bp.route('/edit_crew/<crew_id>', methods=['GET','POST'])
+@login_required
+def edit_crew(crew_id):
+    if current_user.race_lead:
+        crew = Crew.query.filter_by(id=crew_id).first()
+        form = AddCrewForm(name=crew.name, image=crew.image)
+        if request.method == 'GET':
+            form.home_track.choices = [(tr.id, tr.name) for tr in Track.query.filter((Track.crew_id==None)|(Track.crew_id==crew.id)).all()]
+            form.home_track.data = Track.query.filter_by(id=crew.track_id).first()
+        if form.validate_on_submit():
+            crew.track_id = form.home_track.data.id
+            crew.image = form.image.data
+            crew.name = form.name.data
+            db.session.commit()
+            flash(f'{crew.name} has been updated.')
+            return redirect(url_for('main.crew_info'))
+        return render_template('add_product.html', form=form, title=f'Edit Crew - {crew.name}')
     flash('You do not have access to this page.')
     return redirect(url_for('main.index'))
 
@@ -1062,6 +1073,15 @@ def check_race_finish():
         #END API CALLS
     # END RACE LEAD SECTION
     # START RACER SECTION
+
+@bp.route('/crew_info', methods=['GET'])
+@login_required
+def crew_info():
+    if current_user.racer:
+        crews = Crew.query.all()
+        return render_template('crew_info.html', crews=crews)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
 
 @bp.route('/upcoming_races', methods=['GET'])
 @login_required
