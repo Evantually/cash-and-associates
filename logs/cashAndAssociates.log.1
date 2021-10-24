@@ -1,71 +1,10 @@
-2021-10-23 12:37:47,972 ERROR: Exception on /add_crew [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-23 13:09:34,387 ERROR: Exception on /edit_crew/1 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 758, in add_crew
-    form.home_track.choices = [("", "---")+[(tr.id, tr.name) for tr in Track.query.filter(Track.crew_id==None).all()]]
-TypeError: can only concatenate tuple (not "list") to tuple
-2021-10-23 12:41:24,073 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 12:41:36,705 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 12:58:09,419 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 12:58:21,242 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:00:03,496 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:00:05,664 ERROR: Exception on /manage_racers/66 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 887, in manage_racers
-    form.crew.choices = [('','---')+[Crew.query.order_by(Crew.name).all()]]
-TypeError: can only concatenate tuple (not "list") to tuple
-2021-10-23 13:00:36,275 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:00:36,607 ERROR: Exception on /manage_racers/66 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 887, in manage_racers
-    form.crew.choices = [('','---')+[(cr.id, cr.name) for cr in Crew.query.order_by(Crew.name).all()]]
-TypeError: can only concatenate tuple (not "list") to tuple
-2021-10-23 13:01:43,312 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:02:33,109 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:03:01,386 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:08:26,133 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:08:38,475 ERROR: Exception on /edit_crew/1 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 500, in _literal_coercion
-    return expr._bind_param(operator, element, type_=bindparam_type)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 4451, in _bind_param
-    return BindParameter(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 1417, in __init__
-    self.type = _compared_to_type.coerce_compared_value(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\type_api.py", line 665, in coerce_compared_value
-    _coerced_type = _resolve_value_to_type(value)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 3276, in _resolve_value_to_type
-    raise exc.ArgumentError(
-sqlalchemy.exc.ArgumentError: Object Oil is not legal as a SQL literal value
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.ProgrammingError: can't adapt type 'Track'
 
 The above exception was the direct cause of the following exception:
 
@@ -80,41 +19,92 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 938, in edit_crew
-    track = Track.query.filter_by(id=form.home_track.data).first()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 1751, in filter_by
-    clauses = [
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 1752, in <listcomp>
-    _entity_namespace_key(from_entity, key) == value
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
-    return self.operate(eq, other)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 316, in operate
-    return op(self.comparator, *other, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
-    return self.operate(eq, other)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\properties.py", line 430, in operate
-    return op(self.__clause_element__(), *other, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\annotation.py", line 221, in __eq__
-    return self.__element.__class__.__eq__(self, other)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
-    return self.operate(eq, other)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 813, in operate
-    return op(self.comparator, *other, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
-    return self.operate(eq, other)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\type_api.py", line 76, in operate
-    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 97, in _boolean_compare
-    obj = coercions.expect(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 186, in expect
-    resolved = impl._literal_coercion(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 502, in _literal_coercion
-    self._raise_for_expected(element, err=err)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 487, in _raise_for_expected
-    return super(ExpressionElementImpl, self)._raise_for_expected(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 282, in _raise_for_expected
-    util.raise_(exc.ArgumentError(msg, code=code), replace_context=err)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 944, in edit_crew
+    db.session.commit()
+  File "<string>", line 2, in commit
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1428, in commit
+    self._transaction.commit(_to_root=self.future)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 829, in commit
+    self._prepare_impl()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 808, in _prepare_impl
+    self.session.flush()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3298, in flush
+    self._flush(objects)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3438, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
     raise exception
-sqlalchemy.exc.ArgumentError: SQL expression element or literal value expected, got Oil.
-2021-10-23 13:09:26,119 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3398, in _flush
+    flush_context.execute()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 456, in execute
+    rec.execute(self)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 630, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 234, in save_obj
+    _emit_update_statements(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 998, in _emit_update_statements
+    c = connection._execute_20(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
+    ret = self._execute_context(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
+    self._handle_dbapi_exception(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
+    util.raise_(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: <unprintable ProgrammingError object>
+2021-10-23 13:09:52,876 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 13:11:00,679 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 13:11:51,163 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 13:50:49,003 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1071, in get_crew_scores
+    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
+IndexError: list index out of range
+2021-10-23 13:50:49,016 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1071, in get_crew_scores
+    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
+IndexError: list index out of range
+2021-10-23 13:53:10,690 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 14:01:32,777 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 14:42:48,640 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 14:43:51,596 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 14:44:09,619 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 14:44:26,587 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 14:44:37,184 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 14:45:52,246 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 16:01:14,211 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 16:02:56,679 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 17:37:32,419 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 21:23:59,972 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

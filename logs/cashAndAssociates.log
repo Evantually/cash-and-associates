@@ -1,10 +1,13 @@
-2021-10-23 13:09:34,387 ERROR: Exception on /edit_crew/1 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-23 21:24:46,520 ERROR: Exception on /setup_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-psycopg2.ProgrammingError: can't adapt type 'Track'
+psycopg2.errors.UndefinedColumn: column "octane_member" of relation "race" does not exist
+LINE 1: ...rack, crew_race, highest_class, finalized, buyin, octane_mem...
+                                                             ^
+
 
 The above exception was the direct cause of the following exception:
 
@@ -19,15 +22,22 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 944, in edit_crew
-    db.session.commit()
-  File "<string>", line 2, in commit
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1428, in commit
-    self._transaction.commit(_to_root=self.future)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 829, in commit
-    self._prepare_impl()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 808, in _prepare_impl
-    self.session.flush()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 849, in setup_race
+    track = Track.query.filter_by(id=form.track.data.id).first()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2760, in first
+    return self.limit(1)._iter().first()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
+    result = self.session.execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1637, in execute
+    ) = compile_state_cls.orm_pre_session_exec(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\context.py", line 289, in orm_pre_session_exec
+    session._autoflush()
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2204, in _autoflush
+    util.raise_(e, with_traceback=sys.exc_info()[2])
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2193, in _autoflush
+    self.flush()
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3298, in flush
     self._flush(objects)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 3438, in _flush
@@ -42,10 +52,10 @@ Traceback (most recent call last):
     rec.execute(self)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 630, in execute
     util.preloaded.orm_persistence.save_obj(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 234, in save_obj
-    _emit_update_statements(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 998, in _emit_update_statements
-    c = connection._execute_20(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 242, in save_obj
+    _emit_insert_statements(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\persistence.py", line 1219, in _emit_insert_statements
+    result = connection._execute_20(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
     return meth(self, args_10style, kwargs_10style, execution_options)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
@@ -62,48 +72,13 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.ProgrammingError: <unprintable ProgrammingError object>
-2021-10-23 13:09:52,876 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:11:00,679 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:11:51,163 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 13:50:49,003 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1071, in get_crew_scores
-    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
-IndexError: list index out of range
-2021-10-23 13:50:49,016 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1071, in get_crew_scores
-    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
-IndexError: list index out of range
-2021-10-23 13:53:10,690 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 14:01:32,777 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 14:42:48,640 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 14:43:51,596 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 14:44:09,619 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 14:44:26,587 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 14:44:37,184 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 14:45:52,246 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 16:01:14,211 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 16:02:56,679 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-23 17:37:32,419 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+sqlalchemy.exc.ProgrammingError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UndefinedColumn) column "octane_member" of relation "race" does not exist
+LINE 1: ...rack, crew_race, highest_class, finalized, buyin, octane_mem...
+                                                             ^
+
+[SQL: INSERT INTO race (timestamp, name, start_time, laps, track, crew_race, highest_class, finalized, buyin, octane_member, octane_prospect, octane_crew, open_249, new_blood_249, offroad_249, moto_249) VALUES (%(timestamp)s, %(name)s, %(start_time)s, %(laps)s, %(track)s, %(crew_race)s, %(highest_class)s, %(finalized)s, %(buyin)s, %(octane_member)s, %(octane_prospect)s, %(octane_crew)s, %(open_249)s, %(new_blood_249)s, %(offroad_249)s, %(moto_249)s) RETURNING race.id]
+[parameters: {'timestamp': datetime.datetime(2021, 10, 24, 2, 24, 46, 507011), 'name': 'Toot Toot', 'start_time': datetime.datetime(2021, 10, 24, 2, 45), 'laps': 3, 'track': 2, 'crew_race': False, 'highest_class': 'A', 'finalized': False, 'buyin': 500, 'octane_member': False, 'octane_prospect': False, 'octane_crew': False, 'open_249': False, 'new_blood_249': False, 'offroad_249': False, 'moto_249': False}]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+2021-10-23 21:24:57,738 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-23 21:25:01,512 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
