@@ -11,17 +11,17 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm, ManageRacerForm, AddCarForm,
     AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm,
-    EditRaceForm, AddCrewForm)
+    EditRaceForm, AddCrewForm, AddToRaceForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
-                        RacePerformance, Crew)
+                        RacePerformance, Crew, CrewResults)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
                             get_available_classes, determine_crew_points, get_timezones,
-                            post_to_discord)
+                            post_to_discord, calculate_crew_points)
 
 
 @bp.before_app_request
@@ -709,6 +709,29 @@ def add_blackjack_entry():
 # START RACE SECTION
 
     # RACE LEAD SECTION
+        # TESTING ROUTES
+
+@bp.route('/add_to_race', methods=['GET', 'POST'])
+@login_required
+def add_to_race():
+    form = AddToRaceForm()
+    ocs = OwnedCar.query.all()
+    races = Race.query.all()
+    form.car.choices = [(oc.id, oc.name) for oc in ocs]
+    form.race.choices = [(race.id, race.name) for race in races]
+    if form.validate_on_submit():
+        race = Race.query.filter_by(id=form.race.data).first()
+        car = OwnedCar.query.filter_by(id=form.car.data).first()
+        rp = RacePerformance(user_id=car.user_id, car_id=car.car_id, car_details=car.id,
+                            track_id=race.track_info.id, race_id=race.id)
+        db.session.add(rp)
+        db.session.commit()
+        flash(f'{car.name} has been added to {race.name}.')
+        return redirect(url_for('main.add_to_race'))
+    return render_template('add_product.html', form=form)
+
+
+        # END TESTING ROUTES
         # START ADD STUFF
 @bp.route('/add_car', methods=['GET', 'POST'])
 @login_required
@@ -754,7 +777,7 @@ def add_crew():
     if current_user.race_lead:
         form = AddCrewForm()
         if form.validate_on_submit():
-            crew = Crew(name=form.name.data, points=30,
+            crew = Crew(name=form.name.data, points=100,
                         image=form.image.data, track_id=form.home_track.data.id)
             db.session.add(crew)
             db.session.commit()
@@ -843,8 +866,12 @@ def setup_race():
             utc_time = utc_time_init.replace('Z','')
             race = Race(name=form.name.data, start_time=datetime.strptime(utc_time,'%Y-%m-%d %H:%M:%S'),
                         laps=form.laps.data, track=form.track.data.id,
-                        highest_class=form.highest_class.data, crew_race=form.crew_race.data,
-                        buyin=form.buyin.data)
+                        highest_class=form.highest_class.data, crew_race=form.octane_crew.data,
+                        buyin=form.buyin.data, octane_member=form.octane_member.data,
+                        octane_prospect=form.octane_prospect.data, octane_crew=form.octane_crew.data,
+                        open_249=form.open_249.data, new_blood_249=form.new_blood_249.data,
+                        offroad_249=form.offroad_249.data, moto_249=form.moto_249.data,
+                        challenging_crew_id=form.challenging_crew.data.id, defending_crew_id=form.defending_crew.data.id)
             db.session.add(race)
             track = Track.query.filter_by(id=form.track.data.id).first()
             try:
@@ -919,6 +946,8 @@ def manage_crew_race(race_id):
         for racer in racers:
             if racer.user_info.race_crew not in crew_names:
                 crew_names.append(racer.user_info.race_crew)
+        if len(crew_names) < 1:
+            crew_names = ['Crew 1', 'Crew 2']
         return render_template('crew_race_manager.html', racers=racers, 
                             crew_names=crew_names, 
                             title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {race.laps} Laps', race=race)
@@ -985,6 +1014,8 @@ def edit_race(race_id):
             race.laps = form.laps.data
             race.highest_class = form.highest_class.data
             race.crew_race = form.crew_race.data
+            race.challenging_crew_id = form.challenging_crew.data.id
+            race.defending_crew_id = form.defending_crew.data.id
             db.session.commit()
             flash(f'{race.name} has been updated successfully.')
             return redirect(url_for('main.manage_race', race_id=race.id))
@@ -1031,6 +1062,19 @@ def finalize_race():
             rp.end_position = index + 1            
             db.session.commit()
         race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
+        if race.crew_race:
+            results = calculate_crew_points(race_info, True)
+            if CrewResults.query.filter_by(race_id=race.id).first():
+                cr = CrewResults.query.filter_by(race_id=race.id).first()
+                cr.challenging_crew_points=results['cc_score']
+                cr.defending_crew_points=results['dc_score']
+                db.session.commit()
+            else:
+                cr = CrewResults(race_id=race.id, challenging_crew=race.challenging_crew_id,
+                                defending_crew=race.defending_crew_id, challenging_crew_points=results['cc_score'],
+                                defending_crew_points=results['dc_score'])
+                db.session.add(cr)
+                db.session.commit()
         race.finalized = True
         db.session.commit()
         return jsonify({'text': "The race has been finalized successfully."})
@@ -1040,35 +1084,8 @@ def finalize_race():
 @login_required
 def get_crew_scores():
     race_info = request.get_json()
-    racers = race_info['racer_order']
-    dnfs = race_info['dnf_order']
-    crews = []
-    crew1 = []
-    crew2 = []
-    for racer in racers:
-        if racer[3] not in crews:
-            crews.append(racer[3])
-    for racer in dnfs:
-        if racer[3] not in crews:
-            crews.append(racer[3])
-    for index, racer in enumerate(racers):
-        rp = RacePerformance.query.filter_by(id=racer[0]).first()
-        rp.end_position = index + 1
-        db.session.commit()
-        if racer[3] == crews[0]:
-            crew1.append(rp)
-        else:
-            crew2.append(rp)
-    for index, racer in enumerate(dnfs):
-        rp = RacePerformance.query.filter_by(id=racer[0]).first()
-        rp.end_position = 0
-        db.session.commit()
-        if racer[3] == crews[0]:
-            crew1.append(rp)
-        else:
-            crew2.append(rp)
-    crew1_score, crew2_score = determine_crew_points(crew1, crew2)
-    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
+    output = calculate_crew_points(race_info)
+    return output
 
 @bp.route('/race/check_if_finished', methods=['POST'])
 @login_required
@@ -1087,8 +1104,9 @@ def check_race_finish():
 @login_required
 def crew_info():
     if current_user.racer:
-        crews = Crew.query.all()
-        return render_template('crew_info.html', crews=crews)
+        crews = Crew.query.order_by(Crew.points).all()
+        return render_template('crew_info.html', crews=crews, race_performance=RacePerformance, 
+                                crew_results=CrewResults, func=func, race=Race)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 
@@ -1159,6 +1177,10 @@ def edit_owned_car(car_id):
 def race_signup(race_id):
     if current_user.racer:
         race = Race.query.filter_by(id=race_id).first()
+        if race.crew_race:
+            if current_user.crew_id not in ([race.defending_crew_id, race.challenging_crew_id]):
+                flash('You are not in a crew associated with this race. If this is an error talk to an organizer.')
+                return redirect(url_for('main.upcoming_races'))            
         if RacePerformance.query.filter_by(race_id=race.id).filter_by(user_id=current_user.id).first():
             flash('You have already registered for this race.')
             return redirect(url_for('main.race_info', race_id=race.id))

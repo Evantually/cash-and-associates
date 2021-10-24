@@ -301,6 +301,8 @@ class Race(db.Model):
     new_blood_249 = db.Column(db.Boolean, default=False)
     offroad_249 = db.Column(db.Boolean, default=False)
     moto_249 = db.Column(db.Boolean, default=False)
+    challenging_crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
+    defending_crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
 
 class RacePerformance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -311,6 +313,7 @@ class RacePerformance(db.Model):
     car_info = db.relationship('OwnedCar')
     track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
     race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
+    race_info = db.relationship('Race')
     start_position = db.Column(db.Integer, default=0)
     end_position = db.Column(db.Integer, default=0)
 
@@ -328,6 +331,7 @@ class Crew(db.Model):
 class CrewResults(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
+    race_info = db.relationship('Race')
     challenging_crew = db.Column(db.Integer, db.ForeignKey('crew.id'))
     defending_crew = db.Column(db.Integer, db.ForeignKey('crew.id'))
     challenging_crew_points = db.Column(db.Integer)

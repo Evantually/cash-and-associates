@@ -128,7 +128,15 @@ class SetupRaceForm(FlaskForm):
     laps = IntegerField(_l('Laps'))
     highest_class = StringField(_l('Highest Class Allowed'))
     buyin = IntegerField(_l('Buy-in'))
-    crew_race = BooleanField('Crew Race?')
+    octane_member = BooleanField('Octane Member Race')
+    octane_prospect = BooleanField('Octane Prospect Race')
+    octane_crew = BooleanField('Octane Crew Race')
+    open_249 = BooleanField('249 Open League Race')
+    new_blood_249 = BooleanField('249 New Blood Race')
+    offroad_249 = BooleanField('249 Offroad Race')
+    moto_249 = BooleanField('249 Moto Race')
+    challenging_crew = QuerySelectField(query_factory=lambda: Crew.query.order_by(Crew.name).all())
+    defending_crew = QuerySelectField(query_factory=lambda: Crew.query.order_by(Crew.name).all())
     submit = SubmitField(_l('Submit'))
 
 class EditRaceForm(FlaskForm):
@@ -137,6 +145,8 @@ class EditRaceForm(FlaskForm):
     laps = IntegerField(_l('Laps'))
     highest_class = StringField(_l('Highest Class Allowed'))
     crew_race = BooleanField('Crew Race?')
+    challenging_crew = QuerySelectField(query_factory=lambda: Crew.query.order_by(Crew.name).all())
+    defending_crew = QuerySelectField(query_factory=lambda: Crew.query.order_by(Crew.name).all())
     delete_race = BooleanField('Delete Race?')
     submit = SubmitField(_l('Submit'))
 
@@ -165,4 +175,10 @@ class AddCrewForm(FlaskForm):
     name = StringField(_l('Name'))
     image = StringField(_l('Crew Image'))
     home_track = QuerySelectField(query_factory=lambda: Track.query.filter(Track.crew_id==None).all())
+    points = IntegerField(_l('Points'))
+    submit = SubmitField(_l('Submit'))
+
+class AddToRaceForm(FlaskForm):
+    race = SelectField('Race')
+    car = SelectField('Car')
     submit = SubmitField(_l('Submit'))

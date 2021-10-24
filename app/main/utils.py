@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
 import pytz
-from app.models import User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry
+from app.models import User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry, Crew, Race, RacePerformance
 from app import db
 from sqlalchemy.sql import func
 import itertools
 import requests
 import random
-from flask import url_for
+from flask import url_for, jsonify
+from config import Config
 
 def organize_data_by_date(data):
     output = {}
@@ -504,26 +505,34 @@ def get_timezones(utc_time):
 
     return time1, time2, time3
 
+def calculate_payouts(race):
+    rps = RacePerformance.query.filter_by(race_id=race.id).filter(RacePerformance.end_position != 0).order_by(RacePerformance.end_position).limit(3).all()
+    payout_total = race.buyin * len(RacePerformance.query.filter_by(race_id=race.id).all())
+    payout_percentages = [.5,.25,.15]
+    payouts = [i*payout_total for i in payout_percentages]
+    return list(zip(payouts, rps))
+
 def post_to_discord(race):
     time1, time2, time3 = get_timezones(race.start_time)
     alert_urls = []
     if race.octane_member:
-        alert_urls.append([OCTANE_MEMBER_WEBHOOK, 'League Member'])
+        alert_urls.append([Config.OCTANE_MEMBER_WEBHOOK, 'League Member'])
     if race.octane_prospect:
-        alert_urls.append(OCTANE_PROSPECT_WEBHOOK, 'Prospect')
+        alert_urls.append([Config.OCTANE_PROSPECT_WEBHOOK, 'Prospect'])
     if race.octane_crew:
-        alert_urls.append(OCTANE_ALERT_WEBHOOK, 'everyone')
+        alert_urls.append([Config.OCTANE_ALERT_WEBHOOK, 'everyone'])
     if race.open_249:
-        alert_urls.append(TWOFOURNINE_OPEN_WEBHOOK, 'Open League')
+        alert_urls.append([Config.TWOFOURNINE_OPEN_WEBHOOK, 'Open League'])
     if race.new_blood_249:
-        alert_urls.append(TWOFOURNINE_NB_WEBHOOK, 'New Blood')
+        alert_urls.append([Config.TWOFOURNINE_NB_WEBHOOK, 'New Blood'])
     if race.offroad_249:
-        alert_urls.append(TWOFOURNINE_OFFROAD_WEBHOOK, 'Offroad League')
+        alert_urls.append([Config.TWOFOURNINE_OFFROAD_WEBHOOK, 'Offroad League'])
     if race.moto_249:
-        alert_urls.append(TWOFOURNINE_MOTO_WEBHOOK, 'Moto League')
+        alert_urls.append([Config.TWOFOURNINE_MOTO_WEBHOOK, 'Moto League'])
     if len(alert_urls) == 0:
-        alert_urls.append(ALERT_TESTING_WEBHOOK)
+        alert_urls.append([Config.ALERT_TESTING_WEBHOOK, ''])
     for url in alert_urls:
+        joint_race = 'JOINT RACE' if len(alert_urls) > 1 else ''
         data = {
             'username': 'Encrypted',
             'embeds': [{
@@ -533,18 +542,18 @@ def post_to_discord(race):
                                 Radio: {random.randint(20, 100) + round(random.random(),2)}\n\
                                 Buy-in: ${race.buyin}\n\
                                 [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
-                                :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:',
+                                :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:\n\
+                                {joint_race}',
                 'footer': {
                     'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
                 },
-                'title': 'Encrypted Message',
-                'image': {
-                    'url': f'{race.track_info.meet_location}'
-                }
+                'title': 'Encrypted Message'
             }],
             'content': f'@{url[1]}',
             "allowed_mentions": { "parse": [url[1]] }
         }
+        if race.track_info.meet_location:
+            data['embeds'][0]['image'] = {'url': race.track_info.meet_location}
         result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
         try:
             result.raise_for_status()
@@ -552,3 +561,48 @@ def post_to_discord(race):
             print(err)
         else:
             print("Payload delivered successfully, code {}.".format(result.status_code))
+
+def calculate_crew_points(race_info, db_entry=False):
+    racers = race_info['racer_order']
+    dnfs = race_info['dnf_order']
+    race_id = race_info['race_id']
+    challenging_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().challenging_crew_id).first()
+    defending_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().defending_crew_id).first()
+    crews = []
+    crew1 = []
+    crew2 = []
+    for racer in racers:
+        try:
+            if racer[3] not in crews:
+                crews.append(racer[3])
+        except IndexError as err:
+            print(err, racer)
+    for racer in dnfs:
+        if racer[3] not in crews:
+            crews.append(racer[3])
+    for index, racer in enumerate(racers):
+        rp = RacePerformance.query.filter_by(id=racer[0]).first()
+        rp.end_position = index + 1
+        db.session.commit()
+        if racer[3] == crews[0]:
+            crew1.append(rp)
+        else:
+            crew2.append(rp)
+    for index, racer in enumerate(dnfs):
+        rp = RacePerformance.query.filter_by(id=racer[0]).first()
+        rp.end_position = 0
+        db.session.commit()
+        if racer[3] == crews[0]:
+            crew1.append(rp)
+        else:
+            crew2.append(rp)
+    crew1_score, crew2_score = determine_crew_points(crew1, crew2)
+    if crews[0] == challenging_crew.name:
+        challenging_crew_score = crew1_score
+        defending_crew_score = crew2_score
+    else:
+        challenging_crew_score = crew2_score
+        defending_crew_score = crew1_score
+    if db_entry:
+        return {'challenging_crew': challenging_crew,'defending_crew': defending_crew, 'cc_score': challenging_crew_score,'dc_score': defending_crew_score}
+    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})

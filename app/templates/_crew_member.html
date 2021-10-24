@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-md-4">{{ member.username }}</div>
+    <div class="col-md-4"><table class="table">
+        <tr>
+            <th>1st</th>
+            <th>2nd</th>
+            <th>3rd</th>
+            <th>4th</th>
+            <th>DNFs</th>
+            <th>Point contribution</th>
+        </tr>
+        <tr class="scores">
+            <td id="first">{{ race_performance.query.with_entities(func.count(race_performance.user_id).label('wins')).join(race, race.id==race_performance.race_id).filter(race.crew_race==True).filter(race_performance.user_id==member.id).filter(race_performance.end_position==1).first()['wins'] }}</td>
+            <td id="second">{{ race_performance.query.with_entities(func.count(race_performance.user_id).label('wins')).join(race, race.id==race_performance.race_id).filter(race.crew_race==True).filter(race_performance.user_id==member.id).filter(race_performance.end_position==2).first()['wins'] }}</td>
+            <td id="third">{{ race_performance.query.with_entities(func.count(race_performance.user_id).label('wins')).join(race, race.id==race_performance.race_id).filter(race.crew_race==True).filter(race_performance.user_id==member.id).filter(race_performance.end_position==3).first()['wins'] }}</td>
+            <td id="fourth">{{ race_performance.query.with_entities(func.count(race_performance.user_id).label('wins')).join(race, race.id==race_performance.race_id).filter(race.crew_race==True).filter(race_performance.user_id==member.id).filter(race_performance.end_position==4).first()['wins'] }}</td>
+            <td id="dnf">{{ race_performance.query.with_entities(func.count(race_performance.user_id).label('wins')).join(race, race.id==race_performance.race_id).filter(race.crew_race==True).filter(race_performance.user_id==member.id).filter(race_performance.end_position==0).first()['wins'] }}</td>
+            <td id="points"></td>
+        </tr>
+    </table></div>
+    <div class="col-md-4"></div>
+</div>
+<hr>

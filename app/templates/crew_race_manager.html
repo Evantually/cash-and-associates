@@ -18,8 +18,11 @@
         <div class="col-md-3"><a href="javascript:FinalizeRace();" role="button"><button class="btn btn-primary btn-lg">Finalize Race</button></a></div>
         <div id="raceresults" class="col-md-3" style="visibility: hidden;"><a href="{{ url_for('main.race_results', race_id=race.id) }}" role="button"><button class="btn btn-primary btn-lg">Race Results</button></a></div>
     </div>
+    {% if crew_names | length > 1 %}
     <div id="info" crew1="{{ crew_names[0].replace(' ','') }}" crew2="{{ crew_names[1].replace(' ','') }}" style="visibility: hidden;"></div>
     {% endif %}
+    {% endif %}
+    {% if crew_names | length > 1 %}
     <div class="row">
         <header>
             <h1 class="text-center">Scoreboard</h1>
@@ -94,6 +97,9 @@
 
         </div>
     </div>
+    {% else %}
+    <p>Waiting for crew to join.</p>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
@@ -169,7 +175,7 @@
         animation: 100
     });
     function SetStartPosition() {
-        race_info = GetRacerInfo();
+        race_info = GetRacerData();
         $.ajax(
             {
                 url: '/race/set_start_order' ,
@@ -188,7 +194,7 @@
         })
     }
     function SetEndPosition() {
-        race_info = GetRacerInfo();
+        race_info = GetRacerData();
         $.ajax(
             {
                 url: '/race/set_end_order' ,
@@ -228,16 +234,30 @@
     }
     function GetRacerData() {
         racer_order = [];
+        dnf_order = [];
+        race_id = $('#placements').attr('race-id');
         $("#placements li").each(function(index, elem) {
             let racer_info = $(elem);
             racer_order.push([
                 parseInt(racer_info.attr('racer-id')), 
                 parseInt(racer_info.attr('user-id')),
-                parseInt(racer_info.attr('car-id'))
+                parseInt(racer_info.attr('car-id')),
+                racer_info.attr('crew-name')
+            ]);
+        });
+        $("#dnfs li").each(function(index, elem) {
+            let racer_info = $(elem);
+            dnf_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id')),
+                racer_info.attr('crew-name')
             ]);
         });
         race_info = {
             racer_order: racer_order,
+            dnf_order: dnf_order,
+            race_id: race_id,
             auth_id: parseInt($("#user").attr('auth-id'))
         }
         return race_info
