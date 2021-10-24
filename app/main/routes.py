@@ -90,7 +90,6 @@ def add_product():
 @login_required
 def add_transaction():
     form = AddTransactionForm()
-    choices = [("","---")]
     form.product.choices = [("", "---")]+[(s.id, s.name) for s in Product.query.filter_by(company_id=current_user.company).all()]
     if form.validate_on_submit():
         if form.product.data == "":
@@ -882,12 +881,16 @@ def manage_racer_perms():
 def manage_racers(user_id):
     if current_user.access_level == 'admin' or current_user.race_lead:
         user = User.query.filter_by(id=user_id).first()
-        form = ManageRacerForm(racer=user.racer, race_lead=user.race_lead)
+        form = ManageRacerForm(racer=user.racer, race_lead=user.race_lead, crew=user.crew_id)
+        form.crew.choices = [('','---')]+[(cr.id, cr.name) for cr in Crew.query.order_by(Crew.name).all()]
         if form.validate_on_submit():
             user.racer = form.racer.data
             user.race_lead = form.race_lead.data
             user.racer_updated = datetime.utcnow()
-            user.crew_id = form.crew.data.id
+            if form.crew.data:
+                user.crew_id = form.crew.data
+            else:
+                user.crew_id = None
             db.session.commit()
             flash(f'Racer info updated for {user.username}')
             return redirect(url_for('main.manage_racer_perms'))
@@ -928,10 +931,16 @@ def edit_crew(crew_id):
     if current_user.race_lead:
         crew = Crew.query.filter_by(id=crew_id).first()
         form = AddCrewForm(name=crew.name, image=crew.image)
+        form.home_track.choices = [(tr.id, tr.name) for tr in Track.query.filter((Track.crew_id==None)|(Track.crew_id==crew.id)).all()]
         if request.method == 'GET':
-            form.home_track.choices = [(tr.id, tr.name) for tr in Track.query.filter((Track.crew_id==None)|(Track.crew_id==crew.id)).all()]
             form.home_track.data = Track.query.filter_by(id=crew.track_id).first()
         if form.validate_on_submit():
+            old_track = Track.query.filter_by(id=crew.track_id).first()
+            old_track.crew_id = None
+            db.session.commit()
+            track = Track.query.filter_by(id=form.home_track.data.id).first()
+            track.crew_id = crew.id
+            db.session.commit()
             crew.track_id = form.home_track.data.id
             crew.image = form.image.data
             crew.name = form.name.data

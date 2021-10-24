@@ -1,4 +1,4 @@
-2021-10-22 13:45:12,729 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:48:57,992 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -13,7 +13,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:17,733 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:03,000 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -28,7 +28,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:22,740 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:08,009 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -43,7 +43,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:27,753 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:13,025 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -58,7 +58,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:32,763 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:18,025 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -73,7 +73,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:37,766 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:23,031 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -88,7 +88,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:42,773 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:28,037 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -103,7 +103,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:47,788 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:33,051 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -118,7 +118,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1068, in check_race_finish
     race = Race.query.filter_by(id=race_info['race_id']).first()
 KeyError: 'race_id'
-2021-10-22 13:45:52,791 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-22 13:49:38,056 ERROR: Exception on /race/check_if_finished [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()

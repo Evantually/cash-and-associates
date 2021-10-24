@@ -15,6 +15,14 @@ class Config(object):
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    OCTANE_MEMBER_WEBHOOK = os.environ.get('OCTANE_MEMBER_WEBHOOK')
+    OCTANE_PROSPECT_WEBHOOK = os.environ.get('OCTANE_PROSPECT_WEBHOOK')
+    OCTANE_ALERT_WEBHOOK = os.environ.get('OCTANE_ALERT_WEBHOOK')
+    ALERT_TESTING_WEBHOOK = os.environ.get('ALERT_TESTING_WEBHOOK')
+    TWOFOURNINE_OPEN_WEBHOOK = os.environ.get('TWOFOURNINE_OPEN_WEBHOOK')
+    TWOFOURNINE_NB_WEBHOOK = os.environ.get('TWOFOURNINE_NB_WEBHOOK')
+    TWOFOURNINE_OFFROAD_WEBHOOK = os.environ.get('TWOFOURNINE_OFFROAD_WEBHOOK')
+    TWOFOURNINE_MOTO_WEBHOOK = os.environ.get('TWOFOURNINE_MOTO_WEBHOOK')
     ADMINS = ['your-email@example.com']
     LANGUAGES = ['en', 'es']
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')

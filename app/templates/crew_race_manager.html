@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block metas %}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename='styles/scoreboard.css')}}">
+<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet"> 
+{% endblock %}
+
 {% block app_content %}
     <h1 id="user" auth-id="{{ current_user.id }}"">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>{{ title }}</h2>
@@ -9,9 +15,26 @@
     <div class="row">
         <div class="col-md-3"><a href="javascript:SetStartPosition();" role="button"><button class="btn btn-primary btn-lg">Set Starting Positions</button></a></div>
         <div class="col-md-3"><a href="javascript:SetEndPosition();" role="button"><button class="btn btn-primary btn-lg">Set Ending Positions</button></a></div>
+        <div class="col-md-3"><a href="javascript:FinalizeRace();" role="button"><button class="btn btn-primary btn-lg">Finalize Race</button></a></div>
+        <div id="raceresults" class="col-md-3" style="visibility: hidden;"><a href="{{ url_for('main.race_results', race_id=race.id) }}" role="button"><button class="btn btn-primary btn-lg">Race Results</button></a></div>
     </div>
     <div id="info" crew1="{{ crew_names[0].replace(' ','') }}" crew2="{{ crew_names[1].replace(' ','') }}" style="visibility: hidden;"></div>
     {% endif %}
+    <div class="row">
+        <header>
+            <h1 class="text-center">Scoreboard</h1>
+        </header>
+        <div class="scorecontainer">
+            <div class="btncontainer">
+                <h2>{{ crew_names[0] }}</h2>
+                <div class="btn-score" id="team1" team-id="{{ crew_names[0].replace(' ','') }}1">0</div>
+            </div>
+            <div class="btncontainer">
+                <h2>{{ crew_names[1] }}</h2>
+                <div class="btn-score" id="team2" team-id="{{ crew_names[1].replace(' ','') }}1">0</div>
+            </div>
+        </div>
+    </div>
     <h3>Registered Racers (<span id="num_racers">{{ racers | length }})</span></h3>
     <div class="row">
         <div class="col-md-3"><h2>{{ crew_names[0] }}</h2></div>
@@ -61,21 +84,6 @@
         <div class="col-md-6">
             <h3>DNF Section <span id="num_dnf"></span></h3>
         </div>
-        <div class="col-md-6">
-            <h3>Scoreboard</h3>
-            <table>
-                <tr>
-                    <th>Crew</th>
-                    <th>Score</th>
-                </tr>
-            {% for crew_name in crew_names %}
-            <tr>
-                <td>{{ crew_name }}</td>
-                <td id="{{ crew_name.replace(' ','') }}1"></td>
-            </tr>
-            {% endfor %}
-            </table>
-        </div>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -92,10 +100,7 @@
 {{ super() }}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
-    function GetCrewScores(race_id) {
-        $.post('/get_crew_scores')
-    }
-    $("#placements").on("change", function() {
+    $("#placements").on("mouseenter mouseleave change", function() {
         racer_order = [];
         dnf_order = [];
         $('#placements li').each(function(index, elem) {
@@ -129,8 +134,8 @@
             contentType: "application/json; charset=utf-8"
         })
         .done(function(response) {
-            $(`#${response['crew1name']}1`).text(response['crew1score'])
-            $(`#${response['crew2name']}1`).text(response['crew2score'])
+            $(`[team-id="${response['crew1name']}1"]`).text(response['crew1score'])
+            $(`[team-id="${response['crew2name']}1"]`).text(response['crew2score'])
             // success_audio.play();
         })
         .fail(function() {
@@ -164,20 +169,7 @@
         animation: 100
     });
     function SetStartPosition() {
-        racer_order = [];
-        $("#placements li").each(function(index, elem) {
-            let racer_info = $(elem);
-            racer_order.push([
-                parseInt(racer_info.attr('racer-id')), 
-                parseInt(racer_info.attr('user-id')),
-                parseInt(racer_info.attr('car-id'))
-            ]);
-        });
-        race_info = {
-            racer_order: racer_order,
-            auth_id: parseInt($("#user").attr('auth-id'))
-        }
-        console.log(race_info);
+        race_info = GetRacerInfo();
         $.ajax(
             {
                 url: '/race/set_start_order' ,
@@ -196,20 +188,7 @@
         })
     }
     function SetEndPosition() {
-        racer_order = [];
-        $("#placements li").each(function(index, elem) {
-            let racer_info = $(elem);
-            racer_order.push([
-                parseInt(racer_info.attr('racer-id')), 
-                parseInt(racer_info.attr('user-id')),
-                parseInt(racer_info.attr('car-id'))
-            ]);
-        });
-        race_info = {
-            racer_order: racer_order,
-            auth_id: parseInt($("#user").attr('auth-id'))
-        }
-        console.log(race_info);
+        race_info = GetRacerInfo();
         $.ajax(
             {
                 url: '/race/set_end_order' ,
@@ -226,6 +205,42 @@
             $("#response").text("{{ _('Error: Could not contact server.') }}");
                 fail_audio.play();
         })
+    }
+    function FinalizeRace() {
+        race_info = GetRacerData();
+        $.ajax(
+            {
+                url: '/race/finalize_race' ,
+                type: 'POST',
+                data: JSON.stringify(race_info),
+                contentType: "application/json; charset=utf-8"
+            }
+        )
+        .done(function(response) {
+            $("#response").text(response['text'])
+            success_audio.play();
+            $('#raceresults').css('visibility', 'visible');
+        })
+        .fail(function() {
+            $("#response").text("{{ _('Error: Could not contact server.') }}");
+                fail_audio.play();
+        })
+    }
+    function GetRacerData() {
+        racer_order = [];
+        $("#placements li").each(function(index, elem) {
+            let racer_info = $(elem);
+            racer_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id'))
+            ]);
+        });
+        race_info = {
+            racer_order: racer_order,
+            auth_id: parseInt($("#user").attr('auth-id'))
+        }
+        return race_info
     }
 </script>
 {% endblock %}

@@ -143,7 +143,7 @@ class EditRaceForm(FlaskForm):
 class ManageRacerForm(FlaskForm):
     racer = BooleanField('Racer')
     race_lead = BooleanField('Race Lead')
-    crew =  QuerySelectField(query_factory=lambda: Crew.query.order_by(Crew.name).all())
+    crew =  SelectField('Crew')
     submit = SubmitField(_l('Submit'))
 
 class RaceSignupForm(FlaskForm):

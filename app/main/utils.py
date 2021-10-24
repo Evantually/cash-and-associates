@@ -506,32 +506,49 @@ def get_timezones(utc_time):
 
 def post_to_discord(race):
     time1, time2, time3 = get_timezones(race.start_time)
-    url = 'https://discord.com/api/webhooks/900813709788737588/GNbqlBQddbpBX0_7z_6Z_uMrBgBwy9lJWP_REcO4T2XUX0QSSPl13tMUpeR8HdW04BBA'
-    data = {
-        'username': 'Encrypted',
-        'embeds': [{
-            'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
-                            Start time: {time1} | {time2} | {time3}\n\
-                            ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
-                            Radio: {random.randint(20, 100) + round(random.random(),2)}\n\
-                            Buy-in: ${race.buyin}\n\
-                            [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
-                            :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:',
-            'footer': {
-                'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
-            },
-            'title': 'Encrypted Message',
-            'image': {
-                'url': f'{race.track_info.meet_location}'
-            }
-        }],
-        'content': '@everyone',
-        "allowed_mentions": { "parse": ["everyone"] }
-    }
-    result = requests.post(url, json=data, headers={"Content-Type": "application/json"})
-    try:
-        result.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        print(err)
-    else:
-        print("Payload delivered successfully, code {}.".format(result.status_code))
+    alert_urls = []
+    if race.octane_member:
+        alert_urls.append([OCTANE_MEMBER_WEBHOOK, 'League Member'])
+    if race.octane_prospect:
+        alert_urls.append(OCTANE_PROSPECT_WEBHOOK, 'Prospect')
+    if race.octane_crew:
+        alert_urls.append(OCTANE_ALERT_WEBHOOK, 'everyone')
+    if race.open_249:
+        alert_urls.append(TWOFOURNINE_OPEN_WEBHOOK, 'Open League')
+    if race.new_blood_249:
+        alert_urls.append(TWOFOURNINE_NB_WEBHOOK, 'New Blood')
+    if race.offroad_249:
+        alert_urls.append(TWOFOURNINE_OFFROAD_WEBHOOK, 'Offroad League')
+    if race.moto_249:
+        alert_urls.append(TWOFOURNINE_MOTO_WEBHOOK, 'Moto League')
+    if len(alert_urls) == 0:
+        alert_urls.append(ALERT_TESTING_WEBHOOK)
+    for url in alert_urls:
+        data = {
+            'username': 'Encrypted',
+            'embeds': [{
+                'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
+                                Start time: {time1} | {time2} | {time3}\n\
+                                ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
+                                Radio: {random.randint(20, 100) + round(random.random(),2)}\n\
+                                Buy-in: ${race.buyin}\n\
+                                [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
+                                :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:',
+                'footer': {
+                    'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
+                },
+                'title': 'Encrypted Message',
+                'image': {
+                    'url': f'{race.track_info.meet_location}'
+                }
+            }],
+            'content': f'@{url[1]}',
+            "allowed_mentions": { "parse": [url[1]] }
+        }
+        result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
+        try:
+            result.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            print(err)
+        else:
+            print("Payload delivered successfully, code {}.".format(result.status_code))

@@ -3,44 +3,33 @@
 
 {% block metas %}
 {{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename='styles/accordion.css')}}">
 {% endblock %}
 
 {% block app_content %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>Crew Info</h2>
-    <div class="accordion" id="crew_accordion">
-        {% for crew in crews %}
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_{{ crew.id }}">
-                <button class="accordion-button btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ crew.id }}" aria-expanded="false">
-                Accordion Item #1
-                </button>
-            </h2>
-            <div id="collapse_{{ crew.id }}" class="accordion-collapse collapse show" aria-labelledby="heading_{{ crew.id }}" data-bs-parent="#crew_accordion">
-                <div class="accordion-body">
-                    {% for member in crew.members.all() %}
-                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                    {% endfor %}
+    <div class="row">
+        <div class="col">
+            <div class="tabs">
+                {% for crew in crews %}
+                <div class="tab">
+                    <input type="checkbox" id="chck{{ loop.index }}">
+                    <label class="tab-label" for="chck{{ loop.index }}">{{ crew.name }}</label>
+                    <div class="tab-content">
+                        {% for member in crew.members.all() %}
+                            {% include '_crew_member.html' %}
+                        {% endfor %}
+                    </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
-    <table class="table table-hover">
-        <tr>
-            <th></th>
-            <th>Car Class</th>
-            <th>Car Model</th>
-            <th>Racer</th>
-            <th>Car Name</th>
-        </tr>
-    </table>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script>
-</script>
 
 {% endblock %}
