@@ -516,9 +516,9 @@ def post_to_discord(race):
     time1, time2, time3 = get_timezones(race.start_time)
     alert_urls = []
     if race.octane_member:
-        alert_urls.append([Config.OCTANE_MEMBER_WEBHOOK, 'League Member'])
+        alert_urls.append([Config.OCTANE_MEMBER_WEBHOOK, '<@&873061504512049157>', 'League Member'])
     if race.octane_prospect:
-        alert_urls.append([Config.OCTANE_PROSPECT_WEBHOOK, 'Prospect'])
+        alert_urls.append([Config.OCTANE_PROSPECT_WEBHOOK, '<@&888936290949672961>', 'Prospect'])
     if race.octane_crew:
         alert_urls.append([Config.OCTANE_ALERT_WEBHOOK, 'everyone'])
     if race.open_249:
@@ -533,10 +533,11 @@ def post_to_discord(race):
         alert_urls.append([Config.ALERT_TESTING_WEBHOOK, ''])
     for url in alert_urls:
         joint_race = 'JOINT RACE' if len(alert_urls) > 1 else ''
+        allowed_mentions = {"parse": [url[1]]} if url[1] == 'everyone' else {"roles": [url[2]]}
         data = {
             'username': 'Encrypted',
             'embeds': [{
-                'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
+                'description': f'This is a test. Please disregard. | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
                                 Start time: {time1} | {time2} | {time3}\n\
                                 ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
                                 Radio: {random.randint(20, 500) + round(random.random(),2)}\n\
@@ -547,10 +548,10 @@ def post_to_discord(race):
                 'footer': {
                     'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
                 },
-                'title': 'Encrypted Message'
+                'title': 'This is a test. Disregard this message.'
             }],
-            'content': f'@everyone',
-            "allowed_mentions": { "parse": ['everyone'] }
+            'content': f'@{url[1]}' if url[1] == 'everyone' else url[1],
+            # "allowed_mentions": allowed_mentions
         }
         if race.track_info.meet_location:
             data['embeds'][0]['image'] = {'url': race.track_info.meet_location}
