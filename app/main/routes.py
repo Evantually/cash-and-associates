@@ -1104,7 +1104,7 @@ def check_race_finish():
 @login_required
 def crew_info():
     if current_user.racer:
-        crews = Crew.query.order_by(Crew.points).all()
+        crews = Crew.query.order_by(Crew.points.desc()).all()
         return render_template('crew_info.html', crews=crews, race_performance=RacePerformance, 
                                 crew_results=CrewResults, func=func, race=Race)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
