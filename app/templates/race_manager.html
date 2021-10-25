@@ -103,6 +103,7 @@
     }
     function FinalizeRace() {
         race_info = CollectRacerPositions();
+        console.log(race_info);
         $.ajax(
             {
                 url: '/race/finalize_race' ,
@@ -123,6 +124,7 @@
     }
     function CollectRacerPositions() {
         racer_order = [];
+        dnf_order = [];
         $("#racers li").each(function(index, elem) {
             let racer_info = $(elem);
             racer_order.push([
@@ -131,8 +133,17 @@
                 parseInt(racer_info.attr('car-id'))
             ]);
         });
+        $("#dnf li").each(function(index, elem) {
+            let racer_info = $(elem);
+            dnf_order.push([
+                parseInt(racer_info.attr('racer-id')), 
+                parseInt(racer_info.attr('user-id')),
+                parseInt(racer_info.attr('car-id'))
+            ]);
+        });
         race_info = {
             racer_order: racer_order,
+            dnf_order: dnf_order,
             auth_id: parseInt($("#user").attr('auth-id'))
         }
         return race_info;

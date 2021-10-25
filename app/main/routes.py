@@ -1066,6 +1066,11 @@ def finalize_race():
             rp = RacePerformance.query.filter_by(id=racer[0]).first()
             rp.end_position = index + 1            
             db.session.commit()
+        dnfs = race_info['dnf_order']
+        for racer in dnfs:
+            rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            rp.end_position = 0
+            db.session.commit()
         race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
         if race.crew_race:
             results = calculate_crew_points(race_info, True)
