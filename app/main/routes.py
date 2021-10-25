@@ -1106,6 +1106,19 @@ def check_race_finish():
         return jsonify({'finalized': True})
     return jsonify({'finalized': False})
 
+@bp.route('/borrow_a_car', methods=['POST'])
+@login_required
+def borrow_car():
+    car_info = request.get_json()
+    cars = OwnedCar.query.filter_by(user_id=car_info['user_id']).all()
+    return jsonify({'cars': cars})
+
+@bp.route('/retrieve_racers', methods=['GET'])
+@login_required
+def retrieve_racers():
+    racers = User.query.filter_by(racer=True).all()
+    return jsonify({'racers': racers})
+
         #END API CALLS
     # END RACE LEAD SECTION
     # START RACER SECTION
@@ -1188,6 +1201,34 @@ def edit_owned_car(car_id):
 @bp.route('/race_signup/<race_id>', methods=['GET', 'POST'])
 @login_required
 def race_signup(race_id):
+    if current_user.racer:
+        race = Race.query.filter_by(id=race_id).first()
+        if race.crew_race:
+            if current_user.crew_id not in ([race.defending_crew_id, race.challenging_crew_id]):
+                flash('You are not in a crew associated with this race. If this is an error talk to an organizer.')
+                return redirect(url_for('main.upcoming_races'))            
+        if RacePerformance.query.filter_by(race_id=race.id).filter_by(user_id=current_user.id).first():
+            flash('You have already registered for this race.')
+            return redirect(url_for('main.race_info', race_id=race.id))
+        classes = get_available_classes(race.highest_class)
+        form = RaceSignupForm()
+        form.car.choices = [(c.id, c.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(Car.car_class.in_(classes)).all()]
+        if form.validate_on_submit():
+            car = OwnedCar.query.filter_by(id=form.car.data).first()
+            rp = RacePerformance(user_id=current_user.id, car_id=car.car_id,
+                                car_details=car.id, track_id=race.track, 
+                                race_id=race.id)
+            db.session.add(rp)
+            db.session.commit()
+            flash(f'{car.name} has been registered for this event!')
+            return redirect(url_for('main.race_info', race_id=race.id))
+        return render_template('add_product.html', title=f'Sign Up - {race.name}', form=form)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
+
+@bp.route('/borrow_a_car/<race_id>', methods=['GET', 'POST'])
+@login_required
+def borrow_a_car(race_id):
     if current_user.racer:
         race = Race.query.filter_by(id=race_id).first()
         if race.crew_race:

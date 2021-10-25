@@ -98,6 +98,7 @@ class AddCarForm(FlaskForm):
     car_class = StringField(_l('Car Class'))
     drivetrain = SelectField(_l('Drivetrain'), choices=[('AWD','AWD'), ('FWD','FWD'), ('RWD', 'RWD')])
     image = StringField(_l('Image Link'))
+    delete = BooleanField('Delete this car')
     submit = SubmitField(_l('Submit'))
 
 class AddOwnedCarForm(FlaskForm):
