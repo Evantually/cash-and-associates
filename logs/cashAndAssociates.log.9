@@ -1,4 +1,4 @@
-2021-10-24 16:45:03,329 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-24 16:47:02,497 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -12,10 +12,10 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
     output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:45:03,502 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 569, in calculate_crew_points
+    challenging_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().challenging_crew).first()
+AttributeError: 'Race' object has no attribute 'challenging_crew'
+2021-10-24 16:47:02,612 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -29,10 +29,10 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
     output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:45:04,249 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 569, in calculate_crew_points
+    challenging_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().challenging_crew).first()
+AttributeError: 'Race' object has no attribute 'challenging_crew'
+2021-10-24 16:47:03,243 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -46,10 +46,10 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
     output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:45:04,777 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 569, in calculate_crew_points
+    challenging_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().challenging_crew).first()
+AttributeError: 'Race' object has no attribute 'challenging_crew'
+2021-10-24 16:47:03,580 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -63,10 +63,10 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
     output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:45:04,798 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 569, in calculate_crew_points
+    challenging_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().challenging_crew).first()
+AttributeError: 'Race' object has no attribute 'challenging_crew'
+2021-10-24 16:47:04,459 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -80,10 +80,10 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
     output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:45:05,415 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 569, in calculate_crew_points
+    challenging_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().challenging_crew).first()
+AttributeError: 'Race' object has no attribute 'challenging_crew'
+2021-10-24 16:47:04,578 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -97,10 +97,12 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
     output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:45:26,604 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 569, in calculate_crew_points
+    challenging_crew = Crew.query.filter_by(id=Race.query.filter_by(id=race_id).first().challenging_crew).first()
+AttributeError: 'Race' object has no attribute 'challenging_crew'
+2021-10-24 16:47:33,466 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-24 16:49:30,240 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-24 16:49:47,341 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -114,24 +116,6 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
     output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:45:27,287 ERROR: Exception on /get_crew_scores [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1081, in get_crew_scores
-    output = calculate_crew_points(race_info)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 597, in calculate_crew_points
-    if crews[0] == challenging_crew.name:
-AttributeError: 'NoneType' object has no attribute 'name'
-2021-10-24 16:46:59,569 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 605, in calculate_crew_points
+    return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
+NameError: name 'jsonify' is not defined

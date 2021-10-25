@@ -1,4 +1,4 @@
-2021-10-24 18:17:33,606 ERROR: Exception on /crew_info [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-10-24 19:09:52,480 ERROR: Exception on /setup_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -10,96 +10,26 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1108, in crew_info
-    return render_template('crew_info.html', crews=crews, race_performance=RacePerformance, crew_results=CrewResults, func=func)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
-    return _render(
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
-    rv = template.render(context)
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\crew_info.html", line 2, in top-level template code
-    {% import 'bootstrap/wtf.html' as wtf %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
-    {% extends 'bootstrap/base.html' %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
-    {% block doc -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
-    {%- block html %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
-    {% block body -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
-    {% block content -%}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 152, in block 'content'
-    {% block app_content %}{% endblock %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\crew_info.html", line 21, in block 'app_content'
-    {% include '_crew_member.html' %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\_crew_member.html", line 13, in top-level template code
-    <td>{{ race_performance.query.with_entities(func.count(race_performance.user_id).label('wins')).filter(race_performance.user_id==member.id).filter(race_performance.race_info.crew_race==True).filter(race_performance.end_position==1).first()['wins'] }}</td>
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'flask_sqlalchemy.model.DefaultMeta object' has no attribute 'race_info'
-2021-10-24 18:18:14,779 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:18:18,249 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:18:20,125 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:18:21,329 ERROR: Exception on /crew_info [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1108, in crew_info
-    return render_template('crew_info.html', crews=crews, race_performance=RacePerformance, crew_results=CrewResults, func=func)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
-    return _render(
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
-    rv = template.render(context)
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\crew_info.html", line 2, in top-level template code
-    {% import 'bootstrap/wtf.html' as wtf %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
-    {% extends 'bootstrap/base.html' %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
-    {% block doc -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
-    {%- block html %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
-    {% block body -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
-    {% block content -%}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 152, in block 'content'
-    {% block app_content %}{% endblock %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\crew_info.html", line 21, in block 'app_content'
-    {% include '_crew_member.html' %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\_crew_member.html", line 13, in top-level template code
-    <td>{{ race_performance.query.with_entities(func.count(race_performance.user_id).label('wins')).filter(race_performance.user_id==member.id).filter(race_performance.race_info.crew_race==True).filter(race_performance.end_position==1).first()['wins'] }}</td>
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 478, in getattr
-    return obj[attribute]
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 434, in __getitem__
-    return self.operate(getitem, index)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 316, in operate
-    return op(self.comparator, *other, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 434, in __getitem__
-    return self.operate(getitem, index)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 225, in operate
-    raise NotImplementedError(str(op))
-NotImplementedError: <built-in function getitem>
-2021-10-24 18:23:38,739 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:24:38,251 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:25:05,992 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:25:41,661 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:29:52,766 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:52:16,291 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:52:41,410 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-10-24 18:54:03,708 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 882, in setup_race
+    post_to_discord(race)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 557, in post_to_discord
+    result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 119, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 528, in request
+    prep = self.prepare_request(req)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 456, in prepare_request
+    p.prepare(
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 316, in prepare
+    self.prepare_url(url, params)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 390, in prepare_url
+    raise MissingSchema(error)
+requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perhaps you meant http://None?
+2021-10-24 19:10:55,336 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-24 19:11:58,513 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-24 19:15:49,079 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-24 19:16:12,263 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-24 19:17:15,500 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-10-24 19:18:04,989 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

@@ -539,7 +539,7 @@ def post_to_discord(race):
                 'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
                                 Start time: {time1} | {time2} | {time3}\n\
                                 ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
-                                Radio: {random.randint(20, 100) + round(random.random(),2)}\n\
+                                Radio: {random.randint(20, 500) + round(random.random(),2)}\n\
                                 Buy-in: ${race.buyin}\n\
                                 [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
                                 :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:\n\
@@ -549,8 +549,8 @@ def post_to_discord(race):
                 },
                 'title': 'Encrypted Message'
             }],
-            'content': f'@{url[1]}',
-            "allowed_mentions": { "parse": [url[1]] }
+            'content': f'@everyone',
+            "allowed_mentions": { "parse": ['everyone'] }
         }
         if race.track_info.meet_location:
             data['embeds'][0]['image'] = {'url': race.track_info.meet_location}
