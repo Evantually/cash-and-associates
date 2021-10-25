@@ -537,7 +537,7 @@ def post_to_discord(race):
         data = {
             'username': 'Encrypted',
             'embeds': [{
-                'description': f'Upcoming Race. | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
+                'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
                                 Start time: {time1} | {time2} | {time3}\n\
                                 ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
                                 Radio: {random.randint(20, 500) + round(random.random(),2)}\n\

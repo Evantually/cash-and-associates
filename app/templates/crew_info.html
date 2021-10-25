@@ -15,9 +15,12 @@
                 {% for crew in crews %}
                 <div class="tab">
                     <input type="checkbox" id="chck{{ loop.index }}">
-                    <label class="tab-label" for="chck{{ loop.index }}">{% if crew.image %}
-                        <img src="{{ crew.image }}" width="200px">
-                        {% endif %}{{ crew.points }} Points | {{ crew.name }}</label>
+                    <label class="tab-label" for="chck{{ loop.index }}">
+                        <div class="row">
+                            <div class="col-md-3">{% if crew.image %}<img src="{{ crew.image }}" height="50px">{% endif %}</div>
+                            <div class="col-md-12">{{ crew.points }} Points | {{ crew.name }}</div>
+                        </div>
+                    </label>
                     <div class="tab-content">
                         {% for member in crew.members.all() %}
                             {% include '_crew_member.html' %}
