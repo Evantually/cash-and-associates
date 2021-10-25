@@ -170,6 +170,7 @@ class EditOwnedCarForm(FlaskForm):
     brakes_level = SelectField('Brakes Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     suspension_level = SelectField('Suspension Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'))
+    delete = BooleanField('Delete this car')
     submit = SubmitField(_l('Submit'))
 
 class AddCrewForm(FlaskForm):

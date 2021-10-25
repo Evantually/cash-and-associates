@@ -812,6 +812,11 @@ def edit_car(car_id):
                         car_class=car.car_class, drivetrain=car.drivetrain,
                         image=car.image)
         if form.validate_on_submit():
+            if form.delete.data:
+                db.session.delete(car)
+                db.session.commit()
+                flash('The car has been removed from your cars.')
+                return redirect(url_for('main.my_cars'))
             car.name=form.name.data
             car.make = form.make.data
             car.model = form.model.data
@@ -1262,7 +1267,8 @@ def race_info(race_id):
 def race_results(race_id):
     if current_user.racer:
         race = Race.query.filter_by(id=race_id).first()
-        racers = race.participants.order_by(RacePerformance.end_position).all()
+        racers = race.participants.filter(RacePerformance.end_position > 0).order_by(RacePerformance.end_position).all()
+        dnfs = race.participants.filter(RacePerformance.end_position == 0).order_by(RacePerformance.end_position).all()
         try:
             racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
             racer_most_wins = User.query.filter_by(id=racer_id).first()
@@ -1275,7 +1281,7 @@ def race_results(race_id):
             car_most_wins = None
         return render_template('race_results.html', title=f'Race - {race.name}', race=race, racers=racers,
                                 top_racer=racer_most_wins, top_car=car_most_wins, racer_wins=racer_number_wins, 
-                                car_wins=car_number_wins)
+                                car_wins=car_number_wins, dnfs=dnfs)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))               
 

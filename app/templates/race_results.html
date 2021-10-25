@@ -110,9 +110,54 @@
             <th>Racer</th>
             <th>Car Name</th>
         </tr>
-        {% for racer in racers %}
+        {% if racers | length > 3 %}
+            {% for racer in racers[3:] %}
+            <tr>
+                <td>{{ racer.end_position }}</td>
+                <td>
+                    {% if racer.car_info.image %}
+                    <img height="128px" src="{{ racer.car_info.image }}">
+                    {% else %}
+                    <img height="128px" src="{{ racer.car_stock.image }}">
+                    {% endif %}
+                </td>
+                <td>{{ racer.car_stock.car_class }}</td>
+                <td>{{ racer.car_stock.name }}</td>
+                <td>{{ racer.user_info.username }}</td>
+                <td>{{ racer.car_info.name }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            {% for racer in racers[1:] %}
+            <tr>
+                <td>{{ racer.end_position }}</td>
+                <td>
+                    {% if racer.car_info.image %}
+                    <img height="128px" src="{{ racer.car_info.image }}">
+                    {% else %}
+                    <img height="128px" src="{{ racer.car_stock.image }}">
+                    {% endif %}
+                </td>
+                <td>{{ racer.car_stock.car_class }}</td>
+                <td>{{ racer.car_stock.name }}</td>
+                <td>{{ racer.user_info.username }}</td>
+                <td>{{ racer.car_info.name }}</td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+    {% if dnfs | length > 0 %}
+    <h3>DNFs</h3>
+    <table class="table table-hover">
         <tr>
-            <td>{{ loop.index }}</td>
+            <th></th>
+            <th>Car Class</th>
+            <th>Car Model</th>
+            <th>Racer</th>
+            <th>Car Name</th>
+        </tr>
+        {% for racer in dnfs %}
+        <tr>
             <td>
                 {% if racer.car_info.image %}
                 <img height="128px" src="{{ racer.car_info.image }}">
@@ -127,6 +172,7 @@
         </tr>
         {% endfor %}
     </table>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
