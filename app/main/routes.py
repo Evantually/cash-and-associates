@@ -1157,8 +1157,11 @@ def edit_owned_car(car_id):
                                 transmission_level=car.transmission_level, turbo_level=car.turbo_level,
                                 brakes_level=car.brakes_level, suspension_level=car.suspension_level,
                                 image=car.image)
+        if request.method == 'GET':
+            form.car.data = Car.query.filter_by(id=car.car_id).first()
         if form.validate_on_submit():
             car.name = form.name.data
+            car.car_id = form.car.data.id
             car.engine_level = form.engine_level.data
             car.transmission_level = form.transmission_level.data
             car.turbo_level = form.turbo_level.data
