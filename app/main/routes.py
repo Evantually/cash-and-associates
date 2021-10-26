@@ -1183,6 +1183,15 @@ def edit_owned_car(car_id):
         if request.method == 'GET':
             form.car.data = Car.query.filter_by(id=car.car_id).first()
         if form.validate_on_submit():
+            if form.delete.data:
+                rps = RacePerformance.query.filter_by(car_details=car.id).all()
+                for rp in rps:
+                    db.session.delete(rp)
+                    db.session.commit()
+                db.session.delete(car)
+                db.session.commit()
+                flash('The car has been removed from your cars.')
+                return redirect(url_for('main.my_cars'))
             car.name = form.name.data
             car.car_id = form.car.data.id
             car.engine_level = form.engine_level.data

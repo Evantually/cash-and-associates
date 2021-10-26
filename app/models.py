@@ -339,3 +339,33 @@ class CrewResults(db.Model):
     defending_crew = db.Column(db.Integer, db.ForeignKey('crew.id'))
     challenging_crew_points = db.Column(db.Integer)
     defending_crew_points = db.Column(db.Integer)
+
+class AchievementCondition(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    check_condition = db.Column(db.String(64))
+
+    def check_criteria(self, criteria):
+        return True
+
+class Achievement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    description = db.Column(db.String(256))
+    image = db.Column(db.String(256))
+    achievement_type = db.Column(db.String(256))
+
+class PlayerAchievement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    achievement_id = db.Column(db.Integer, db.ForeignKey('achievement.id'))
+
+completed_achievements = db.Table(
+    'completed_achievements',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('achievement_condition_id', db.Integer, db.ForeignKey('achievement_condition.id'))
+)
+
+achievement_properties = db.Table(
+    'achievement_properties',
+    db.Column('achievement_id', db.Integer, db.ForeignKey('achievement.id')),
+    db.Column('achievement_condition_id', db.Integer, db.ForeignKey('achievement_condition.id'))
+)
