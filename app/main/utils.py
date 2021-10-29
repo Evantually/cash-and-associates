@@ -521,6 +521,8 @@ def post_to_discord(race):
         alert_urls.append([Config.OCTANE_PROSPECT_WEBHOOK, '<@&888936290949672961>', 'Prospect'])
     if race.octane_crew:
         alert_urls.append([Config.OCTANE_ALERT_WEBHOOK, 'everyone'])
+    if race.octane_newcomer:
+        alert_urls.append([Config.OCTANE_ALERT_WEBHOOK, 'Newcomer'])
     if race.open_249:
         alert_urls.append([Config.TWOFOURNINE_OPEN_WEBHOOK, 'Open League'])
     if race.new_blood_249:

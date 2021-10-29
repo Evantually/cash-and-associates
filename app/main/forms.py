@@ -132,6 +132,7 @@ class SetupRaceForm(FlaskForm):
     octane_member = BooleanField('Octane Member Race')
     octane_prospect = BooleanField('Octane Prospect Race')
     octane_crew = BooleanField('Octane Crew Race')
+    octane_newcomer = BooleanField('Octane Newcomer Race')
     open_249 = BooleanField('249 Open League Race')
     new_blood_249 = BooleanField('249 New Blood Race')
     offroad_249 = BooleanField('249 Offroad Race')
