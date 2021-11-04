@@ -76,3 +76,5 @@ Traceback (most recent call last):
     allowed_mentions = {"parse": [url[1]]} if url[1] == 'everyone' else {"roles": [url[2]]}
 IndexError: list index out of range
 2021-11-04 14:49:34,117 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-04 14:53:59,709 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-04 16:06:20,962 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
