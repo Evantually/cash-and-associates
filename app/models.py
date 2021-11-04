@@ -300,6 +300,8 @@ class Race(db.Model):
     octane_member = db.Column(db.Boolean, default=False)
     octane_prospect = db.Column(db.Boolean, default=False)
     octane_crew = db.Column(db.Boolean, default=False)
+    octane_newcomer = db.Column(db.Boolean, default=False)
+    octane_community = db.Column(db.Boolean, default=False)
     open_249 = db.Column(db.Boolean, default=False)
     new_blood_249 = db.Column(db.Boolean, default=False)
     offroad_249 = db.Column(db.Boolean, default=False)

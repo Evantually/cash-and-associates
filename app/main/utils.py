@@ -522,7 +522,9 @@ def post_to_discord(race):
     if race.octane_crew:
         alert_urls.append([Config.OCTANE_ALERT_WEBHOOK, 'everyone'])
     if race.octane_newcomer:
-        alert_urls.append([Config.OCTANE_ALERT_WEBHOOK, 'Newcomer'])
+        alert_urls.append([Config.OCTANE_NEWCOMER_WEBHOOK, '<@&902311716619182113>', 'Newcomer'])
+    if race.octane_community:
+        alert_urls.append([Config.OCTANE_COMMUNITY_WEBHOOK, '<@&902311716619182113>', 'Newcomer'])
     if race.open_249:
         alert_urls.append([Config.TWOFOURNINE_OPEN_WEBHOOK, 'Open League'])
     if race.new_blood_249:
@@ -533,6 +535,7 @@ def post_to_discord(race):
         alert_urls.append([Config.TWOFOURNINE_MOTO_WEBHOOK, 'Moto League'])
     if len(alert_urls) == 0:
         alert_urls.append([Config.ALERT_TESTING_WEBHOOK, ''])
+    radio_freq = random.randint(20, 500) + round(random.random(),2)
     for url in alert_urls:
         joint_race = 'JOINT RACE' if len(alert_urls) > 1 else ''
         allowed_mentions = {"parse": [url[1]]} if url[1] == 'everyone' else {"roles": [url[2]]}
@@ -542,7 +545,7 @@ def post_to_discord(race):
                 'description': f'Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
                                 Start time: {time1} | {time2} | {time3}\n\
                                 ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
-                                Radio: {random.randint(20, 500) + round(random.random(),2)}\n\
+                                Radio: {radio_freq}\n\
                                 Buy-in: ${race.buyin}\n\
                                 [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
                                 :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:\n\

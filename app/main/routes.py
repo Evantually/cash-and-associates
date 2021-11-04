@@ -877,7 +877,7 @@ def setup_race():
                         open_249=form.open_249.data, new_blood_249=form.new_blood_249.data,
                         offroad_249=form.offroad_249.data, moto_249=form.moto_249.data,
                         challenging_crew_id=form.challenging_crew.data.id, defending_crew_id=form.defending_crew.data.id,
-                        octane_newcomer=form.octane_newcomer.data)
+                        octane_newcomer=form.octane_newcomer.data, octane_community=form.octane_community.data)
             db.session.add(race)
             track = Track.query.filter_by(id=form.track.data.id).first()
             try:
