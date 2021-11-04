@@ -1222,7 +1222,7 @@ def race_signup(race_id):
             return redirect(url_for('main.race_info', race_id=race.id))
         classes = get_available_classes(race.highest_class)
         form = RaceSignupForm()
-        form.car.choices = [(c.id, c.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(Car.car_class.in_(classes)).all()]
+        form.car.choices = [(c.id, c.name if c.name else c.car_info.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(Car.car_class.in_(classes)).all()]
         if form.validate_on_submit():
             car = OwnedCar.query.filter_by(id=form.car.data).first()
             rp = RacePerformance(user_id=current_user.id, car_id=car.car_id,
