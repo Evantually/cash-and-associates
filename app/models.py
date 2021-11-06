@@ -7,6 +7,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from app import db, login
 
+completed_achievements = db.Table(
+    'completed_achievements',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('achievement_condition_id', db.Integer, db.ForeignKey('achievement_condition.id'))
+)
+
+achievement_properties = db.Table(
+    'achievement_properties',
+    db.Column('achievement_id', db.Integer, db.ForeignKey('achievement.id')),
+    db.Column('achievement_condition_id', db.Integer, db.ForeignKey('achievement_condition.id'))
+)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,12 +42,16 @@ class User(UserMixin, db.Model):
     business = db.Column(db.Boolean, default=False)
     blackjack = db.Column(db.Boolean, default=False)
     race_lead = db.Column(db.Boolean, default=False)
+    race_host = db.Column(db.Boolean, default=False)
     racer = db.Column(db.Boolean, default=False)
     race_crew = db.Column(db.String(120))
     crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
     race_points = db.Column(db.Integer)
     races = db.relationship('RacePerformance', backref='user_info', lazy='dynamic')
     cars = db.relationship('OwnedCar', backref='user_info', lazy='dynamic')
+    achievements = db.relationship('AchievementCondition', secondary=completed_achievements,
+                        backref=db.backref('users', lazy='dynamic'))
+
 
 
     def __repr__(self):
@@ -345,6 +360,9 @@ class CrewResults(db.Model):
 class AchievementCondition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     check_condition = db.Column(db.String(64))
+    achievement_type = db.Column(db.String(64))
+    value = db.Column(db.Integer)
+    operand = db.Column(db.String(64))
 
     def check_criteria(self, criteria):
         return True
@@ -354,20 +372,8 @@ class Achievement(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.String(256))
     image = db.Column(db.String(256))
-    achievement_type = db.Column(db.String(256))
+    achievement_category = db.Column(db.String(256))
 
 class PlayerAchievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     achievement_id = db.Column(db.Integer, db.ForeignKey('achievement.id'))
-
-completed_achievements = db.Table(
-    'completed_achievements',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('achievement_condition_id', db.Integer, db.ForeignKey('achievement_condition.id'))
-)
-
-achievement_properties = db.Table(
-    'achievement_properties',
-    db.Column('achievement_id', db.Integer, db.ForeignKey('achievement.id')),
-    db.Column('achievement_condition_id', db.Integer, db.ForeignKey('achievement_condition.id'))
-)

@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import pytz
-from app.models import User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry, Crew, Race, RacePerformance
+from app.models import (User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry, Crew, Race, 
+                        RacePerformance, completed_achievements, Achievement, AchievementCondition, achievement_properties)
 from app import db
 from sqlalchemy.sql import func
 import itertools
@@ -613,3 +614,122 @@ def calculate_crew_points(race_info, db_entry=False):
     if db_entry:
         return {'challenging_crew': challenging_crew,'defending_crew': defending_crew, 'cc_score': challenging_crew_score,'dc_score': defending_crew_score}
     return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
+
+def initialize_achievements():
+    achievements = [
+        {
+            'name': 'Revved Up and Ready',
+            'description': 'Participate in your first race.',
+            'image': '',
+            'category': 'Race Participation',
+            'criteria': [
+                {
+                    'achievement_type': 'Race Participation',
+                    'condition_criteria': 1,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        },{
+            'name': 'Are We There Yet?',
+            'description': 'Participate in 10 races.',
+            'image': '',
+            'category': 'Race Participation',
+            'criteria': [
+                {
+                    'achievement_type': 'Race Participation',
+                    'condition_criteria': 10,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        },{
+            'name': 'It\'s Just a Hobby',
+            'description': 'Participate in 25 races.',
+            'image': '',
+            'category': 'Race Participation',
+            'criteria': [
+                {
+                    'achievement_type': 'Race Participation',
+                    'condition_criteria': 25,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        },{
+            'name': 'I\'m Kinda Good At This',
+            'description': 'Win a race for the first time.',
+            'image': '',
+            'category': 'Wins',
+            'criteria': [
+                {
+                    'achievement_type': 'Wins',
+                    'condition_criteria': 1,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        },{
+            'name': 'Poe Dee Umm',
+            'description': 'Finish a race in the top 3.',
+            'image': '',
+            'category': 'Podiums',
+            'criteria': [
+                {
+                    'achievement_type': 'Podiums',
+                    'condition_criteria': 1,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        },{
+            'name': 'That\'s Gotta Be Some Kind of Record.',
+            'description': 'Finish a race in the top 3 ten times.',
+            'image': '',
+            'category': 'Podiums',
+            'criteria': [
+                {
+                    'achievement_type': 'Podiums',
+                    'condition_criteria': 10,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        },{
+            'name': 'Three\'s Company',
+            'description': 'Complete races with 3 different car models.',
+            'image': '',
+            'category': 'Car Variety',
+            'criteria': [
+                {
+                    'achievement_type': 'Car Variety',
+                    'condition_criteria': 3,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        },{
+            'name': '',
+            'description': 'Complete races with 5 different car models.',
+            'image': '',
+            'category': 'Car Variety',
+            'criteria': [
+                {
+                    'achievement_type': 'Car Variety',
+                    'condition_criteria': 5,
+                    'operand': 'GREATER_OR_EQUAL'
+                }
+            ]
+        }
+    ]
+    for achieve in achievements:
+        if Achievement.query.filter_by(name=achieve['name']).first():
+            continue
+        else:
+            ach = Achievement(name=achieve['name'], description=achieve['description'],
+                                image=achieve['image'], achievement_category=['category'])
+            db.session.add(ach)
+            db.session.commit()
+            for con in achievement['criteria']:
+                ach_con = AchievementCondition(check_condition=check_condition, achievement_type=con['achievement_type'], 
+                                                value=con['achievement_criteria'])
+                db.session.add(ach_con)
+                db.session.commit()
+
+def check_achievements(racers):
+    for racer in racers:
+        racer_achieves = [a.id for a in AchievementCondition.query.join(completed_achievements).filter(completed_achievements.c.user_id == racer.id).all()]
+        

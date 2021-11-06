@@ -156,6 +156,7 @@ class EditRaceForm(FlaskForm):
 class ManageRacerForm(FlaskForm):
     racer = BooleanField('Racer')
     race_lead = BooleanField('Race Lead')
+    race_host = BooleanField('Race Host')
     crew =  SelectField('Crew')
     submit = SubmitField(_l('Submit'))
 
@@ -186,4 +187,8 @@ class AddCrewForm(FlaskForm):
 class AddToRaceForm(FlaskForm):
     race = SelectField('Race')
     car = SelectField('Car')
+    submit = SubmitField(_l('Submit'))
+
+class RacerSelectForm(FlaskForm):
+    racer = SelectField('Racer')
     submit = SubmitField(_l('Submit'))

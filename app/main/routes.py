@@ -11,7 +11,7 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm, ManageRacerForm, AddCarForm,
     AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm,
-    EditRaceForm, AddCrewForm, AddToRaceForm)
+    EditRaceForm, AddCrewForm, AddToRaceForm, RacerSelectForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
@@ -1103,16 +1103,10 @@ def get_crew_scores():
 def check_race_finish():
     race_info = request.get_json()
     race = Race.query.filter_by(id=race_info['race_id']).first()
-    if race.finalized:
-        return jsonify({'finalized': True})
+    if race:
+        if race.finalized:
+            return jsonify({'finalized': True})
     return jsonify({'finalized': False})
-
-@bp.route('/borrow_a_car', methods=['POST'])
-@login_required
-def borrow_car():
-    car_info = request.get_json()
-    cars = OwnedCar.query.filter_by(user_id=car_info['user_id']).all()
-    return jsonify({'cars': cars})
 
 @bp.route('/retrieve_racers', methods=['GET'])
 @login_required
@@ -1232,13 +1226,26 @@ def race_signup(race_id):
             db.session.commit()
             flash(f'{car.name} has been registered for this event!')
             return redirect(url_for('main.race_info', race_id=race.id))
-        return render_template('add_product.html', title=f'Sign Up - {race.name}', form=form)
+        return render_template('race_signup.html', title=f'Sign Up - {race.name}', form=form, race=race)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 
-@bp.route('/borrow_a_car/<race_id>', methods=['GET', 'POST'])
+@bp.route('/racer_select/<race_id>', methods=['GET', 'POST'])
 @login_required
-def borrow_a_car(race_id):
+def racer_select(race_id):
+    if current_user.racer:
+        race = Race.query.filter_by(id=race_id).first()
+        form = RacerSelectForm()
+        form.racer.choices = [(r.id, r.username) for r in User.query.filter_by(racer=True).order_by(User.username).all()]
+        if form.validate_on_submit():
+            return redirect(url_for('main.borrow_a_car', race_id=race_id, racer_id=form.racer.data))
+        return render_template('add_product.html', title=f'Borrow A Car - {race.name}', form=form)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
+
+@bp.route('/borrow_a_car/<race_id>/<racer_id>', methods=['GET', 'POST'])
+@login_required
+def borrow_a_car(race_id, racer_id):
     if current_user.racer:
         race = Race.query.filter_by(id=race_id).first()
         if race.crew_race:
@@ -1250,7 +1257,7 @@ def borrow_a_car(race_id):
             return redirect(url_for('main.race_info', race_id=race.id))
         classes = get_available_classes(race.highest_class)
         form = RaceSignupForm()
-        form.car.choices = [(c.id, c.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(Car.car_class.in_(classes)).all()]
+        form.car.choices = [(c.id, c.car_info.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==racer_id).filter(Car.car_class.in_(classes)).all()]
         if form.validate_on_submit():
             car = OwnedCar.query.filter_by(id=form.car.data).first()
             rp = RacePerformance(user_id=current_user.id, car_id=car.car_id,
@@ -1260,7 +1267,7 @@ def borrow_a_car(race_id):
             db.session.commit()
             flash(f'{car.name} has been registered for this event!')
             return redirect(url_for('main.race_info', race_id=race.id))
-        return render_template('add_product.html', title=f'Sign Up - {race.name}', form=form)
+        return render_template('add_product.html', title=f'Sign Up (Borrowing A Car) - {race.name}', form=form)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 
