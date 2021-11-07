@@ -508,15 +508,13 @@ def get_timezones(utc_time):
     return time1, time2, time3
 
 def calculate_payouts(race):
-    rps = RacePerformance.query.filter_by(race_id=race.id).filter(RacePerformance.end_position != 0).order_by(RacePerformance.end_position).all()
+    rps = RacePerformance.query.filter_by(race_id=race.id).filter(RacePerformance.end_position != 0).order_by(RacePerformance.end_position).limit(3).all()
     total_racers = RacePerformance.query.filter_by(race_id=race.id).all()
     payout_total = race.buyin * len(total_racers)
     if len(total_racers) >= 5:
         payout_percentages = [.5,.3,.2]
     else:
         payout_percentages = [1, 0, 0]
-    for i in range(len(payout_percentages), len(rps)):
-        payout_percentages.append(0)
     payouts = [int(i*payout_total) for i in payout_percentages]
     for index, payout in enumerate(payouts):
         rps[index].payout = payout
