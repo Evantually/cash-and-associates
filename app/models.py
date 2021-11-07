@@ -379,6 +379,7 @@ class RacePerformance(db.Model):
     race_info = db.relationship('Race')
     start_position = db.Column(db.Integer, default=0)
     end_position = db.Column(db.Integer, default=0)
+    payout = db.Column(db.Integer)
 
 class Crew(db.Model):
     id = db.Column(db.Integer, primary_key=True)

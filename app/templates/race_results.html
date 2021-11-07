@@ -17,7 +17,7 @@
             {% endif %}
         </div>
         <div class="col-md-3">
-            <h2>1st Place</h2>
+            <h2>1st Place | {{ "${:,.0f}".format(racers[0].payout) }}</h2>
             <table class="table">
                 <tr>
                     <th>Car Class</th>
@@ -50,7 +50,7 @@
                 {% endif %}
             </div>
             <div class="col-md-3">
-                <h2>2nd Place</h2>
+                <h2>2nd Place | {{ "${:,.0f}".format(racers[1].payout) }}</h2>
                 <table class="table">
                     <tr>
                         <th>Car Class</th>
@@ -81,7 +81,7 @@
                 {% endif %}
             </div>
             <div class="col-md-3">
-                <h2>3rd Place</h2>
+                <h2>3rd Place | {{ "${:,.0f}".format(racers[2].payout) }}</h2>
                 <table class="table">
                     <tr>
                         <th>Car Class</th>

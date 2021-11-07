@@ -508,11 +508,18 @@ def get_timezones(utc_time):
     return time1, time2, time3
 
 def calculate_payouts(race):
-    rps = RacePerformance.query.filter_by(race_id=race.id).filter(RacePerformance.end_position != 0).order_by(RacePerformance.end_position).limit(3).all()
-    payout_total = race.buyin * len(RacePerformance.query.filter_by(race_id=race.id).all())
-    payout_percentages = [.5,.25,.15]
-    payouts = [i*payout_total for i in payout_percentages]
-    return list(zip(payouts, rps))
+    rps = RacePerformance.query.filter_by(race_id=race.id).filter(RacePerformance.end_position != 0).order_by(RacePerformance.end_position).all()
+    payout_total = race.buyin * len(rps)
+    if len(rps) >= 5:
+        payout_percentages = [.5,.3,.2]
+    else:
+        payout_percentages = [1, 0, 0]
+    for i in range(len(payout_percentages), len(rps)):
+        payout_percentages.append(0)
+    payouts = [int(i*payout_total) for i in payout_percentages]
+    for index, payout in enumerate(payouts):
+        rps[index].payout = payout
+        db.session.commit()
 
 def post_to_discord(race):
     time1, time2, time3 = get_timezones(race.start_time)
@@ -872,5 +879,5 @@ def check_player_completed_achievements(user):
         if all(x == True for x in props_completed):
             user.complete_achievement(achieve)
         else:
-            user.uncomplete_achievements(achieve)
+            user.uncomplete_achievement(achieve)
         db.session.commit()
