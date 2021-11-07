@@ -511,7 +511,7 @@ def calculate_payouts(race):
     rps = RacePerformance.query.filter_by(race_id=race.id).filter(RacePerformance.end_position != 0).order_by(RacePerformance.end_position).limit(3).all()
     total_racers = len(RacePerformance.query.filter_by(race_id=race.id).all())
     dnfs = len(RacePerformance.query.filter_by(race_id=race.id).filter(RacePerformance.end_position == 0).all())
-    payout_total = race.buyin * len(total_racers)
+    payout_total = race.buyin * total_racers
     if total_racers - dnfs == 1:
         payout_percentages = [1, 0, 0]
     elif total_racers - dnfs == 2:
