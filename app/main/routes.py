@@ -915,7 +915,7 @@ def manage_racer_perms():
 def manage_racers(user_id):
     if current_user.access_level == 'admin' or current_user.race_lead:
         user = User.query.filter_by(id=user_id).first_or_404()
-        form = ManageRacerForm(racer=user.racer, race_lead=user.race_lead, crew=user.crew_id)
+        form = ManageRacerForm(racer=user.racer, race_lead=user.race_lead, crew=user.crew_id, race_host=user.race_host)
         form.crew.choices = [('','---')]+[(cr.id, cr.name) for cr in Crew.query.order_by(Crew.name).all()]
         if form.validate_on_submit():
             user.racer = form.racer.data
