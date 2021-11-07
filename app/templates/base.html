@@ -71,7 +71,7 @@
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Racing
                             <span class="caret"></span></a>                              
-                            <ul class="dropdown-menu multi-column {% if current_user.race_lead %}columns-3{% else %}columns-2{% endif %}">
+                            <ul class="dropdown-menu multi-column {% if current_user.race_lead or current_user.race_host %}columns-3{% else %}columns-2{% endif %}">
                                 <div class="row">
                                     <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">  
                                         <ul class="multi-column-dropdown">
