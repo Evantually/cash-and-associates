@@ -91,8 +91,10 @@
                                             <li class="divider"></li>
                                             <li class="dropdown-header">Races</li>
                                             <li class="divider"></li>
-                                            {% if current_user.race_lead %}
+                                            {% if current_user.race_lead or current_user.race_host %}
                                             <li><a href="{{ url_for('main.setup_race') }}">Setup Race</a></li>
+                                            {% endif %}
+                                            {% if current_user.race_lead %}
                                             <li><a href="{{ url_for('main.manage_racer_perms') }}">Manage Racers</a></li>                                                                 
                                             {% endif %}
                                             <li><a href="{{ url_for('main.race_history') }}">Race History</a></li>
