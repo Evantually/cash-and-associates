@@ -866,7 +866,7 @@ def edit_track(track_id):
 @login_required
 def setup_race():
     form = SetupRaceForm()
-    if current_user.race_lead:
+    if current_user.race_lead or current_user.race_host:
         if form.validate_on_submit():
             utc_time_init = form.utc_time.data.replace('T',' ')
             utc_time = utc_time_init.replace('Z','')
@@ -936,7 +936,7 @@ def manage_racers(user_id):
 @bp.route('/manage_race/<race_id>', methods=['GET','POST'])
 @login_required
 def manage_race(race_id):
-    if current_user.race_lead:
+    if current_user.race_lead or current_user.race_host:
         race = Race.query.filter_by(id=race_id).first_or_404()
         racers = RacePerformance.query.filter_by(race_id=race.id).order_by(RacePerformance.end_position).all()
         return render_template('race_manager.html', racers=racers, title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {f"{race.laps} Laps" if race.track_info.lap_race else "Sprint"}', race=race)
@@ -990,7 +990,7 @@ def edit_crew(crew_id):
 @bp.route('/edit_race/<race_id>', methods=['GET', 'POST'])
 @login_required
 def edit_race(race_id):
-    if current_user.race_lead:
+    if current_user.race_lead or current_user.race_host:
         race = Race.query.filter_by(id=race_id).first_or_404()
         form = EditRaceForm(name=race.name, crew_race=race.crew_race,
                             laps=race.laps, track=race.track,
@@ -1036,7 +1036,8 @@ def edit_race(race_id):
 @login_required
 def set_start_order():
     race_info = request.get_json()
-    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+    racer = User.query.filter_by(id=race_info['auth_id']).first()
+    if racer.race_lead or racer.race_host:
         racers = race_info['racer_order']
         for index, racer in enumerate(racers):
             rp = RacePerformance.query.filter_by(id=racer[0]).first()
@@ -1049,7 +1050,8 @@ def set_start_order():
 @login_required
 def set_end_order():
     race_info = request.get_json()
-    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+    racer = User.query.filter_by(id=race_info['auth_id']).first()
+    if racer.race_lead or racer.race_host:
         racers = race_info['racer_order']
         for index, racer in enumerate(racers):
             rp = RacePerformance.query.filter_by(id=racer[0]).first()
@@ -1062,7 +1064,8 @@ def set_end_order():
 @login_required
 def finalize_race():
     race_info = request.get_json()
-    if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
+    racer = User.query.filter_by(id=race_info['auth_id']).first()
+    if racer.race_lead or racer.race_host:
         racers = race_info['racer_order']
         racer_ids = []
         for index, racer in enumerate(racers):
