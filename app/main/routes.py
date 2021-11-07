@@ -920,6 +920,7 @@ def manage_racers(user_id):
         if form.validate_on_submit():
             user.racer = form.racer.data
             user.race_lead = form.race_lead.data
+            user.race_host = form.race_host.data
             user.racer_updated = datetime.utcnow()
             if form.crew.data:
                 user.crew_id = form.crew.data
