@@ -517,8 +517,11 @@ def calculate_payouts(race):
         payout_percentages = [1, 0, 0]
     payouts = [int(i*payout_total) for i in payout_percentages]
     for index, payout in enumerate(payouts):
-        rps[index].payout = payout
-        db.session.commit()
+        try:
+            rps[index].payout = payout
+            db.session.commit()
+        except IndexError:
+            continue
 
 def post_to_discord(race):
     time1, time2, time3 = get_timezones(race.start_time)
