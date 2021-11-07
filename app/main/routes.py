@@ -15,7 +15,7 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
-                        RacePerformance, Crew, CrewResults)
+                        RacePerformance, Crew, CrewResults, Notification, Message)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
@@ -124,18 +124,18 @@ def add_transaction():
 @bp.route('/add_category', methods=['GET', 'POST'])
 @login_required
 def add_category():
-    if current_user.access_level != 'admin':
-        flash('You do not have access to add a category.')
-        return redirect(url_for('main.index'))
-    form = AddCategoryForm()
-    if form.validate_on_submit():
-        category = Category(name=form.category.data)
-        db.session.add(category)
-        db.session.commit()
-        flash(f'{category.name} has been added as a category.')
-        return redirect(url_for('main.add_category'))
-    return render_template('add_product.html', title=_('Add Category'),
-                           form=form)
+    if current_user.access_level == 'admin' or current_user.company == 1:
+        form = AddCategoryForm()
+        if form.validate_on_submit():
+            category = Category(name=form.category.data)
+            db.session.add(category)
+            db.session.commit()
+            flash(f'{category.name} has been added as a category.')
+            return redirect(url_for('main.add_category'))
+        return render_template('add_product.html', title=_('Add Category'),
+                            form=form)
+    flash('You do not have access to add a category.')
+    return redirect(url_for('main.index'))
 
 @bp.route('/add_company', methods=['GET', 'POST'])
 @login_required
@@ -1370,6 +1370,35 @@ def achievements():
         return render_template('race_history.html', races=races)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
+
+@bp.route('/messages')
+@login_required
+def messages():
+    current_user.last_message_read_time = datetime.utcnow()
+    current_user.add_notification('unread_message_count', 0)
+    db.session.commit()
+    page = request.args.get('page', 1, type=int)
+    messages = current_user.messages_received.order_by(
+        Message.timestamp.desc()).paginate(
+            page, current_app.config['POSTS_PER_PAGE'], False)
+    next_url = url_for('main.messages', page=messages.next_num) \
+        if messages.has_next else None
+    prev_url = url_for('main.messages', page=messages.prev_num) \
+        if messages.has_prev else None
+    return render_template('messages.html', messages=messages.items,
+                           next_url=next_url, prev_url=prev_url)
+
+@bp.route('/notifications')
+@login_required
+def notifications():
+    since = request.args.get('since', 0.0, type=float)
+    notifications = current_user.notifications.filter(
+        Notification.timestamp > since).order_by(Notification.timestamp.asc())
+    return jsonify([{
+        'name': n.name,
+        'data': n.get_data(),
+        'timestamp': n.timestamp
+    } for n in notifications])
 
     # END RACER SECTION
 
