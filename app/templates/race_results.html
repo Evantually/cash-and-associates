@@ -105,6 +105,10 @@
         <tr>
             <th>Position</th>
             <th></th>
+            {% if racers | length > 3 %}
+            {% else %}
+            <th>Payout</th>
+            {% endif %}
             <th>Car Class</th>
             <th>Car Model</th>
             <th>Racer</th>
@@ -138,6 +142,7 @@
                     <img height="128px" src="{{ racer.car_stock.image }}">
                     {% endif %}
                 </td>
+                <td>{{ "${:,.0f}".format(racer.payout) }}</td>
                 <td>{{ racer.car_stock.car_class }}</td>
                 <td>{{ racer.car_stock.name }}</td>
                 <td>{{ racer.user_info.username }}</td>
