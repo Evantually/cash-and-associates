@@ -19,6 +19,12 @@ achievement_properties = db.Table(
     db.Column('achievement_condition_id', db.Integer, db.ForeignKey('achievement_condition.id'))
 )
 
+player_achievements = db.Table(
+    'player_achievements',
+    db.Column('achievement_id', db.Integer, db.ForeignKey('achievement.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -50,8 +56,12 @@ class User(UserMixin, db.Model):
     races = db.relationship('RacePerformance', backref='user_info', lazy='dynamic')
     cars = db.relationship('OwnedCar', backref='user_info', lazy='dynamic')
     achievements = db.relationship('AchievementCondition', secondary=completed_achievements,
-                        backref=db.backref('users', lazy='dynamic'))
-
+                        backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
+    completed_achievements = db.relationship('Achievement', secondary=player_achievements,
+                        backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
+    notifications = db.relationship('Notification', backref='user',
+                                    lazy='dynamic')
+    last_message_read_time = db.Column(db.DateTime)
 
 
     def __repr__(self):
@@ -76,6 +86,28 @@ class User(UserMixin, db.Model):
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+    def add_achievement_condition(self, ach_con):
+        if not self.achieve_earned(ach_con):
+            self.achievements.append(ach_con)
+
+    def remove_achievement_condition(self, ach_con):
+        if self.achieve_earned(ach_con):
+            self.achievements.remove(ach_con)
+
+    def achieve_earned(self, ach_con):
+        return self.achievements.filter(completed_achievements.c.achievement_condition_id == ach_con.id).count() > 0
+
+    def complete_achievement(self, ach):
+        if not self.completed_achievement(ach):
+            self.completed_achievements.append(ach)
+    
+    def uncomplete_achievement(self, ach):
+        if self.completed_achievement(ach):
+            self.completed_achievements.remove(ach)
+
+    def completed_achievement(self, ach):
+        return self.completed_achievements.filter(player_achievements.c.achievement_id == ach.id).count() > 0
+
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -84,6 +116,17 @@ class User(UserMixin, db.Model):
         except:
             return
         return User.query.get(id)
+
+    def new_messages(self):
+        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
+        return Message.query.filter_by(recipient=self).filter(
+            Message.timestamp > last_read_time).count()
+
+    def add_notification(self, name, data):
+        self.notifications.filter_by(name=name).delete()
+        n = Notification(name=name, payload_json=json.dumps(data), user=self)
+        db.session.add(n)
+        return n
 
 
 @login.user_loader
@@ -363,6 +406,7 @@ class AchievementCondition(db.Model):
     achievement_type = db.Column(db.String(64))
     value = db.Column(db.Integer)
     operand = db.Column(db.String(64))
+    car_class_info = db.Column(db.String(4))
 
     def check_criteria(self, criteria):
         return True
@@ -373,7 +417,36 @@ class Achievement(db.Model):
     description = db.Column(db.String(256))
     image = db.Column(db.String(256))
     achievement_category = db.Column(db.String(256))
+    properties = db.relationship('AchievementCondition', secondary=achievement_properties,
+                        backref=db.backref('achievement', lazy='dynamic'), lazy='dynamic')
 
-class PlayerAchievement(db.Model):
+    def add_achievement_condition(self, ach_con):
+        if not self.achieve_property(ach_con):
+            self.properties.append(ach_con)
+
+    def remove_achievement_condition(self, ach_con):
+        if self.achieve_property(ach_con):
+            self.properties.remove(ach_con)
+
+    def achieve_property(self, ach_con):
+        return self.properties.filter(achievement_properties.c.achievement_condition_id == ach_con.id).count() > 0
+
+class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    achievement_id = db.Column(db.Integer, db.ForeignKey('achievement.id'))
+    name = db.Column(db.String(128), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.Float, index=True, default=time)
+    payload_json = db.Column(db.Text)
+
+    def get_data(self):
+        return json.loads(str(self.payload_json))
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.body)

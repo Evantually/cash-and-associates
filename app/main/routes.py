@@ -11,7 +11,7 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm, ManageRacerForm, AddCarForm,
     AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm,
-    EditRaceForm, AddCrewForm, AddToRaceForm, RacerSelectForm)
+    EditRaceForm, AddCrewForm, AddToRaceForm, RacerSelectForm, RacerManageSelectForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
@@ -21,7 +21,7 @@ from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
                             get_available_classes, determine_crew_points, get_timezones,
-                            post_to_discord, calculate_crew_points)
+                            post_to_discord, calculate_crew_points, check_achievements)
 
 
 @bp.before_app_request
@@ -180,7 +180,7 @@ def manage_user():
 @login_required
 def manage_subscriptions(user_id):
     if current_user.access_level == 'admin' or current_user.company == 1:
-        user = User.query.filter_by(id=user_id).first()
+        user = User.query.filter_by(id=user_id).first_or_404()
         form = ManageSubscriptionForm(hunter=user.hunter, fisher=user.fisher, postal=user.postal,
                                     blackjack=user.blackjack, personal=user.personal, business=user.business)
         if form.validate_on_submit():
@@ -348,7 +348,7 @@ def edit_profile():
 @bp.route('/post_sale', methods=['POST'])
 @login_required
 def post_sale():
-    product = Product.query.filter_by(id=request.form['product_id']).first()
+    product = Product.query.filter_by(id=request.form['product_id']).first_or_404()
     try:
         price = int(request.form['cost'])
     except ValueError:
@@ -404,7 +404,7 @@ def test(business):
 
 @bp.route('/fetch_info/<company_id>/<access_token>')
 def fetch_info(company_id, access_token):
-    company = Company.query.filter_by(id=company_id).first()
+    company = Company.query.filter_by(id=company_id).first_or_404()
     if access_token == company.access_token:
         # Add transactional info here to be spit out into json
         return jsonify()
@@ -466,10 +466,10 @@ def hunting_jobs():
 @bp.route('/jobs/hunting/view/<job_id>')
 @login_required
 def hunting_view(job_id):
+    job = Job.query.filter_by(id=job_id).first_or_404()
     entries = HuntingEntry.query.filter_by(job=job_id).order_by(HuntingEntry.timestamp).all()
     ma_data, time_data, yield_data = moving_average(entries, 2, 30, HuntingEntry)
     output = summarize_job(entries, 'Hunting')
-    job = Job.query.filter_by(id=job_id).first()
     job.total_earnings = output['total']
     job.hourly_earnings = output['total_hour']
     db.session.commit()
@@ -513,7 +513,7 @@ def fishing_tracker(job_id):
     except:
         current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
     if current_user.sub_expiration > datetime.utcnow() and current_user.fisher:
-        job = Job.query.filter_by(id=job_id).first()
+        job = Job.query.filter_by(id=job_id).first_or_404()
         return render_template('fishing_tracker.html', job=job)
     else:
         flash('Please renew your subscription to keep using this service!')
@@ -522,10 +522,10 @@ def fishing_tracker(job_id):
 @bp.route('/jobs/fishing/view/<job_id>')
 @login_required
 def fishing_view(job_id):
+    job = Job.query.filter_by(id=job_id).first_or_404()
     entries = FishingEntry.query.filter_by(job=job_id).order_by(FishingEntry.timestamp).all()
     ma_data, time_data, yield_data = moving_average(entries, 2, 30, FishingEntry)
     output = summarize_job(entries, 'Fishing')
-    job = Job.query.filter_by(id=job_id).first()
     job.total_earnings = output['total']
     job.hourly_earnings = output['total_hour']
     db.session.commit()
@@ -564,7 +564,7 @@ def postal_tracker(job_id):
     except:
         current_user.sub_expiration = datetime.utcnow() - timedelta(seconds=10)
     if current_user.sub_expiration > datetime.utcnow() and current_user.postal:
-        job = Job.query.filter_by(id=job_id).first()
+        job = Job.query.filter_by(id=job_id).first_or_404()
         return render_template('postal_tracker.html', job=job)
     else:
         flash('Please renew your subscription to keep using this service!')
@@ -573,10 +573,10 @@ def postal_tracker(job_id):
 @bp.route('/jobs/postal/view/<job_id>')
 @login_required
 def postal_view(job_id):
+    job = Job.query.filter_by(id=job_id).first_or_404()
     entries = PostalEntry.query.filter_by(job=job_id).order_by(PostalEntry.timestamp).all()
     ma_data, time_data, yield_data = moving_average(entries, 2, 30, PostalEntry)
     output = summarize_job(entries, 'Postal')
-    job = Job.query.filter_by(id=job_id).first()
     job.total_earnings = output['total']
     job.hourly_earnings = output['total_hour']
     db.session.commit()
@@ -623,10 +623,10 @@ def mining_tracker(job_id):
 @bp.route('/jobs/mining/view/<job_id>')
 @login_required
 def mining_view(job_id):
+    job = Job.query.filter_by(id=job_id).first_or_404()
     entries = MiningEntry.query.filter_by(job=job_id).order_by(MiningEntry.timestamp).all()
     ma_data, time_data, yield_data = moving_average(entries, 2, 30, MiningEntry)
     output = summarize_job(entries, 'mining')
-    job = Job.query.filter_by(id=job_id).first()
     job.total_earnings = output['total']
     job.hourly_earnings = output['total_hour']
     db.session.commit()
@@ -689,7 +689,7 @@ def blackjack_decision():
 @bp.route('/blackjack/add_entry', methods=['POST'])
 @login_required
 def add_blackjack_entry():
-    job = Job.query.filter_by(id=int(request.form['job_id'])).first()
+    job = Job.query.filter_by(id=int(request.form['job_id'])).first_or_404()
     entry = BlackjackEntry(user_id=int(request.form['user_id']), job=int(request.form['job_id']))
     db.session.add(entry)
     player_hand = BlackjackHand(blackjack_entry=entry.id, player_hand=True)
@@ -807,7 +807,7 @@ def manage_cars():
 @login_required
 def edit_car(car_id):
     if current_user.race_lead:
-        car = Car.query.filter_by(id=car_id).first()
+        car = Car.query.filter_by(id=car_id).first_or_404()
         form = AddCarForm(name=car.name, make=car.make, model=car.model,
                         car_class=car.car_class, drivetrain=car.drivetrain,
                         image=car.image)
@@ -843,7 +843,7 @@ def manage_tracks():
 @login_required
 def edit_track(track_id):
     if current_user.race_lead:
-        track = Track.query.filter_by(id=track_id).first()
+        track = Track.query.filter_by(id=track_id).first_or_404()
         form = AddTrackForm(name=track.name,track_map=track.track_map,
                             track_video=track.track_video, lap_race=track.lap_race,
                             embed_link=track.embed_link, meet_location=track.meet_location)
@@ -900,7 +900,7 @@ def setup_race():
 @login_required
 def manage_racer_perms():
     if current_user.access_level == 'admin' or current_user.race_lead:
-        form = ManageUserForm()
+        form = RacerManageSelectForm()
         if form.validate_on_submit():
             user_id = form.user.data.id
             return redirect(url_for('main.manage_racers', user_id=user_id))
@@ -913,7 +913,7 @@ def manage_racer_perms():
 @login_required
 def manage_racers(user_id):
     if current_user.access_level == 'admin' or current_user.race_lead:
-        user = User.query.filter_by(id=user_id).first()
+        user = User.query.filter_by(id=user_id).first_or_404()
         form = ManageRacerForm(racer=user.racer, race_lead=user.race_lead, crew=user.crew_id)
         form.crew.choices = [('','---')]+[(cr.id, cr.name) for cr in Crew.query.order_by(Crew.name).all()]
         if form.validate_on_submit():
@@ -936,7 +936,7 @@ def manage_racers(user_id):
 @login_required
 def manage_race(race_id):
     if current_user.race_lead:
-        race = Race.query.filter_by(id=race_id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
         racers = RacePerformance.query.filter_by(race_id=race.id).order_by(RacePerformance.end_position).all()
         return render_template('race_manager.html', racers=racers, title=f'Manage Race - {race.name} | {race.highest_class}-Class | {race.track_info.name} | {f"{race.laps} Laps" if race.track_info.lap_race else "Sprint"}', race=race)
     flash('You do not have access to this page.')
@@ -946,7 +946,7 @@ def manage_race(race_id):
 @login_required
 def manage_crew_race(race_id):
     if current_user.race_lead:
-        race = Race.query.filter_by(id=race_id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
         racers = RacePerformance.query.filter_by(race_id=race.id).all()
         crew_names = []
         for racer in racers:
@@ -964,7 +964,7 @@ def manage_crew_race(race_id):
 @login_required
 def edit_crew(crew_id):
     if current_user.race_lead:
-        crew = Crew.query.filter_by(id=crew_id).first()
+        crew = Crew.query.filter_by(id=crew_id).first_or_404()
         form = AddCrewForm(name=crew.name, image=crew.image)
         form.home_track.choices = [(tr.id, tr.name) for tr in Track.query.filter((Track.crew_id==None)|(Track.crew_id==crew.id)).all()]
         if request.method == 'GET':
@@ -990,7 +990,7 @@ def edit_crew(crew_id):
 @login_required
 def edit_race(race_id):
     if current_user.race_lead:
-        race = Race.query.filter_by(id=race_id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
         form = EditRaceForm(name=race.name, crew_race=race.crew_race,
                             laps=race.laps, track=race.track,
                             highest_class=race.highest_class)
@@ -1063,16 +1063,21 @@ def finalize_race():
     race_info = request.get_json()
     if User.query.filter_by(id=race_info['auth_id']).first().race_lead:
         racers = race_info['racer_order']
+        racer_ids = []
         for index, racer in enumerate(racers):
             rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            racer_ids.append(rp.user_id)
             rp.end_position = index + 1            
             db.session.commit()
         dnfs = race_info['dnf_order']
         for racer in dnfs:
             rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            racer_ids.append(rp.user_id)
             rp.end_position = 0
             db.session.commit()
         race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
+        check_racers = User.query.filter(User.id.in_(racer_ids)).all()
+        check_achievements(check_racers)
         if race.crew_race:
             results = calculate_crew_points(race_info, True)
             if CrewResults.query.filter_by(race_id=race.id).first():
@@ -1170,7 +1175,7 @@ def my_cars():
 @login_required
 def edit_owned_car(car_id):
     if current_user.racer:
-        car = OwnedCar.query.filter_by(id=car_id).first()
+        car = OwnedCar.query.filter_by(id=car_id).first_or_404()
         form = EditOwnedCarForm(name=car.name, engine_level=car.engine_level,
                                 transmission_level=car.transmission_level, turbo_level=car.turbo_level,
                                 brakes_level=car.brakes_level, suspension_level=car.suspension_level,
@@ -1206,7 +1211,7 @@ def edit_owned_car(car_id):
 @login_required
 def race_signup(race_id):
     if current_user.racer:
-        race = Race.query.filter_by(id=race_id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
         if race.crew_race:
             if current_user.crew_id not in ([race.defending_crew_id, race.challenging_crew_id]):
                 flash('You are not in a crew associated with this race. If this is an error talk to an organizer.')
@@ -1234,7 +1239,7 @@ def race_signup(race_id):
 @login_required
 def racer_select(race_id):
     if current_user.racer:
-        race = Race.query.filter_by(id=race_id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
         form = RacerSelectForm()
         form.racer.choices = [(r.id, r.username) for r in User.query.filter_by(racer=True).order_by(User.username).all()]
         if form.validate_on_submit():
@@ -1247,7 +1252,7 @@ def racer_select(race_id):
 @login_required
 def borrow_a_car(race_id, racer_id):
     if current_user.racer:
-        race = Race.query.filter_by(id=race_id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
         if race.crew_race:
             if current_user.crew_id not in ([race.defending_crew_id, race.challenging_crew_id]):
                 flash('You are not in a crew associated with this race. If this is an error talk to an organizer.')
@@ -1275,8 +1280,8 @@ def borrow_a_car(race_id, racer_id):
 @login_required
 def change_registration(race_id):
     if current_user.racer:
-        race = Race.query.filter_by(id=race_id).first()
-        rp = RacePerformance.query.filter_by(race_id=race.id).filter_by(user_id=current_user.id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
+        rp = RacePerformance.query.filter_by(race_id=race.id).filter_by(user_id=current_user.id).first_or_404()
         classes = get_available_classes(race.highest_class)
         form = RaceSignupForm()
         form.car.choices = [(c.id, c.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(OwnedCar.id != rp.car_details).filter(Car.car_class.in_(classes)).all()]
@@ -1305,7 +1310,7 @@ def change_registration(race_id):
 @login_required
 def race_info(race_id):
     if current_user.racer:
-        race = Race.query.filter_by(id=race_id).first()
+        race = Race.query.filter_by(id=race_id).first_or_404()
         if race.finalized:
             return redirect(url_for('main.race_results', race_id=race.id))
         racers = race.participants.order_by(RacePerformance.start_position).all()
@@ -1355,7 +1360,16 @@ def race_history():
         races = Race.query.order_by(Race.start_time.desc()).all()
         return render_template('race_history.html', races=races)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
-    return redirect(url_for('main.index'))                        
+    return redirect(url_for('main.index'))
+
+@bp.route('/achievements', methods=['GET'])
+@login_required
+def achievements():
+    if current_user.racer:
+        completed_achievements = current_user.completed_achievements.all()
+        return render_template('race_history.html', races=races)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
 
     # END RACER SECTION
 

@@ -27,95 +27,95 @@
                     <li><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
                     {% if current_user.is_anonymous %}
                     {% else %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Management Tools
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('main.add_product') }}">Add Product</a></li>
-                            <li><a href="{{ url_for('main.add_transaction') }}">Add Transaction</a></li>
-                            {% if current_user.access_level == 'manager' %}
-                            <li><a href="{{ url_for('main.set_employees') }}">{{ _('Add Employee to Company') }}</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    {% if current_user.access_level == 'admin' or current_user.company == 1 %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Tools
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('main.manage_user') }}">Manage Subscriptions</a></li>                           
-                            <li><a href="{{ url_for('main.active_subscriptions') }}">Active Subscriptions</a></li>                           
-                        </ul>
-                    </li>
-                    {% endif %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Job Trackers
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('main.jobs') }}">New Job</a></li>
-                            <li><a href="{{ url_for('main.hunting_jobs') }}">Hunting Jobs</a></li>
-                            <li><a href="{{ url_for('main.fishing_jobs') }}">Fishing Jobs</a></li>
-                            <li><a href="{{ url_for('main.postal_jobs') }}">GoPostal Jobs</a></li>
-                            {% if current_user.blackjack %}
-                            <li><a href="{{ url_for('main.blackjack_jobs') }}">Blackjack Jobs</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    {% if current_user.racer %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Racing
-                        <span class="caret"></span></a>                              
-                        <ul class="dropdown-menu multi-column {% if current_user.race_lead %}columns-3{% else %}columns-2{% endif %}">
-                            <div class="row">
-                                <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">  
-                                    <ul class="multi-column-dropdown">
-                                        <li class="divider"></li>
-                                        <li class="dropdown-header">Cars</li>
-                                        <li class="divider"></li>
-                                        {% if current_user.race_lead %}
-                                        <li><a href="{{ url_for('main.add_car') }}">Add Car</a></li>
-                                        <li><a href="{{ url_for('main.manage_cars') }}">Manage Cars</a></li>
-                                        {% endif %}
-                                        <li><a href="{{ url_for('main.add_owned_car') }}">Add Owned Car</a></li>
-                                        <li><a href="{{ url_for('main.my_cars') }}">My Cars</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">
-                                    <ul class="multi-column-dropdown">
-                                        <li class="divider"></li>
-                                        <li class="dropdown-header">Races</li>
-                                        <li class="divider"></li>
-                                        {% if current_user.race_lead %}
-                                        <li><a href="{{ url_for('main.setup_race') }}">Setup Race</a></li>
-                                        <li><a href="{{ url_for('main.manage_racer_perms') }}">Manage Racers</a></li>                                                                 
-                                        {% endif %}
-                                        <li><a href="{{ url_for('main.race_history') }}">Race History</a></li>
-                                        <li><a href="{{ url_for('main.upcoming_races') }}">Upcoming Races</a></li>  
-                                    </ul>
-                                </div>
-                                {% if current_user.race_lead %}
-                                <div class="col-md-4">
-                                    <ul class="multi-column-dropdown">
-                                        <li class="divider"></li>
-                                        <li class="dropdown-header">Tracks</li>
-                                        <li class="divider"></li>
-                                        <!-- {% if current_user.race_lead %}                                     -->
-                                        <li><a href="{{ url_for('main.add_track') }}">Add Track</a></li>
-                                        <li><a href="{{ url_for('main.manage_tracks') }}">Manage Tracks</a></li>
-                                        <!-- {% endif %} -->
-                                        <li class="divider"></li>
-                                        <li class="dropdown-header">Crews</li>
-                                        <li class="divider"></li>
-                                        <li><a href="{{ url_for('main.add_crew') }}">Add Crew</a></li>
-                                        <li><a href="{{ url_for('main.crew_info') }}">Crew Dashboard</a></li>
-                                    </ul>
-                                </div>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Management Tools
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('main.add_product') }}">Add Product</a></li>
+                                <li><a href="{{ url_for('main.add_transaction') }}">Add Transaction</a></li>
+                                {% if current_user.access_level == 'manager' %}
+                                <li><a href="{{ url_for('main.set_employees') }}">{{ _('Add Employee to Company') }}</a></li>
                                 {% endif %}
-                            </div> 
-                        </ul>
-                    </li>
-                    {% endif %}
-                    <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
+                            </ul>
+                        </li>
+                        {% if current_user.access_level == 'admin' or current_user.company == 1 %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Tools
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('main.manage_user') }}">Manage Subscriptions</a></li>                           
+                                <li><a href="{{ url_for('main.active_subscriptions') }}">Active Subscriptions</a></li>                           
+                            </ul>
+                        </li>
+                        {% endif %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Job Trackers
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('main.jobs') }}">New Job</a></li>
+                                <li><a href="{{ url_for('main.hunting_jobs') }}">Hunting Jobs</a></li>
+                                <li><a href="{{ url_for('main.fishing_jobs') }}">Fishing Jobs</a></li>
+                                <li><a href="{{ url_for('main.postal_jobs') }}">GoPostal Jobs</a></li>
+                                {% if current_user.blackjack %}
+                                <li><a href="{{ url_for('main.blackjack_jobs') }}">Blackjack Jobs</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        {% if current_user.racer %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Racing
+                            <span class="caret"></span></a>                              
+                            <ul class="dropdown-menu multi-column {% if current_user.race_lead %}columns-3{% else %}columns-2{% endif %}">
+                                <div class="row">
+                                    <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">  
+                                        <ul class="multi-column-dropdown">
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Cars</li>
+                                            <li class="divider"></li>
+                                            {% if current_user.race_lead %}
+                                            <li><a href="{{ url_for('main.add_car') }}">Add Car</a></li>
+                                            <li><a href="{{ url_for('main.manage_cars') }}">Manage Cars</a></li>
+                                            {% endif %}
+                                            <li><a href="{{ url_for('main.add_owned_car') }}">Add Owned Car</a></li>
+                                            <li><a href="{{ url_for('main.my_cars') }}">My Cars</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">
+                                        <ul class="multi-column-dropdown">
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Races</li>
+                                            <li class="divider"></li>
+                                            {% if current_user.race_lead %}
+                                            <li><a href="{{ url_for('main.setup_race') }}">Setup Race</a></li>
+                                            <li><a href="{{ url_for('main.manage_racer_perms') }}">Manage Racers</a></li>                                                                 
+                                            {% endif %}
+                                            <li><a href="{{ url_for('main.race_history') }}">Race History</a></li>
+                                            <li><a href="{{ url_for('main.upcoming_races') }}">Upcoming Races</a></li>  
+                                        </ul>
+                                    </div>
+                                    {% if current_user.race_lead %}
+                                    <div class="col-md-4">
+                                        <ul class="multi-column-dropdown">
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Tracks</li>
+                                            <li class="divider"></li>
+                                            <!-- {% if current_user.race_lead %}                                     -->
+                                            <li><a href="{{ url_for('main.add_track') }}">Add Track</a></li>
+                                            <li><a href="{{ url_for('main.manage_tracks') }}">Manage Tracks</a></li>
+                                            <!-- {% endif %} -->
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Crews</li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{ url_for('main.add_crew') }}">Add Crew</a></li>
+                                            <li><a href="{{ url_for('main.crew_info') }}">Crew Dashboard</a></li>
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+                                </div> 
+                            </ul>
+                        </li>
+                        {% endif %}
+                        <li><a href="{{ url_for('main.point_of_sale') }}">{{ _('Point of Sale') }}</a></li>
                     {% endif %}
                     {% if (current_user.access_level in ('admin', 'manager','temp')) or (current_user.company is none) %}
                     <li><a href="{{ url_for('main.transaction_history') }}">{{ _('Dashboard') }}</a></li>
@@ -129,6 +129,16 @@
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('auth.login') }}">{{ _('Login') }}</a></li>
                     {% else %}
+                    <li>
+                        <a href="{{ url_for('main.notifications') }}">{{ _('Notifications') }}
+                            {% set new_messages = current_user.new_messages() %}
+                            <span id="message_count" class="badge"
+                                  style="visibility: {% if new_messages %}visible
+                                                     {% else %}hidden{% endif %};">
+                                {{ new_messages }}
+                            </span>
+                        </a>
+                    </li>
                     <li><a href="{{ url_for('main.user', username=current_user.username) }}">{{ _('Profile') }}</a></li>
                     <li><a href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a></li>
                     {% endif %}
@@ -505,6 +515,26 @@
         function hide_inventory(elem){
             $(elem).css('display', 'none');
         }
+        function set_message_count(n) {
+            $('#message_count').text(n);
+            $('#message_count').css('visibility', n ? 'visible' : 'hidden');
+        }
+        {% if current_user.is_authenticated %}
+        $(function() {
+            var since = 0;
+            setInterval(function() {
+                $.ajax('{{ url_for('main.notifications') }}?since=' + since).done(
+                    function(notifications) {
+                        for (var i = 0; i < notifications.length; i++) {
+                            if (notifications[i].name == 'unread_message_count')
+                                set_message_count(notifications[i].data);
+                            since = notifications[i].timestamp;
+                        }
+                    }
+                );
+            }, 10000);
+        });
+        {% endif %}
         setdarkmode();
     </script>
 {% endblock %}

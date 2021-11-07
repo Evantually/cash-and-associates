@@ -79,6 +79,10 @@ class ManageUserForm(FlaskForm):
     user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').order_by(User.username).all())
     submit = SubmitField(_l('Submit'))
 
+class RacerManageSelectForm(FlaskForm):
+    user = QuerySelectField(query_factory=lambda: User.query.filter(User.username != 'admin').filter(User.access_level != 'temp').order_by(User.username).all())
+    submit = SubmitField(_l('Submit'))
+
 class ManageSubscriptionForm(FlaskForm):
     hunter = BooleanField('Hunting Subscription')
     fisher = BooleanField('Fishing Subscription')
