@@ -36,10 +36,12 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Wins</th>
+                                    <th>Lap Record</th>
                                 </tr>
                                 <tr>
                                     <td>{{ top_racer.username }}</td>
                                     <td>{{ racer_wins }}</td>
+                                    <td>{{ top_racer.lap_record }}</td>
                                 </tr>
                             </table>
                         </td>
@@ -59,10 +61,12 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Wins</th>
+                                    <th>Lap Record <br>({{ race.highest_class }}-Class or Less)</th>
                                 </tr>
                                 <tr>
                                     <td>{{ top_car.name }}</td>
                                     <td>{{ car_wins }}</td>
+                                    <td>{{ top_car.lap_record }}</td>
                                 </tr>
                             </table>
                         </td>

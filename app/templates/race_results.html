@@ -24,7 +24,7 @@
                     {% for lap in racers[0].laps %}
                     <div class="row">
                         <div class="col-md-12">
-                            {{ lap }}
+                            Lap {{loop.index}}: {{ lap }}
                         </div>
                     </div>
                     {% endfor %}
@@ -55,7 +55,7 @@
                         {% for lap in racers[1].laps %}
                         <div class="row">
                             <div class="col-md-12">
-                                {{ lap }}
+                                Lap {{loop.index}}: {{ lap }}
                             </div>
                         </div>
                         {% endfor %}
@@ -84,7 +84,7 @@
                         {% for lap in racers[2].laps %}
                         <div class="row">
                             <div class="col-md-12">
-                                {{ lap }}
+                                Lap {{loop.index}}: {{ lap }}
                             </div>
                         </div>
                         {% endfor %}
@@ -126,7 +126,7 @@
                 <td>{{ racer.car_info.name }}</td>
                 <td>
                     {% for lap in racer.laps %}
-                    {{ lap }} <br>
+                    Lap {{loop.index}}: {{ lap }}<br>
                     {% endfor %}
                 </td>
             </tr>
@@ -149,7 +149,7 @@
                 <td>{{ racer.car_info.name }}</td>
                 <td>
                     {% for lap in racer.laps %}
-                    {{ lap }} <br>
+                    Lap {{loop.index}}: {{ lap }}<br>
                     {% endfor %}
                 </td>
             </tr>
