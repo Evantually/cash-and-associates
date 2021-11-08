@@ -1345,10 +1345,16 @@ def race_info(race_id):
         try:
             racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
             racer_most_wins = User.query.filter_by(id=racer_id).first()
-            racer_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(user_id=racer_most_wins.id).filter_by(track_id=race.track).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
+            try:
+                racer_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(user_id=racer_most_wins.id).filter_by(track_id=race.track).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
+            except AttributeError:
+                racer_most_wins.lap_record = datetime.fromtimestamp(0).strftime('%M:%S.%f')[:-3]
             car_id, car_number_wins = RacePerformance.query.with_entities(RacePerformance.car_id, func.count(RacePerformance.car_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.car_id).order_by(text('wins DESC')).first()
             car_most_wins = Car.query.filter_by(id=car_id).first()
-            car_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(car_id=car_most_wins.id).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
+            try:
+                car_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(car_id=car_most_wins.id).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
+            except AttributeError:
+                car_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(user_id=racer_most_wins.id).filter_by(track_id=race.track).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
         except TypeError:
             racer_id, racer_number_wins = [None, None]
             racer_most_wins=None
