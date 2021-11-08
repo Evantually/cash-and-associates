@@ -13,6 +13,16 @@
         <div id="raceresults" class="col-md-3" style="visibility: hidden;"><a href="{{ url_for('main.race_results', race_id=race.id) }}" role="button"><button class="btn btn-primary btn-lg">Race Results</button></a></div>
     </div>
     {% endif %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Total Prize Pool</span>
+                </div>
+                <input id="prizepool" placeholder="{{ (racers | length) * race.buyin }}" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            </div>
+        </div>
+    </div>
     <h3>Registered Racers ({{ racers | length }})</h3>
     <ol id="racers" style="padding: 10px;">
         {% for racer in racers %}
@@ -144,7 +154,8 @@
         race_info = {
             racer_order: racer_order,
             dnf_order: dnf_order,
-            auth_id: parseInt($("#user").attr('auth-id'))
+            auth_id: parseInt($("#user").attr('auth-id')),
+            prizepool: parseInt($("#prizepool").val())
         }
         return race_info;
     }

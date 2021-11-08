@@ -1081,7 +1081,7 @@ def finalize_race():
             rp.end_position = 0
             db.session.commit()
         race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
-        calculate_payouts(race)
+        calculate_payouts(race, race_info['prizepool'])
         check_racers = User.query.filter(User.id.in_(racer_ids)).all()
         check_achievements(check_racers, 'Race Finish')
         if race.crew_race:
