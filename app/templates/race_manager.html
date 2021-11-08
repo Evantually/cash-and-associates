@@ -224,7 +224,7 @@
         $("#dnf").children("li").each(function(index, elem) {
             let racer_info = $(elem);
             init_lap_times = [];
-            lap_time_elems = racer_info.children('.split-time')
+            lap_time_elems = racer_info.find('.split-time')
             for (i=0; i< lap_time_elems.length; i++) {
                 init_lap_times.push(convertTimeToMilliseconds(init_lap_times, i, lap_time_elems[i].innerText));
             }
@@ -279,9 +279,9 @@
             return a-b;
         });
         calced_lap_times = [];
-        for (i=0; i< lap_times.length; i++) {
+        for (i=0; i< new_lap_times.length; i++) {
             if (i > 0) {
-                calced_lap_times.push(new_lap_times[i] - new_lap_times.slice(0,i).reduce((a, b) => a + b, 0))
+                calced_lap_times.push(new_lap_times[i] - calced_lap_times.slice(0,i).reduce((a, b) => a + b, 0))
             } else {
                 calced_lap_times.push(new_lap_times[i])
             }

@@ -1087,11 +1087,6 @@ def finalize_race():
             racer_ids.append(rp.user_id)
             rp.end_position = 0
             db.session.commit()
-            for lap in racer[3]:
-                lt = LapTime(milliseconds=lap, race_id=race.id, user_id=racer[1], 
-                            car_id=racer[2], dnf=True, track_id=race.track_info.id)
-                db.session.add(lt)
-                db.session.commit()
         calculate_payouts(race, race_info['prizepool'])
         check_racers = User.query.filter(User.id.in_(racer_ids)).all()
         check_achievements(check_racers, 'Race Finish')
@@ -1370,6 +1365,15 @@ def race_results(race_id):
         race = Race.query.filter_by(id=race_id).first()
         racers = race.participants.filter(RacePerformance.end_position > 0).order_by(RacePerformance.end_position).all()
         dnfs = race.participants.filter(RacePerformance.end_position == 0).order_by(RacePerformance.end_position).all()
+        for racer in racers:
+            racer_laps = []
+            laps = LapTime.query.filter_by(user_id=racer.user_id).filter_by(race_id=race.id).all()
+            for lap in laps:
+                try:
+                    racer_laps.append(datetime.fromtimestamp(lap.milliseconds / 1000.0).strftime('%M:%S.%f')[:-3])
+                except OSError:
+                    continue
+            racer.laps = racer_laps
         try:
             racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
             racer_most_wins = User.query.filter_by(id=racer_id).first()

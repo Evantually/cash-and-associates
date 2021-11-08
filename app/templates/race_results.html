@@ -18,20 +18,18 @@
         </div>
         <div class="col-md-3">
             <h2>1st Place | {{ "${:,.0f}".format(racers[0].payout) }}</h2>
-            <table class="table">
-                <tr>
-                    <th>Car Class</th>
-                    <th>Car Model</th>
-                    <th>Racer</th>
-                    <th>Car Name</th>
-                </tr>
-                <tr>
-                    <td>{{ racers[0].car_stock.car_class }}</td>
-                    <td>{{ racers[0].car_stock.name }}</td>
-                    <td>{{ racers[0].user_info.username }}</td>
-                    <td>{{ racers[0].car_info.name }}</td>
-                </tr>
-            </table>
+            <h3>{{ racers[0].user_info.username }}</h3>
+            <div class="row">                
+                <div class="col-md-12">
+                    {% for lap in racers[0].laps %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ lap }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
     <br>
@@ -51,20 +49,18 @@
             </div>
             <div class="col-md-3">
                 <h2>2nd Place | {{ "${:,.0f}".format(racers[1].payout) }}</h2>
-                <table class="table">
-                    <tr>
-                        <th>Car Class</th>
-                        <th>Car Model</th>
-                        <th>Racer</th>
-                        <th>Car Name</th>
-                    </tr>
-                    <tr>
-                        <td>{{ racers[1].car_stock.car_class }}</td>
-                        <td>{{ racers[1].car_stock.name }}</td>
-                        <td>{{ racers[1].user_info.username }}</td>
-                        <td>{{ racers[1].car_info.name }}</td>
-                    </tr>
-                </table>
+                <h3>{{ racers[1].user_info.username }}</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for lap in racers[1].laps %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ lap }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
         {% endif %}
@@ -82,20 +78,18 @@
             </div>
             <div class="col-md-3">
                 <h2>3rd Place | {{ "${:,.0f}".format(racers[2].payout) }}</h2>
-                <table class="table">
-                    <tr>
-                        <th>Car Class</th>
-                        <th>Car Model</th>
-                        <th>Racer</th>
-                        <th>Car Name</th>
-                    </tr>
-                    <tr>
-                        <td>{{ racers[2].car_stock.car_class }}</td>
-                        <td>{{ racers[2].car_stock.name }}</td>
-                        <td>{{ racers[2].user_info.username }}</td>
-                        <td>{{ racers[2].car_info.name }}</td>
-                    </tr>
-                </table>
+                <h3>{{ racers[2].user_info.username }}</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for lap in racers[2].laps %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ lap }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
         {% endif %}
@@ -113,6 +107,7 @@
             <th>Car Model</th>
             <th>Racer</th>
             <th>Car Name</th>
+            <th>Lap Times</th>
         </tr>
         {% if racers | length > 3 %}
             {% for racer in racers[3:] %}
@@ -129,6 +124,11 @@
                 <td>{{ racer.car_stock.name }}</td>
                 <td>{{ racer.user_info.username }}</td>
                 <td>{{ racer.car_info.name }}</td>
+                <td>
+                    {% for lap in racer.laps %}
+                    {{ lap }} <br>
+                    {% endfor %}
+                </td>
             </tr>
             {% endfor %}
         {% else %}
@@ -147,6 +147,11 @@
                 <td>{{ racer.car_stock.name }}</td>
                 <td>{{ racer.user_info.username }}</td>
                 <td>{{ racer.car_info.name }}</td>
+                <td>
+                    {% for lap in racer.laps %}
+                    {{ lap }} <br>
+                    {% endfor %}
+                </td>
             </tr>
             {% endfor %}
         {% endif %}
