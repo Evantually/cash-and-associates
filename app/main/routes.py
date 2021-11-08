@@ -15,14 +15,15 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
-                        RacePerformance, Crew, CrewResults, Notification, Message)
+                        RacePerformance, Crew, CrewResults, Notification, Message,
+                        LapTime)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
                             get_available_classes, determine_crew_points, get_timezones,
                             post_to_discord, calculate_crew_points, check_achievements,
-                            calculate_payouts)
+                            calculate_payouts, convert_from_milliseconds)
 
 
 @bp.before_app_request
@@ -1068,19 +1069,29 @@ def finalize_race():
     racer = User.query.filter_by(id=race_info['auth_id']).first()
     if racer.race_lead or racer.race_host:
         racers = race_info['racer_order']
+        race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
         racer_ids = []
         for index, racer in enumerate(racers):
-            rp = RacePerformance.query.filter_by(id=racer[0]).first()
+            rp = RacePerformance.query.filter_by(id=int(racer[0])).first()
             racer_ids.append(rp.user_id)
             rp.end_position = index + 1            
             db.session.commit()
+            for lap in racer[3]:
+                lt = LapTime(milliseconds=lap, race_id=race.id, user_id=racer[1],
+                car_id=racer[2], track_id=race.track_info.id)
+                db.session.add(lt)
+                db.session.commit()
         dnfs = race_info['dnf_order']
         for racer in dnfs:
             rp = RacePerformance.query.filter_by(id=racer[0]).first()
             racer_ids.append(rp.user_id)
             rp.end_position = 0
             db.session.commit()
-        race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
+            for lap in racer[3]:
+                lt = LapTime(milliseconds=lap, race_id=race.id, user_id=racer[1], 
+                            car_id=racer[2], dnf=True, track_id=race.track_info.id)
+                db.session.add(lt)
+                db.session.commit()
         calculate_payouts(race, race_info['prizepool'])
         check_racers = User.query.filter(User.id.in_(racer_ids)).all()
         check_achievements(check_racers, 'Race Finish')
@@ -1320,6 +1331,22 @@ def race_info(race_id):
         if race.finalized:
             return redirect(url_for('main.race_results', race_id=race.id))
         racers = race.participants.order_by(RacePerformance.start_position).all()
+        for racer in racers:
+            laps = LapTime.query.filter_by(user_id=racer.user_id).filter_by(track_id=race.track).order_by(LapTime.milliseconds).all()
+            racer.laps_completed = len(laps)
+            if len(laps) > 0:
+                lap_average = sum([lap.milliseconds for lap in laps]) / len(laps)
+                racer.lap_average = datetime.fromtimestamp(lap_average/1000.0).strftime('%M:%S.%f')[:-3]
+                racer.best_lap = datetime.fromtimestamp(laps[0].milliseconds/1000.0).strftime('%M:%S.%f')[:-3]
+            else:
+                racer.lap_average = 'No Data'
+                racer.best_lap = 'No Data'
+            racer.track_wins = len(RacePerformance.query.filter_by(track_id=race.track).filter_by(user_id=racer.user_id).filter_by(end_position=1).all())
+            racer.track_podiums = len(RacePerformance.query.filter_by(track_id=race.track).filter_by(user_id=racer.user_id).filter((RacePerformance.end_position <= 3) & (RacePerformance.end_position > 0)).all())
+            racer.track_completions = len(RacePerformance.query.filter_by(track_id=race.track).filter_by(user_id=racer.user_id).filter(RacePerformance.end_position != 0).all())
+            racer.wins = len(RacePerformance.query.filter_by(end_position=1).filter_by(user_id=racer.user_id).all())
+            racer.podiums = len(RacePerformance.query.filter_by(user_id=racer.user_id).filter((RacePerformance.end_position <= 3) & (RacePerformance.end_position > 0)).all())
+            racer.completions = len(RacePerformance.query.filter_by(user_id=racer.user_id).filter(RacePerformance.end_position != 0).all())
         try:
             racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
             racer_most_wins = User.query.filter_by(id=racer_id).first()

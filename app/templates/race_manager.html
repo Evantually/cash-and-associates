@@ -1,6 +1,31 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block styles %}
+{{ super() }}
+<style>
+    #display, #times {
+        margin: 10px 0px;
+    padding: 10px;
+        border: 1px solid silver;
+    font-family: monospace;
+    }
+
+    .total-time { /* total measured time */
+    font-size: 30px;
+    }
+
+    .split-time { /* time of last split */
+    font-size: 15px;
+    }
+
+    button {
+        margin: 0px;
+    padding: 5px;
+    }
+</style>
+{% endblock %}
+
 {% block app_content %}
     <h1 id="user" auth-id="{{ current_user.id }}"">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>{{ title }}</h2>
@@ -12,6 +37,15 @@
         <div class="col-md-3"><a href="javascript:FinalizeRace();" role="button"><button class="btn btn-primary btn-lg">Finalize Race</button></a></div>
         <div id="raceresults" class="col-md-3" style="visibility: hidden;"><a href="{{ url_for('main.race_results', race_id=race.id) }}" role="button"><button class="btn btn-primary btn-lg">Race Results</button></a></div>
     </div>
+    <div id="display">
+        <div class="total-time">
+          00:00:00.000
+        </div>
+    </div>
+    <button class="btn btn-primary" onclick="startStopwatch();">Start</button>
+    <button class="btn btn-primary" onclick="stopStopwatch();">Stop</button>
+    <button class="btn btn-primary" onclick="splitTime();">Split time</button>
+    <ul id="racertimes" style="display: block;"></ul>
     {% endif %}
     <div class="row">
         <div class="col-md-4">
@@ -35,14 +69,28 @@
                     <img height="128px" src="{{ racer.car_stock.image }}">
                     {% endif %}
                 </div>
-                <div class="col-md-3">
-                    <td>Car Class: {{ racer.car_stock.car_class }}</td>
-                </div>
-                <div class="col-md-3">
-                    <td>Car: {{ racer.car_stock.name }}</td>
-                </div>
-                <div class="col-md-3">
-                    <td>Name: {{ racer.user_info.username }}</td>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <td>Car Class: {{ racer.car_stock.car_class }}</td>
+                        </div>
+                        <div class="col-md-3">
+                            <td>Car: {{ racer.car_stock.name }}</td>
+                        </div>
+                        <div class="col-md-3">
+                            <td>Name: {{ racer.user_info.username }}</td>
+                        </div>
+                        <div class="col-md-3">
+                            Lap Times:
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9"></div>
+                        <div class="col-md-3">
+                            <ol class="racer-times" id="time_{{ racer.id }}">
+                            </ol>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -72,6 +120,25 @@
             put: ['racers']
         },
         animation: 100
+    });
+    var racer_time_groupings = [];
+    $('.racer-times').each((index, elem) => {
+        racer_time_groupings.push($(elem).attr("id"));
+    });
+    racer_time_groupings.forEach(racer => {
+        Sortable.create(document.getElementById(racer), {
+            group: {
+                name: `${racer}`,
+                put: true,
+                pull: true
+            }
+        });
+    });
+    Sortable.create(racertimes, {
+        group: {
+            name: 'racertimes',
+            pull: true
+        }
     });
     function SetStartPosition() {
         race_info = CollectRacerPositions();
@@ -135,22 +202,41 @@
     function CollectRacerPositions() {
         racer_order = [];
         dnf_order = [];
-        $("#racers li").each(function(index, elem) {
+        $("#racers").children("li").each(function(index, elem) {
             let racer_info = $(elem);
+            init_lap_times = [];
+            lap_time_elems = racer_info.find('.split-time')
+            for (i=0; i< lap_time_elems.length; i++) {
+                init_lap_times.push(convertTimeToMilliseconds(init_lap_times, i, lap_time_elems[i].innerText));
+            }
+            console.log('Initial Lap Times')
+            console.log(init_lap_times);
+            lap_times = calcLapTimes(init_lap_times);
+            console.log('Calculated Lap Times')
+            console.log(lap_times);
             racer_order.push([
                 parseInt(racer_info.attr('racer-id')), 
                 parseInt(racer_info.attr('user-id')),
-                parseInt(racer_info.attr('car-id'))
+                parseInt(racer_info.attr('car-id')),
+                lap_times
             ]);
         });
-        $("#dnf li").each(function(index, elem) {
+        $("#dnf").children("li").each(function(index, elem) {
             let racer_info = $(elem);
+            init_lap_times = [];
+            lap_time_elems = racer_info.children('.split-time')
+            for (i=0; i< lap_time_elems.length; i++) {
+                init_lap_times.push(convertTimeToMilliseconds(init_lap_times, i, lap_time_elems[i].innerText));
+            }
+            lap_times = calcLapTimes(init_lap_times);
             dnf_order.push([
                 parseInt(racer_info.attr('racer-id')), 
                 parseInt(racer_info.attr('user-id')),
-                parseInt(racer_info.attr('car-id'))
+                parseInt(racer_info.attr('car-id')),
+                lap_times
             ]);
         });
+
         race_info = {
             racer_order: racer_order,
             dnf_order: dnf_order,
@@ -158,6 +244,161 @@
             prizepool: parseInt($("#prizepool").val())
         }
         return race_info;
+    }
+
+    function calculatePeriod(t1, t2) {
+        var dt = t2 - t1;
+
+        var units = [
+            {name: 'milliseconds', scale: 1000},
+            {name: 'seconds', scale: 60},
+            {name: 'minutes', scale: 60},
+            {name: 'hours', scale: 24}
+        ];
+
+        var result = { };
+        result.milliseconds = dt;
+        for(var i = 0; i < units.length; ++i) {
+            var unit = units[i];
+
+            var total = Math.floor(dt / unit.scale);
+            var rest = dt - total * unit.scale;
+
+            result[unit.name] = rest;
+
+            dt = total;
+        }
+
+        result.days = dt;
+
+        return result;
+    }
+
+    function calcLapTimes(lap_times) {
+        new_lap_times = lap_times.sort((a,b) => {
+            return a-b;
+        });
+        calced_lap_times = [];
+        for (i=0; i< lap_times.length; i++) {
+            if (i > 0) {
+                calced_lap_times.push(new_lap_times[i] - new_lap_times.slice(0,i).reduce((a, b) => a + b, 0))
+            } else {
+                calced_lap_times.push(new_lap_times[i])
+            }
+        }
+        return calced_lap_times;
+    }
+
+    function convertTimeToMilliseconds(lap_times, index, timestring) {
+        time_info = timestring.split(':')
+        hours = time_info[0];
+        minutes = time_info[1];
+        secondsmillis = time_info[2];
+        second_info = secondsmillis.split('.')
+        seconds = second_info[0];
+        milliseconds = second_info[1];        
+        ms = (parseInt(hours)*3600000) + (parseInt(minutes)*60000) + (parseInt(seconds)*1000) + parseInt(milliseconds)
+        return ms
+    }
+
+    function padLeft(number, length, character) {
+        if(character == null)
+            character = '0';
+
+        var result = number.toString();
+
+        for(var i = result.length; i < length; ++i) {
+            result = character + result;
+        }
+
+        return result;
+    }
+    
+    function renderTime(t1, t2) {
+    	var period = calculatePeriod(t1, t2);
+
+        var text = '';
+
+        if (period.days) {
+          text += padLeft(period.days, 2) + ' days ';
+        }
+
+        text += padLeft(period.hours, 2) + ':';
+        text += padLeft(period.minutes, 2) + ':';
+        text += padLeft(period.seconds, 2) + '.';
+        text += padLeft(period.milliseconds, 3);
+
+        return text;
+    }
+
+    var interval = null; // interval id
+    
+    var start = null; // start time
+    var split = null; // split time
+    
+	var display = document.getElementById('display');
+	var times = document.getElementById('racertimes');
+
+    function startStopwatch() {
+    	if(interval)
+          	return;
+
+      	start = new Date();
+      
+      	if(split) {
+          	times.style.display = 'none';
+          	times.innerHTML = '';
+          
+        	split = null;
+        }
+      
+      	function tick() {
+        	var now = new Date();
+          	
+          	if(split) {
+            	var html = '<div class="total-time">' 
+                	+ renderTime(start, now) 
+                	+ '</div>'
+              
+              	display.innerHTML = html;
+            } else {
+            	var html = '<div class="total-time">' 
+                	+ renderTime(start, now) 
+                	+ '</div>';
+              
+              	display.innerHTML = html;
+            }
+        }
+      
+      	interval = setInterval(tick, 10); // once per 10 ms
+    }
+    
+    function stopStopwatch() {
+    	if(interval) {
+        	clearInterval(interval);
+
+          	interval = null;
+        }
+    }
+    
+    function splitTime() {
+    	if(interval) {
+         	var now = new Date();
+
+          	if (split == null) {
+                times.innerHTML += '<li class="split-time">' 
+                    + renderTime(start, now)
+                    + '</li>';
+              
+            	times.style.display = 'block';
+            } else {
+            	times.innerHTML += '<li class="split-time">' 
+                    + renderTime(start, now)
+                    + '</li>';
+            }
+ 
+          	split = now;
+        }
     }
 </script>
 {% endblock %}

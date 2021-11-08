@@ -75,33 +75,53 @@
         </div>
     </div>
     <h3>Registered Racers ({{ racers | length }})</h3>
-    <table class="table table-hover">
-        <tr>
-            <th></th>
-            <th>Car Class</th>
-            <th>Car Model</th>
-            <th>Racer</th>
-            <th>Car Name</th>
-        </tr>
+    <ol id="racers" style="padding: 10px;">
         {% for racer in racers %}
-        <tr>
-            <td>
-                {% if racer.car_info.image %}
-                <img height="128px" src="{{ racer.car_info.image }}">
-                {% else %}
-                <img height="128px" src="{{ racer.car_stock.image }}">
-                {% endif %}
-            </td>
-            <td>{{ racer.car_stock.car_class }}</td>
-            <td>{{ racer.car_stock.name }}</td>
-            <td>{{ racer.user_info.username }}</td>
-            <td>{{ racer.car_info.name }}</td>
-        </tr>
-        {% if racer.user_info.username == current_user.username %}
-        <tr><td><a href="{{ url_for('main.change_registration', race_id=race.id) }}">Edit this registration (leave or change vehicle).</a></td></tr>
-        {% endif %}
+        <li style="padding: 5px;" racer-id="{{ racer.id }}" user-id="{{ racer.user_info.id }}" car-id="{{ racer.car_info.id }}">
+            <div class="row hover">
+                <div class="col-md-3">
+                    {% if racer.car_info.image %}
+                    <img height="128px" src="{{ racer.car_info.image }}">
+                    {% else %}
+                    <img height="128px" src="{{ racer.car_stock.image }}">
+                    {% endif %}
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-12"><h3>{{ racer.user_info.username }}</h3></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <td>Car Class: {{ racer.car_stock.car_class }}</td>
+                        </div>
+                        <div class="col-md-4">
+                            <td>Car: {{ racer.car_stock.name }}</td>
+                        </div>
+                        <div class="col-md-4">
+                            <td>Car Name: {{ racer.car_info.name }}</td>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Track Lap Record: {{ racer.best_lap }}</div>
+                        <div class="col-md-4">Track Lap Average: {{ racer.lap_average }}</div>
+                        <div class="col-md-4">Track Laps Completed: {{ racer.laps_completed }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Wins (This Track): {{ racer.track_wins }}</div>
+                        <div class="col-md-4">Podiums (This Track): {{ racer.track_podiums }}</div>
+                        <div class="col-md-4">Race Completions (This Track): {{ racer.track_completions }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Wins (All Tracks): {{ racer.wins }}</div>
+                        <div class="col-md-4">Podiums (All Tracks): {{ racer.podiums }}</div>
+                        <div class="col-md-4">Race Completions (All Tracks): {{ racer.completions }}</div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </li>
         {% endfor %}
-    </table>
+    </ol>
 {% endblock %}
 
 {% block scripts %}

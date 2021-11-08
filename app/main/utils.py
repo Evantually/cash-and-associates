@@ -531,6 +531,12 @@ def calculate_payouts(race, prizepool=None):
         except IndexError:
             continue
 
+def convert_from_milliseconds(milliseconds):
+    minutes = (milliseconds // 60000) % 60
+    seconds = (milliseconds // 1000) % 60
+    millis = milliseconds - (minutes * 60000) - (seconds * 1000)
+    return minutes, seconds, millis
+
 def post_to_discord(race):
     time1, time2, time3 = get_timezones(race.start_time)
     alert_urls = []

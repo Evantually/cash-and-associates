@@ -376,7 +376,7 @@ class RacePerformance(db.Model):
     car_info = db.relationship('OwnedCar')
     track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
     race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
-    race_info = db.relationship('Race')
+    race_info = db.relationship('Race', overlaps="participants,race")
     start_position = db.Column(db.Integer, default=0)
     end_position = db.Column(db.Integer, default=0)
     payout = db.Column(db.Integer)
@@ -451,3 +451,12 @@ class Message(db.Model):
 
     def __repr__(self):
         return '<Message {}>'.format(self.body)
+
+class LapTime(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    milliseconds = db.Column(db.Integer)
+    race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    car_id = db.Column(db.Integer, db.ForeignKey('owned_car.id'))
+    track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
+    dnf = db.Column(db.Boolean, default=False)
