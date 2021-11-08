@@ -1354,7 +1354,7 @@ def race_info(race_id):
             try:
                 car_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(car_id=car_most_wins.id).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
             except AttributeError:
-                car_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(user_id=racer_most_wins.id).filter_by(track_id=race.track).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
+                car_most_wins.lap_record = datetime.fromtimestamp(0).strftime('%M:%S.%f')[:-3]
         except TypeError:
             racer_id, racer_number_wins = [None, None]
             racer_most_wins=None
