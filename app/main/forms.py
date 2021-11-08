@@ -106,7 +106,7 @@ class AddCarForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class AddOwnedCarForm(FlaskForm):
-    name = StringField(_l('Name (Optional)'))
+    name = StringField(_l('Name (Optional)'), validators=[Length(max=64)])
     car = QuerySelectField(query_factory=lambda: Car.query.order_by(Car.name).all())
     engine_level = SelectField('Engine Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     transmission_level = SelectField('Transmission Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
@@ -170,7 +170,7 @@ class RaceSignupForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class EditOwnedCarForm(FlaskForm):
-    name = StringField(_l('Name'))
+    name = StringField(_l('Name'), validators=[Length(max=64)])
     car = QuerySelectField(query_factory=lambda: Car.query.order_by(Car.name).all())
     engine_level = SelectField('Engine Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     transmission_level = SelectField('Transmission Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
