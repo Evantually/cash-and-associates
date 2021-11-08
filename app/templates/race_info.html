@@ -118,6 +118,14 @@
                     </div>
                 </div>
             </div>
+            {% if current_user.id == racer.user_id %}
+            <div class="row">
+                <div class="col-md-12">
+                    
+                    <a href="{{ url_for('main.change_registration', race_id=race.id) }}">Leave race or edit race registration</a>
+                </div>
+            </div>
+            {% endif %}
             <hr>
         </li>
         {% endfor %}
