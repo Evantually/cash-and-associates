@@ -319,7 +319,7 @@ class OwnedCar(db.Model):
     turbo_level = db.Column(db.Integer)
     brakes_level = db.Column(db.Integer)
     suspension_level = db.Column(db.Integer)
-    image = db.Column(db.String(64))
+    image = db.Column(db.String(256))
     first = db.Column(db.Integer)
     second = db.Column(db.Integer)
     third = db.Column(db.Integer)

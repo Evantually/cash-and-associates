@@ -113,7 +113,7 @@ class AddOwnedCarForm(FlaskForm):
     turbo_level = SelectField('Turbo Level', choices=[(0,'0'),(1,'1')])
     brakes_level = SelectField('Brakes Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     suspension_level = SelectField('Suspension Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
-    image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'))
+    image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'), validators=[Length(max=64)])
     submit = SubmitField(_l('Submit'))
 
 class AddTrackForm(FlaskForm):
@@ -177,7 +177,7 @@ class EditOwnedCarForm(FlaskForm):
     turbo_level = SelectField('Turbo Level', choices=[(0,'0'),(1,'1')])
     brakes_level = SelectField('Brakes Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
     suspension_level = SelectField('Suspension Level', choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')])
-    image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'))
+    image = StringField(_l('Image Link (Make sure this is web-hosted and ends in the file extension jpg png, etc.)'), validators=[Length(max=64)])
     delete = BooleanField('Delete this car')
     submit = SubmitField(_l('Submit'))
 
