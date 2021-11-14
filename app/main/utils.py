@@ -537,8 +537,7 @@ def convert_from_milliseconds(milliseconds):
     millis = milliseconds - (minutes * 60000) - (seconds * 1000)
     return minutes, seconds, millis
 
-def post_to_discord(race):
-    time1, time2, time3 = get_timezones(race.start_time)
+def determine_webhooks(race):
     alert_urls = []
     if race.octane_member:
         alert_urls.append([Config.OCTANE_MEMBER_WEBHOOK, '<@&873061504512049157>', 'League Member'])
@@ -550,6 +549,10 @@ def post_to_discord(race):
         alert_urls.append([Config.OCTANE_NEWCOMER_WEBHOOK, '<@&902311716619182113>', 'Newcomer'])
     if race.octane_community:
         alert_urls.append([Config.OCTANE_COMMUNITY_WEBHOOK, '<@&902311716619182113>', 'Newcomer'])
+    if race.octane_crew_vs:
+        alert_urls.append([Config.OCTANE_CREW_WEBHOOK, 'everyone'])
+    if race.octane_announcements:
+        alert_urls.append([Config.OCTANE_ANNOUNCEMENTS_WEBHOOK, 'everyone'])
     if race.open_249:
         alert_urls.append([Config.TWOFOURNINE_OPEN_WEBHOOK, 'Open League'])
     if race.new_blood_249:
@@ -559,7 +562,35 @@ def post_to_discord(race):
     if race.moto_249:
         alert_urls.append([Config.TWOFOURNINE_MOTO_WEBHOOK, 'Moto League'])
     if len(alert_urls) == 0:
-        alert_urls.append([Config.ALERT_TESTING_WEBHOOK, ''])
+        alert_urls.append([Config.ALERT_TESTING_WEBHOOK, 'everyone'])
+    return alert_urls
+
+def determine_message_webhooks(form):
+    alert_urls = []
+    if form.octane_announcements.data:
+        alert_urls.append([Config.OCTANE_ANNOUNCEMENTS_WEBHOOK, 'everyone'])
+    if form.octane_crew_vs.data:
+        alert_urls.append([Config.OCTANE_CREW_WEBHOOK, 'everyone'])
+    return alert_urls
+
+def post_encrypted_message(race):
+    alert_urls = determine_message_webhooks(race)
+    for url in alert_urls:
+        data = {
+            'username': race.name.data,
+            'content': race.content.data
+        }
+        result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
+        try:
+            result.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            print(err)
+        else:
+            print("Payload delivered successfully, code {}.".format(result.status_code))
+
+def post_to_discord(race):
+    alert_urls = determine_webhooks(race)
+    time1, time2, time3 = get_timezones(race.start_time)
     radio_freq = random.randint(20, 500) + round(random.random(),2)
     for url in alert_urls:
         joint_race = 'JOINT RACE' if len(alert_urls) > 1 else ''

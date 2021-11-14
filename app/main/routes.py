@@ -11,7 +11,8 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
     DeleteForm, AddTransactionForm, AddCategoryForm, AddCompanyForm, AddEmployeeForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm, ManageRacerForm, AddCarForm,
     AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm,
-    EditRaceForm, AddCrewForm, AddToRaceForm, RacerSelectForm, RacerManageSelectForm)
+    EditRaceForm, AddCrewForm, AddToRaceForm, RacerSelectForm, RacerManageSelectForm,
+    EncryptedMessageForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
@@ -23,7 +24,7 @@ from app.main.utils import (organize_data_by_date, summarize_data, format_curren
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
                             get_available_classes, determine_crew_points, get_timezones,
                             post_to_discord, calculate_crew_points, check_achievements,
-                            calculate_payouts, convert_from_milliseconds)
+                            calculate_payouts, convert_from_milliseconds, post_encrypted_message)
 
 
 @bp.before_app_request
@@ -1415,6 +1416,20 @@ def achievements():
         return render_template('race_history.html', races=races)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
+
+@bp.route('/send_encrypted_message', methods=['GET', 'POST'])
+@login_required
+def send_encrypted_message():
+    if current_user.race_lead:
+        form = EncryptedMessageForm()
+        if form.validate_on_submit():
+            post_encrypted_message(form)
+            flash('Your message has been sent.')
+            return redirect(url_for('main.send_encrypted_message'))
+        return render_template('add_product.html', title='Send Encrypted Message', form=form)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
+    
 
 @bp.route('/messages')
 @login_required

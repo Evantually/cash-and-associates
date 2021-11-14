@@ -196,3 +196,10 @@ class AddToRaceForm(FlaskForm):
 class RacerSelectForm(FlaskForm):
     racer = SelectField('Racer')
     submit = SubmitField(_l('Submit'))
+
+class EncryptedMessageForm(FlaskForm):
+    name = StringField(_l('Name'))
+    content = TextAreaField('Message')
+    octane_announcements = BooleanField('Octane Announcement')
+    octane_crew_vs = BooleanField('Octane Crew vs Crew')
+    submit = SubmitField(_l('Submit'))
