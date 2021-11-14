@@ -84,6 +84,12 @@
                                             {% endif %}
                                             <li><a href="{{ url_for('main.add_owned_car') }}">Add Owned Car</a></li>
                                             <li><a href="{{ url_for('main.my_cars') }}">My Cars</a></li>
+                                            {% if current_user.race_lead %}
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Admin</li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{ url_for('main.send_encrypted_message') }}">Encrypted Message</a></li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                     <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">

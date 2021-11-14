@@ -130,3 +130,4 @@ Traceback (most recent call last):
     raise TypeError(f'Object of type {o.__class__.__name__} '
 TypeError: Object of type StringField is not JSON serializable
 2021-11-13 20:57:22,978 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-13 21:00:48,620 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
