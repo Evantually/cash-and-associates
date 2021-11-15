@@ -24,7 +24,8 @@ from app.main.utils import (organize_data_by_date, summarize_data, format_curren
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
                             get_available_classes, determine_crew_points, get_timezones,
                             post_to_discord, calculate_crew_points, check_achievements,
-                            calculate_payouts, convert_from_milliseconds, post_encrypted_message)
+                            calculate_payouts, convert_from_milliseconds, post_encrypted_message,
+                            post_cancel_to_discord)
 
 
 @bp.before_app_request
@@ -1009,6 +1010,7 @@ def edit_race(race_id):
                 for rp in rps:
                     db.session.delete(rp)
                     db.session.commit()
+                post_cancel_to_discord(race)
                 db.session.delete(race)
                 db.session.commit()
                 flash('The race has been removed successfully.')

@@ -549,10 +549,6 @@ def determine_webhooks(race):
         alert_urls.append([Config.OCTANE_NEWCOMER_WEBHOOK, '<@&902311716619182113>', 'Newcomer'])
     if race.octane_community:
         alert_urls.append([Config.OCTANE_COMMUNITY_WEBHOOK, '<@&902311716619182113>', 'Newcomer'])
-    if race.octane_crew_vs:
-        alert_urls.append([Config.OCTANE_CREW_WEBHOOK, 'everyone'])
-    if race.octane_announcements:
-        alert_urls.append([Config.OCTANE_ANNOUNCEMENTS_WEBHOOK, 'everyone'])
     if race.open_249:
         alert_urls.append([Config.TWOFOURNINE_OPEN_WEBHOOK, 'Open League'])
     if race.new_blood_249:
@@ -587,6 +583,23 @@ def post_encrypted_message(race):
             print(err)
         else:
             print("Payload delivered successfully, code {}.".format(result.status_code))
+
+def post_cancel_to_discord(race):
+    alert_urls = determine_webhooks(race)
+    for url in alert_urls:
+        data = {
+            'username': 'Encrypted',
+            'content': f'{url[1]} \nThe race {race.name} ({race.track_info.name}) has been cancelled.'
+        }
+        result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
+        try:
+            result.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            print(err)
+        else:
+            print("Payload delivered successfully, code {}.".format(result.status_code))
+
+
 
 def post_to_discord(race):
     alert_urls = determine_webhooks(race)

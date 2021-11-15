@@ -1,4 +1,4 @@
-2021-11-07 06:14:32,543 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:16:05,541 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -13,7 +13,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:14:42,553 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:16:15,547 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -28,7 +28,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:14:52,561 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:16:25,558 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -43,7 +43,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:15:02,568 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:16:35,558 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -58,7 +58,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:15:12,576 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:16:45,573 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -73,8 +73,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:15:15,147 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-07 06:15:18,774 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:16:55,575 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -89,7 +88,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:15:35,508 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:17:05,588 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -104,7 +103,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:15:45,510 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:17:15,603 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -119,7 +118,7 @@ Traceback (most recent call last):
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1396, in notifications
     Notification.timestamp > since).order_by(Notification.timestamp.asc())
 NameError: name 'Notification' is not defined
-2021-11-07 06:15:55,525 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-07 06:17:25,648 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
