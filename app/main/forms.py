@@ -202,4 +202,7 @@ class EncryptedMessageForm(FlaskForm):
     content = TextAreaField('Message')
     octane_announcements = BooleanField('Octane Announcement')
     octane_crew_vs = BooleanField('Octane Crew vs Crew')
+    prospect_tag = BooleanField('Prospect')
+    newcomer_tag = BooleanField('Newcomer')
+    member_tag = BooleanField('League Member')
     submit = SubmitField(_l('Submit'))

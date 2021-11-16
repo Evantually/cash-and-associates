@@ -569,12 +569,26 @@ def determine_message_webhooks(form):
         alert_urls.append([Config.OCTANE_CREW_WEBHOOK, 'everyone'])
     return alert_urls
 
+def get_role_tags(form):
+    tags = []
+    if form.prospect_tag.data:
+        tags.append('<@&888936290949672961>')
+    if form.newcomer_tag.data:
+        tags.append('<@&902311716619182113>')
+    if form.member_tag.data:
+        tags.append('<@&873061504512049157>')
+    return tags
+
 def post_encrypted_message(race):
     alert_urls = determine_message_webhooks(race)
+    tags = get_role_tags(race)
+    tags_string = ''
+    for tag in tags:
+        tags_string += tag
     for url in alert_urls:
         data = {
             'username': race.name.data,
-            'content': race.content.data
+            'content': f'{tags_string} {race.content.data}'
         }
         result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
         try:
@@ -616,7 +630,7 @@ def post_to_discord(race):
                                 Start time: {time1} | {time2} | {time3}\n\
                                 ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
                                 Radio: {radio_freq}\n\
-                                Buy-in: ${race.buyin}\n\
+                                Suggested donation: ${race.buyin}\n\
                                 [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
                                 :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:\n\
                                 {joint_race}',
