@@ -588,7 +588,7 @@ def post_encrypted_message(race):
     for url in alert_urls:
         data = {
             'username': race.name.data,
-            'content': f'{tags_string} {race.content.data}'
+            'content': f'{tags_string} \n{race.content.data}'
         }
         result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
         try:
@@ -714,6 +714,7 @@ def initialize_achievements():
     achievements = [
         {
             'name': 'Revved Up and Ready',
+            'point_value': 1,
             'description': 'Participate in your first race.',
             'image': '',
             'category': 'Race Participation',
@@ -728,6 +729,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'Are We There Yet?',
+            'point_value': 5,
             'description': 'Participate in 10 races.',
             'image': '',
             'category': 'Race Participation',
@@ -742,6 +744,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'It\'s Just a Hobby',
+            'point_value': 10,
             'description': 'Participate in 25 races.',
             'image': '',
             'category': 'Race Participation',
@@ -756,6 +759,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'I\'m Kinda Good At This',
+            'point_value': 5,
             'description': 'Win a race for the first time.',
             'image': '',
             'category': 'Wins',
@@ -770,6 +774,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'Poe Dee Umm',
+            'point_value': 5,
             'description': 'Finish a race in the top 3.',
             'image': '',
             'category': 'Podiums',
@@ -784,6 +789,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'That\'s Gotta Be Some Kind of Record.',
+            'point_value': 10,
             'description': 'Finish a race in the top 3 ten times.',
             'image': '',
             'category': 'Podiums',
@@ -798,6 +804,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'Three\'s Company',
+            'point_value': 5,
             'description': 'Complete races with 3 different car models.',
             'image': '',
             'category': 'Car Variety',
@@ -812,6 +819,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'It\'s Five Somewhere',
+            'point_value': 10,
             'description': 'Complete races with 5 different car models.',
             'image': '',
             'category': 'Car Variety',
@@ -826,6 +834,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'C\'s Get Degrees',
+            'point_value': 10,
             'description': 'Compete in 10 races with a C-class vehicle.',
             'image': '',
             'category': 'Class Variety',
@@ -840,6 +849,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'Big Booty B\'s',
+            'point_value': 10,
             'description': 'Compete in 10 races with a B-class vehicle.',
             'image': '',
             'category': 'Class Variety',
@@ -854,6 +864,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'Straight A\'s',
+            'point_value': 10,
             'description': 'Compete in 10 races with an A-class vehicle.',
             'image': '',
             'category': 'Class Variety',
@@ -868,6 +879,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'Supercalifragilisticexpialidocious',
+            'point_value': 10,
             'description': 'Compete in 10 races with an S-class vehicle.',
             'image': '',
             'category': 'Class Variety',
@@ -882,6 +894,7 @@ def initialize_achievements():
             ]
         },{
             'name': 'XXX Enthusiast',
+            'point_value': 10,
             'description': 'Compete in 10 races with an X-class vehicle.',
             'image': '',
             'category': 'Class Variety',
@@ -901,7 +914,8 @@ def initialize_achievements():
             continue
         else:
             ach = Achievement(name=achieve['name'], description=achieve['description'],
-                                image=achieve['image'], achievement_category=achieve['category'])
+                                point_value=achieve['point_value'], image=achieve['image'], 
+                                achievement_category=achieve['category'])
             db.session.add(ach)
             db.session.commit()
             for con in achieve['criteria']:
@@ -917,41 +931,54 @@ def initialize_achievements():
                     db.session.add(ach_con)
                     db.session.commit()
                 ach.add_achievement_condition(ach_con)
+                db.session.commit()
 
 def check_achievements(racers, check_type):
     for racer in racers:
-        racer_achieves = [a.id for a in AchievementCondition.query.join(completed_achievements).filter(completed_achievements.c.user_id == racer.id).all()]
+        racer_achieves = [a.id for a in AchievementCondition.query.join(completed_achievements).filter(completed_achievements.c.user_id == racer).all()]
         achieves_to_check = AchievementCondition.query.filter(AchievementCondition.id.not_in(racer_achieves)).all()
         for achieve in achieves_to_check:
             completed = determine_achieve_completion(racer, achieve)
             if completed:
-                racer.add_achievement_condition(achieve)
-                db.session.commit()
+                try:
+                    User.query.filter_by(id=racer).first().add_achievement_condition(achieve)
+                    db.session.commit()
+                except AttributeError:
+                    continue
+            else:
+                try:
+                    User.query.filter_by(id=racer).first().remove_achievement_condition(achieve)
+                    db.session.commit()
+                except AttributeError:
+                    continue
         check_player_completed_achievements(racer)
 
 def determine_achieve_completion(racer, achieve):
     if achieve.achievement_type == 'Race Participation':
-        return eval(f'{RacePerformance.query.filter_by(user_id=racer.id).count()} {achieve.operand} {achieve.value}')
+        return eval(f'{RacePerformance.query.filter_by(user_id=racer).count()} {achieve.operand} {achieve.value}')
     elif achieve.achievement_type == 'Wins':
-        return eval(f'{RacePerformance.query.filter_by(user_id=racer.id).filter_by(end_position=1).count()} {achieve.operand} {achieve.value}')
+        return eval(f'{RacePerformance.query.filter_by(user_id=racer).filter_by(end_position=1).count()} {achieve.operand} {achieve.value}')
     elif achieve.achievement_type == 'Podiums':
-        return eval(f'{RacePerformance.query.filter_by(user_id=racer.id).filter((RacePerformance.end_position <= 3) & (RacePerformance.end_position > 0)).count()} {achieve.operand} {achieve.value}')
+        return eval(f'{RacePerformance.query.filter_by(user_id=racer).filter((RacePerformance.end_position <= 3) & (RacePerformance.end_position > 0)).count()} {achieve.operand} {achieve.value}')
     elif achieve.achievement_type == 'Car Variety':
-        return eval(f'{RacePerformance.query.with_entities(RacePerformance.car_id).filter(RacePerformance.user_id == racer.id).distinct().count()} {achieve.operand} {achieve.value}')
+        return eval(f'{RacePerformance.query.with_entities(RacePerformance.car_id).filter(RacePerformance.user_id == racer).distinct().count()} {achieve.operand} {achieve.value}')
     elif achieve.achievement_type == 'Class Variety':
-        return eval(f'{RacePerformance.query.filter_by(user_id=racer.id).filter(Car.query.filter_by(id=RacePerformance.car_id).first().car_class == achieve.car_class_info).count()} {achieve.operand} {achieve.value}')
+        return eval(f'{RacePerformance.query.filter_by(user_id=racer).filter(Car.query.filter_by(id=RacePerformance.car_id).first().car_class == achieve.car_class_info).count()} {achieve.operand} {achieve.value}')
 
 def check_player_completed_achievements(user):
-    achievements = Achievement.query.filter(Achievement.id.not_in(a.id for a in user.completed_achievements.all())).all()
-    for achieve in achievements:
-        props_completed = []
-        for prop in achieve.properties.all():
-            if user.achieve_earned(prop):
-                props_completed.append(True)
+    try:
+        achievements = Achievement.query.filter(Achievement.id.not_in(a.id for a in User.query.filter_by(id=user).first().completed_achievements.all())).all()
+        for achieve in achievements:
+            props_completed = []
+            for prop in achieve.properties.all():
+                if User.query.filter_by(id=user).first().achieve_earned(prop):
+                    props_completed.append(True)
+                else:
+                    props_completed.append(False)
+            if all(x == True for x in props_completed):
+                User.query.filter_by(id=user).first().complete_achievement(achieve)
             else:
-                props_completed.append(False)
-        if all(x == True for x in props_completed):
-            user.complete_achievement(achieve)
-        else:
-            user.uncomplete_achievement(achieve)
-        db.session.commit()
+                User.query.filter_by(id=user).first().uncomplete_achievement(achieve)
+            db.session.commit()
+    except AttributeError:
+        pass

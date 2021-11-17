@@ -73,7 +73,7 @@
                             <span class="caret"></span></a>                              
                             <ul class="dropdown-menu multi-column {% if current_user.race_lead or current_user.race_host %}columns-3{% else %}columns-2{% endif %}">
                                 <div class="row">
-                                    <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">  
+                                    <div class="col-md-4">  
                                         <ul class="multi-column-dropdown">
                                             <li class="divider"></li>
                                             <li class="dropdown-header">Cars</li>
@@ -92,7 +92,7 @@
                                             {% endif %}
                                         </ul>
                                     </div>
-                                    <div class="col-md-{% if current_user.race_lead %}4{% else %}6{% endif %}">
+                                    <div class="col-md-4">
                                         <ul class="multi-column-dropdown">
                                             <li class="divider"></li>
                                             <li class="dropdown-header">Races</li>
@@ -107,24 +107,28 @@
                                             <li><a href="{{ url_for('main.upcoming_races') }}">Upcoming Races</a></li>  
                                         </ul>
                                     </div>
-                                    {% if current_user.race_lead %}
+                                    
                                     <div class="col-md-4">
                                         <ul class="multi-column-dropdown">
                                             <li class="divider"></li>
+                                            <li class="dropdown-header">Bragging Section</li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{ url_for('main.achievements') }}">Achievements</a></li>
+                                            <li><a href="{{ url_for('main.leaderboard') }}">Leaderboards</a></li>
+                                            {% if current_user.race_lead %}
+                                            <li class="divider"></li>
                                             <li class="dropdown-header">Tracks</li>
                                             <li class="divider"></li>
-                                            <!-- {% if current_user.race_lead %}                                     -->
                                             <li><a href="{{ url_for('main.add_track') }}">Add Track</a></li>
-                                            <li><a href="{{ url_for('main.manage_tracks') }}">Manage Tracks</a></li>
-                                            <!-- {% endif %} -->
+                                            <li><a href="{{ url_for('main.manage_tracks') }}">Manage Tracks</a></li>                                
                                             <li class="divider"></li>
                                             <li class="dropdown-header">Crews</li>
                                             <li class="divider"></li>
                                             <li><a href="{{ url_for('main.add_crew') }}">Add Crew</a></li>
                                             <li><a href="{{ url_for('main.crew_info') }}">Crew Dashboard</a></li>
+                                            {% endif %}
                                         </ul>
                                     </div>
-                                    {% endif %}
                                 </div> 
                             </ul>
                         </li>

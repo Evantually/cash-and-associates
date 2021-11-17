@@ -17,7 +17,7 @@ from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
                         RacePerformance, Crew, CrewResults, Notification, Message,
-                        LapTime)
+                        LapTime, Achievement)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
@@ -1414,8 +1414,22 @@ def race_history():
 @login_required
 def achievements():
     if current_user.racer:
-        completed_achievements = current_user.completed_achievements.all()
-        return render_template('race_history.html', races=races)
+        completed_achievements = [x.id for x in current_user.completed_achievements]
+        achievement_score = str(sum([x.point_value for x in current_user.completed_achievements]))
+        achievements = Achievement.query.all()
+        return render_template('achievements.html', completed_achievements=completed_achievements,
+                                achievements=achievements, achievement_score=achievement_score)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
+
+@bp.route('/leaderboard', methods=['GET'])
+@login_required
+def leaderboard():
+    if current_user.racer:
+        win_info = RacePerformance.query.with_entities(User.username, func.count(RacePerformance.user_id).label('wins')).join(User, User.id == RacePerformance.user_id).filter(RacePerformance.end_position==1).group_by(User.username).order_by(text('wins DESC')).all()
+        winners = [x[0] for x in win_info][:10]
+        wins = [x[1] for x in win_info][:10]
+        return render_template('leaderboard.html', win_info=win_info, winners=winners, wins=wins)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 

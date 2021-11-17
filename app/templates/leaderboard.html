@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block metas %}
+{{ super() }}
+<meta id="my-data" data-winners="{{ winners }}" data-wins="{{ wins }}" data-label=" {{ label }}">
+{% endblock %}
+
+{% block app_content %}
+    <div class="statistics-section-title"><h1>Leaderboard</h1></div>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="row">
+        <div class="col-md-6"><h4>Racer</h4></div>
+        <div class="col-md-6"><h4>Wins</h4></div>
+    </div>
+    <hr>
+    {% for win in win_info %}
+    <div class="row">
+        <div class="col-md-6">{{ win.username }}</div>
+        <div class="col-md-6">{{ win.wins }}</div>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/google-palette/1.1.0/palette.js"></script>
+    <script>
+
+        function hexToRgbA(hex, alpha){
+            var c;
+            if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+                c= hex.substring(1).split('');
+                if(c.length== 3){
+                    c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+                }
+                c= '0x'+c.join('');
+                return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + alpha + ')';
+            }
+            throw new Error('Bad Hex');
+        }
+
+        function createChart(elem_id, categorization, source_data, source_labels) {
+            full_data = $(elem_id).data();
+            console.log(full_data);
+            full_data[source_labels] = full_data[source_labels].replace(/[']+/g, '"')
+            colors = palette('rainbow', full_data[source_data].length)
+            converted_colors_bg = []
+            converted_colors_bd = []
+            for (i=0;i<full_data[source_data].length;i++){
+                converted_colors_bg.push(hexToRgbA(`#${colors[i]}`, 0.2))
+                converted_colors_bd.push(hexToRgbA(`#${colors[i]}`, 1))
+            }
+            const labels = JSON.parse(full_data[source_labels]);
+            const data = {
+            labels: labels,
+                datasets: [{
+                    label: full_data.label,
+                    data: full_data[source_data],
+                    backgroundColor: converted_colors_bg,
+                    borderColor: converted_colors_bd,
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    stacked: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: categorization
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+        
+            var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+            );
+        }
+        createChart('#my-data', 'Wins', 'wins', 'winners')
+    </script>
+
+{% endblock %}
