@@ -1429,7 +1429,18 @@ def leaderboard():
         win_info = RacePerformance.query.with_entities(User.username, func.count(RacePerformance.user_id).label('wins')).join(User, User.id == RacePerformance.user_id).filter(RacePerformance.end_position==1).group_by(User.username).order_by(text('wins DESC')).all()
         winners = [x[0] for x in win_info][:10]
         wins = [x[1] for x in win_info][:10]
-        return render_template('leaderboard.html', win_info=win_info, winners=winners, wins=wins)
+        racers = User.query.filter_by(racer=True).all()
+        achievement_info = []
+        for racer in racers:
+            achievement_score = sum([x.point_value for x in racer.completed_achievements])
+            achievement_info.append({'name': racer.username, 'score': achievement_score})
+        sorted_achievement_info = sorted(achievement_info, key=lambda d: d['score'], reverse=True)
+        achievements_filtered = [x for x in sorted_achievement_info if x['score'] > 0]
+        achievement_points = [x['score'] for x in sorted_achievement_info][:10]
+        achievement_racers = [x['name'] for x in sorted_achievement_info][:10]
+        return render_template('leaderboard.html', win_info=win_info, winners=winners, wins=wins,
+                                achievement_points=achievement_points, achievement_racers=achievement_racers,
+                                achievement_info=achievements_filtered)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 

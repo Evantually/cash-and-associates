@@ -3,25 +3,58 @@
 
 {% block metas %}
 {{ super() }}
-<meta id="my-data" data-winners="{{ winners }}" data-wins="{{ wins }}" data-label=" {{ label }}">
+<meta id="my-data" data-achievement-points="{{ achievement_points }}" data-achievement-racers="{{ achievement_racers }}" data-winners="{{ winners }}" data-wins="{{ wins }}">
 {% endblock %}
 
 {% block app_content %}
     <div class="statistics-section-title"><h1>Leaderboard</h1></div>
-    <div class="container">
-        <canvas id="myChart"></canvas>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container">
+                <canvas id="myChart2"></canvas>
+            </div>
+        </div>
     </div>
     <div class="row">
-        <div class="col-md-6"><h4>Racer</h4></div>
-        <div class="col-md-6"><h4>Wins</h4></div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6"><h4>Racer</h4></div>
+                <div class="col-md-6"><h4>Wins</h4></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6"><h4>Racer</h4></div>
+                <div class="col-md-6"><h4>Achievement Points</h4></div>
+            </div>
+        </div>
     </div>
     <hr>
-    {% for win in win_info %}
+    
     <div class="row">
-        <div class="col-md-6">{{ win.username }}</div>
-        <div class="col-md-6">{{ win.wins }}</div>
+        <div class="col-md-6">
+            {% for win in win_info %}
+            <div class="row">
+                <div class="col-md-6">{{ win.username }}</div>
+                <div class="col-md-6">{{ win.wins }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            {% for achievement in achievement_info %}
+            <div class="row">
+                <div class="col-md-6">{{ achievement['name'] }}</div>
+                <div class="col-md-6">{{ achievement['score'] }}</div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
+    
 {% endblock %}
 
 {% block scripts %}
@@ -42,7 +75,7 @@
             throw new Error('Bad Hex');
         }
 
-        function createChart(elem_id, categorization, source_data, source_labels) {
+        function createChart(elem_id, categorization, source_data, source_labels, chartID) {
             full_data = $(elem_id).data();
             console.log(full_data);
             full_data[source_labels] = full_data[source_labels].replace(/[']+/g, '"')
@@ -90,11 +123,12 @@
             };
         
             var myChart = new Chart(
-            document.getElementById('myChart'),
+            document.getElementById(chartID),
             config
             );
         }
-        createChart('#my-data', 'Wins', 'wins', 'winners')
+        createChart('#my-data', 'Wins', 'wins', 'winners', 'myChart')
+        createChart('#my-data', 'Achievements', 'achievementPoints', 'achievementRacers', 'myChart2')
     </script>
 
 {% endblock %}
