@@ -71,7 +71,7 @@
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Racing
                             <span class="caret"></span></a>                              
-                            <ul class="dropdown-menu multi-column {% if current_user.race_lead or current_user.race_host %}columns-3{% else %}columns-2{% endif %}">
+                            <ul class="dropdown-menu multi-column columns-3">
                                 <div class="row">
                                     <div class="col-md-4">  
                                         <ul class="multi-column-dropdown">
@@ -106,12 +106,11 @@
                                             <li><a href="{{ url_for('main.race_history') }}">Race History</a></li>
                                             <li><a href="{{ url_for('main.upcoming_races') }}">Upcoming Races</a></li>  
                                         </ul>
-                                    </div>
-                                    
+                                    </div>                                    
                                     <div class="col-md-4">
                                         <ul class="multi-column-dropdown">
                                             <li class="divider"></li>
-                                            <li class="dropdown-header">Bragging Section</li>
+                                            <li class="dropdown-header">Bragging Rights</li>
                                             <li class="divider"></li>
                                             <li><a href="{{ url_for('main.achievements') }}">Achievements</a></li>
                                             <li><a href="{{ url_for('main.leaderboard') }}">Leaderboards</a></li>
