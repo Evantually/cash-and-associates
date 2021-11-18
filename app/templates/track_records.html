@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block metas %}
+{{ super() }}
+
+{% endblock %}
+
+{% block app_content %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h2>{{ title }}</h2>
+    <div class="form-group">
+        <label class="control-label" for="carclass">Choose a car class:</label>
+        <select class="form-control" id="carclass"></select>
+    </div>
+    <table class="table table-hover">
+        <tbody id="records">
+            <tr>
+                <th>Track</th>
+                <th>Racer</th>
+                <th>Car</th>
+                <th>Lap Time</th>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    function millisToMinutesAndSeconds(millis) {
+        var minutes = Math.floor(millis / 60000);
+        var seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds + '.' + String(millis).slice(String(millis).length - 3);
+    }
+    function getTrackRecords() {
+        $.get('/track_records_retrieve', (info) => {
+            data = info.data;
+            console.log(data);
+            for ([key, value] of Object.entries(data)) {
+                filtered_records = value.filter(lap_time => {
+                    return lap_time.car_class === $('#carclass').val()
+                })
+                sorted_records = filtered_records.sort((a,b) => {
+                    return a.lap_time - b.lap_time
+                })
+                data[key] = sorted_records[0];
+            }
+            console.log(data);
+            d3.selectAll('.data').remove();
+            for ([key, value] of Object.entries(data)) {
+                if (value !== undefined) {
+                    tr = d3.select('#records').append('tr')
+                        .classed('data', true);
+                    tr.append('td')
+                            .text(value.track)
+                    tr.append('td')
+                        .text(value.racer)
+                    td = tr.append('td')
+                    td.append('img')
+                        .attr("src", value.car_image)
+                        .attr("height", "200px");
+                    tr.append('td')
+                        .text(millisToMinutesAndSeconds(value.lap_time))
+                } else {
+                    tr = d3.select('#records').append('tr')
+                        .classed('data', true);
+                    tr.append('td')
+                            .text(key)
+                    tr.append('td')
+                        .text('No Racer Info')
+                    tr.append('td')
+                        .text('No Car Info')                  
+                    tr.append('td')
+                        .text('No Lap Time Info')
+                }
+            } 
+        });
+    }
+    
+    function createClassSelect() {
+        const unique = ['D', 'C', 'B', 'A', 'A+', 'S', 'X'];
+        console.log(unique)
+        for (i=0; i<unique.length; i++) {
+            $('#carclass').append($('<option>', {
+                value: unique[i],
+                text: unique[i]
+            }));
+        }
+    }
+    $('select').on('change', () => getTrackRecords());
+    createClassSelect();
+    getTrackRecords();
+</script>
+{% endblock %}

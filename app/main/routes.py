@@ -1133,6 +1133,28 @@ def retrieve_racers():
     racers = User.query.filter_by(racer=True).all()
     return jsonify({'racers': racers})
 
+@bp.route('/track_records_retrieve', methods=['GET'])
+@login_required
+def track_records_retrieve():
+    track_info = {}
+    tracks = Track.query.all()
+    for track in tracks:
+        track_info[track.name] = []
+        for lap in LapTime.query.filter_by(track_id=track.id).all():
+            try:
+                entry = {
+                    'track': track.name,
+                    'racer': User.query.filter_by(id=lap.user_id).first().username,
+                    'car_class': Car.query.filter_by(id=lap.stock_id).first().car_class,
+                    'car': Car.query.filter_by(id=lap.stock_id).first().name,
+                    'car_image': OwnedCar.query.filter_by(id=lap.car_id).first().image,
+                    'lap_time': lap.milliseconds
+                }
+            except AttributeError:
+                continue
+            track_info[track.name].append(entry)
+    return jsonify({'data': track_info})
+
         #END API CALLS
     # END RACE LEAD SECTION
     # START RACER SECTION
@@ -1459,6 +1481,14 @@ def leaderboard():
         return render_template('leaderboard.html', win_info=win_info, winners=winners, wins=wins,
                                 achievement_points=achievement_points, achievement_racers=achievement_racers,
                                 achievement_info=achievements_filtered)
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
+
+@bp.route('/track_records', methods=['GET'])
+@login_required
+def track_records():
+    if current_user.racer:
+        return render_template('track_records.html', title='Track Records')
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 
