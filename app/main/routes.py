@@ -1383,6 +1383,8 @@ def race_results(race_id):
                     racer_laps.append(datetime.fromtimestamp(lap.milliseconds / 1000.0).strftime('%M:%S.%f')[:-3])
                 except OSError:
                     continue
+                except TypeError:
+                    continue
             racer.laps = racer_laps
         try:
             racer_id, racer_number_wins = RacePerformance.query.with_entities(RacePerformance.user_id, func.count(RacePerformance.user_id).label('wins')).filter(RacePerformance.track_id==race.track).filter(RacePerformance.end_position==1).group_by(RacePerformance.user_id).order_by(text('wins DESC')).first()
