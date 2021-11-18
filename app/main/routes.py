@@ -1248,6 +1248,9 @@ def edit_owned_car(car_id):
 def race_signup(race_id):
     if current_user.racer:
         race = Race.query.filter_by(id=race_id).first_or_404()
+        if race.finalized:
+            flash('This race has already finished.')
+            return redirect(url_for('main.race_results', race_id=race.id))
         if race.crew_race:
             if current_user.crew_id not in ([race.defending_crew_id, race.challenging_crew_id]):
                 flash('You are not in a crew associated with this race. If this is an error talk to an organizer.')
