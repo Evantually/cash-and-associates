@@ -567,6 +567,16 @@ def determine_message_webhooks(form):
         alert_urls.append([Config.OCTANE_ANNOUNCEMENTS_WEBHOOK, 'everyone'])
     if form.octane_crew_vs.data:
         alert_urls.append([Config.OCTANE_CREW_WEBHOOK, 'everyone'])
+    if form.prospect_race_alert.data:
+        alert_urls.append([Config.OCTANE_PROSPECT_WEBHOOK, 'everyone'])
+    if form.newcomer_race_alert.data:
+        alert_urls.append([Config.OCTANE_NEWCOMER_WEBHOOK, 'everyone'])
+    if form.prospect_announcement.data:
+        alert_urls.append([Config.OCTANE_PROSPECT_ANNOUNCEMENT_WEBHOOK, 'everyone'])
+    if form.newcomer_announcement.data:
+        alert_urls.append([Config.OCTANE_NEWCOMER_ANNOUNCEMENT_WEBHOOK, 'everyone'])
+    if form.promotional_announcement.data:
+        alert_urls.append([Config.OCTANE_PROMOTIONAL_ANNOUNCEMENT_WEBHOOK, 'everyone'])
     return alert_urls
 
 def get_role_tags(form):
@@ -577,6 +587,8 @@ def get_role_tags(form):
         tags.append('<@&902311716619182113>')
     if form.member_tag.data:
         tags.append('<@&873061504512049157>')
+    if form.promotional_tag.data:
+        tags.append('<@&910663731313278976>')
     return tags
 
 def post_encrypted_message(race):
