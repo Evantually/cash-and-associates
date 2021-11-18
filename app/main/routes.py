@@ -1398,7 +1398,24 @@ def race_results(race_id):
                                 top_racer=racer_most_wins, top_car=car_most_wins, racer_wins=racer_number_wins, 
                                 car_wins=car_number_wins, dnfs=dnfs)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
-    return redirect(url_for('main.index'))               
+    return redirect(url_for('main.index'))
+
+@bp.route('/transfer_vehicle/<car_id>', methods=['GET', 'POST'])
+@login_required
+def transfer_vehicle(car_id):
+    if current_user.racer:
+        form = RacerSelectForm()
+        form.racer.choices = [(r.id, r.username) for r in User.query.filter_by(racer=True).order_by(User.username).all()]
+        if form.validate_on_submit():
+            car = OwnedCar.query.filter_by(id=car_id).first_or_404()
+            new_owner = User.query.filter_by(id=form.racer.data).first_or_404()
+            car.user_id = new_owner.id
+            db.session.commit()
+            flash(f'{car.car_info.name} has been transferred to {new_owner.username}.')
+            return redirect(url_for('main.my_cars'))
+        return render_template('add_product.html', form=form, title='Transfer Vehicle')
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
 
 @bp.route('/race_history', methods=['GET'])
 @login_required

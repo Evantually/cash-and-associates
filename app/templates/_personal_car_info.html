@@ -34,10 +34,11 @@
                 </tr>      
                 <tr>
                     <td><a href="{{ url_for('main.edit_owned_car', car_id=car.id) }}">Edit this car</a></td>
+                    <td><a href="{{ url_for('main.transfer_vehicle', car_id=car.id) }}">Transfer this car</a></td>
                     <td>Total Races: </td>
-                    <td></td>
                     <td></td>
                 </tr>         
             </table>
+        </td>
     </tr>
 </table>

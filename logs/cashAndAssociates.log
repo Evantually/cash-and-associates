@@ -79,3 +79,7 @@ Traceback (most recent call last):
     raise exception
 sqlalchemy.exc.ArgumentError: SQL expression element or literal value expected, got WASP.
 2021-11-17 17:34:13,213 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 17:34:42,406 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 18:56:01,077 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 19:03:46,198 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 19:14:25,043 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

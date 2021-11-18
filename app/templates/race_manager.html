@@ -45,6 +45,17 @@
     <button class="btn btn-primary" onclick="startStopwatch();">Start</button>
     <button class="btn btn-primary" onclick="stopStopwatch();">Stop</button>
     <button class="btn btn-primary" onclick="splitTime();">Split time</button>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Lap Time Entry</span>
+                </div>
+                <input id="manualtime" placeholder="00:00:00.000" type="text" class="form-control" aria-label="Lap Time Entry">
+                <button class="btn btn-primary" onclick="createLapTime();">Create Lap Time</button>
+            </div>
+        </div>
+    </div>
     <ul id="racertimes" style="display: block;"></ul>
     {% endif %}
     <div class="row">
@@ -381,6 +392,12 @@
         }
     }
     
+    function createLapTime() {
+        times.innerHTML += '<li class="split-time">' 
+            + $('#manualtime').val()
+            + '</li>';
+    }
+
     function splitTime() {
     	if(interval) {
          	var now = new Date();
