@@ -1147,7 +1147,7 @@ def track_records_retrieve():
                     'racer': User.query.filter_by(id=lap.user_id).first().username,
                     'car_class': Car.query.filter_by(id=lap.stock_id).first().car_class,
                     'car': Car.query.filter_by(id=lap.stock_id).first().name,
-                    'car_image': OwnedCar.query.filter_by(id=lap.car_id).first().image,
+                    'car_image': OwnedCar.query.filter_by(id=lap.car_id).first().image if OwnedCar.query.filter_by(id=lap.car_id).first().image else Car.query.filter_by(id=lap.stock_id).first().image,
                     'lap_time': lap.milliseconds
                 }
             except AttributeError:
