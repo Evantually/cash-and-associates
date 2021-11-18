@@ -1173,7 +1173,7 @@ def crew_info():
 @login_required
 def upcoming_races():
     if current_user.racer:
-        upcoming_races = Race.query.filter(Race.start_time > datetime.utcnow()).all()
+        upcoming_races = Race.query.filter(Race.start_time > (datetime.utcnow() - timedelta(minutes=10))).all()
         return render_template('upcoming_races.html', upcoming_races=upcoming_races)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
