@@ -1,4 +1,12 @@
-2021-11-17 04:04:08,741 ERROR: Exception on /achievements/288 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-17 09:30:31,285 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:30:47,539 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:47:50,291 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:52:09,640 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:53:07,271 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:56:03,647 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:56:29,965 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:57:04,068 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:57:04,469 ERROR: Exception on /leaderboard [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -10,30 +18,27 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1418, in achievements
-    completed_achievements = [x.id for x in user.completed_achievements]
-AttributeError: 'NoneType' object has no attribute 'completed_achievements'
-2021-11-17 04:06:02,546 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:11:14,754 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:15:05,353 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:19:16,753 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:19:24,083 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:22:30,961 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:24:51,629 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:26:09,169 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:26:16,886 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:35:29,053 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:43:53,876 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:43:56,174 ERROR: Exception on /achievements/280 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1437, in leaderboard
+    sorted_achievement_info = sorted(achievement_info, key=lambda d: d['score'] if d['score'] > 0 else None, reverse=True)
+TypeError: '<' not supported between instances of 'NoneType' and 'int'
+2021-11-17 09:57:32,442 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 09:58:56,678 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 10:00:10,591 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 10:00:35,004 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 17:16:15,364 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 17:19:53,381 ERROR: Exception on /race/finalize_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-psycopg2.errors.UndefinedColumn: column achievement.point_value does not exist
-LINE 1: ...evement_id, achievement.name AS achievement_name, achievemen...
-                                                             ^
-
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 500, in _literal_coercion
+    return expr._bind_param(operator, element, type_=bindparam_type)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 4451, in _bind_param
+    return BindParameter(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 1417, in __init__
+    self.type = _compared_to_type.coerce_compared_value(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\type_api.py", line 665, in coerce_compared_value
+    _coerced_type = _resolve_value_to_type(value)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 3276, in _resolve_value_to_type
+    raise exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: Object WASP is not legal as a SQL literal value
 
 The above exception was the direct cause of the following exception:
 
@@ -48,63 +53,61 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1418, in achievements
-    completed_achievements = [x.id for x in user.completed_achievements]
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2837, in __iter__
-    return self._iter().__iter__()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\dynamic.py", line 351, in _iter
-    return self._generate(sess)._iter()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
-    result = self.session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
-    ret = self._execute_context(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
-    self._handle_dbapi_exception(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
-    util.raise_(
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1095, in finalize_race
+    check_achievements(check_racers, 'Race Finish')
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 938, in check_achievements
+    racer_achieves = [a.id for a in AchievementCondition.query.join(completed_achievements).filter(completed_achievements.c.user_id == racer).all()]
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
+    return self.operate(eq, other)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 813, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
+    return self.operate(eq, other)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\type_api.py", line 76, in operate
+    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 97, in _boolean_compare
+    obj = coercions.expect(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 186, in expect
+    resolved = impl._literal_coercion(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 502, in _literal_coercion
+    self._raise_for_expected(element, err=err)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 487, in _raise_for_expected
+    return super(ExpressionElementImpl, self)._raise_for_expected(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 282, in _raise_for_expected
+    util.raise_(exc.ArgumentError(msg, code=code), replace_context=err)
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
     raise exception
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column achievement.point_value does not exist
-LINE 1: ...evement_id, achievement.name AS achievement_name, achievemen...
-                                                             ^
-
-[SQL: SELECT achievement.id AS achievement_id, achievement.name AS achievement_name, achievement.point_value AS achievement_point_value, achievement.description AS achievement_description, achievement.image AS achievement_image, achievement.achievement_category AS achievement_achievement_category 
-FROM achievement, player_achievements 
-WHERE %(param_1)s = player_achievements.user_id AND achievement.id = player_achievements.achievement_id]
-[parameters: {'param_1': 280}]
-(Background on this error at: http://sqlalche.me/e/14/f405)
-2021-11-17 04:44:19,617 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:44:21,855 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:44:24,288 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:45:27,344 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:48:04,811 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:48:52,420 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:49:11,221 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:49:40,707 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:51:12,435 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:52:18,930 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:52:41,894 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:53:57,317 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:55:26,717 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:55:59,037 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:56:16,635 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:56:52,093 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:58:22,650 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:58:53,313 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 04:59:26,361 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 05:00:57,033 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 05:02:01,509 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 05:10:45,066 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 05:12:09,467 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 05:13:41,970 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 05:14:59,092 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+sqlalchemy.exc.ArgumentError: SQL expression element or literal value expected, got WASP.
+2021-11-17 17:34:13,213 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 17:34:42,406 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 18:56:01,077 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 19:03:46,198 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 19:14:25,043 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 22:36:01,914 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 22:36:13,720 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 22:36:28,471 ERROR: Exception on /track_records [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1146, in track_records
+    'car_class': Car.query.filter_by(id=lap.stock_id).first().car_class,
+AttributeError: 'NoneType' object has no attribute 'car_class'
+2021-11-17 22:37:12,538 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:16:04,183 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:18:25,393 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:18:59,926 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:19:32,039 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:23:47,488 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:24:20,216 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:24:57,567 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:25:53,095 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:32:02,578 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 23:59:08,716 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

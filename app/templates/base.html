@@ -140,7 +140,7 @@
                     <li><a href="{{ url_for('auth.login') }}">{{ _('Login') }}</a></li>
                     {% else %}
                     <li>
-                        <a href="{{ url_for('main.notifications') }}">{{ _('Notifications') }}
+                        <a href="{{ url_for('main.messages') }}">{{ _('Notifications') }}
                             {% set new_messages = current_user.new_messages() %}
                             <span id="message_count" class="badge"
                                   style="visibility: {% if new_messages %}visible

@@ -1,18 +1,6 @@
-2021-11-08 16:45:27,146 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-08 16:45:36,408 ERROR: Exception on /race_info/99 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-psycopg2.errors.UndefinedColumn: column lap_time.stock_id does not exist
-LINE 1: ...time_user_id, lap_time.car_id AS lap_time_car_id, lap_time.s...
-                                                             ^
-HINT:  Perhaps you meant to reference the column "lap_time.track_id".
-
-
-The above exception was the direct cause of the following exception:
-
+2021-11-15 11:04:50,061 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:06:17,411 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:06:43,692 ERROR: Exception on /setup_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -24,44 +12,20 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1330, in race_info
-    laps = LapTime.query.filter_by(user_id=racer.user_id).filter_by(track_id=race.track).order_by(LapTime.milliseconds).all()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2709, in all
-    return self._iter().all()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
-    result = self.session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 323, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
-    ret = self._execute_context(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
-    self._handle_dbapi_exception(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
-    util.raise_(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
-    raise exception
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
-    self.dialect.do_execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column lap_time.stock_id does not exist
-LINE 1: ...time_user_id, lap_time.car_id AS lap_time_car_id, lap_time.s...
-                                                             ^
-HINT:  Perhaps you meant to reference the column "lap_time.track_id".
-
-[SQL: SELECT lap_time.id AS lap_time_id, lap_time.milliseconds AS lap_time_milliseconds, lap_time.race_id AS lap_time_race_id, lap_time.user_id AS lap_time_user_id, lap_time.car_id AS lap_time_car_id, lap_time.stock_id AS lap_time_stock_id, lap_time.track_id AS lap_time_track_id, lap_time.dnf AS lap_time_dnf 
-FROM lap_time 
-WHERE lap_time.user_id = %(user_id_1)s AND lap_time.track_id = %(track_id_1)s ORDER BY lap_time.milliseconds]
-[parameters: {'user_id_1': 66, 'track_id_1': 5}]
-(Background on this error at: http://sqlalche.me/e/14/f405)
-2021-11-08 16:45:45,729 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-08 16:45:48,040 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-08 16:45:56,519 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-08 16:45:56,743 ERROR: Exception on /race_info/99 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 892, in setup_race
+    post_to_discord(race)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 610, in post_to_discord
+    alert_urls = determine_webhooks(race)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 552, in determine_webhooks
+    if race.octane_crew_vs:
+AttributeError: 'Race' object has no attribute 'octane_crew_vs'
+2021-11-15 11:07:02,245 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:07:07,834 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:07:11,854 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:07:59,302 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:09:47,052 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:26:35,816 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 11:27:34,253 ERROR: Exception on /send_encrypted_message [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -73,12 +37,61 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1348, in race_info
-    racer_most_wins.lap_record = datetime.fromtimestamp(LapTime.query.filter_by(user_id=racer_most_wins.id).filter_by(track_id=race.track_id).order_by(LapTime.milliseconds).first().milliseconds / 1000.0).strftime('%M:%S.%f')[:-3]
-AttributeError: 'Race' object has no attribute 'track_id'
-2021-11-08 16:46:30,755 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-08 16:48:25,253 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-08 16:52:23,802 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-08 16:52:51,100 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-09 10:49:01,996 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-09 10:50:26,690 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1428, in send_encrypted_message
+    post_encrypted_message(form)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 579, in post_encrypted_message
+    result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 119, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 528, in request
+    prep = self.prepare_request(req)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 456, in prepare_request
+    p.prepare(
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 316, in prepare
+    self.prepare_url(url, params)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 390, in prepare_url
+    raise MissingSchema(error)
+requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perhaps you meant http://None?
+2021-11-15 11:28:03,148 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 12:13:01,069 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 12:13:21,459 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 13:05:29,453 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 21:35:09,390 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 21:39:07,468 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-15 22:20:56,973 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 03:24:11,088 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 03:24:16,373 ERROR: Exception on /achievements [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1418, in achievements
+    return render_template('race_history.html', races=races)
+NameError: name 'races' is not defined
+2021-11-17 03:29:16,698 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 03:29:17,041 ERROR: Exception on /achievements [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1418, in achievements
+    achievements = Achievement.query.all()
+NameError: name 'Achievement' is not defined
+2021-11-17 03:29:34,727 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-17 03:30:47,044 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

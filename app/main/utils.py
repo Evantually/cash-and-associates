@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pytz
 from app.models import (User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry, Crew, Race, 
                         RacePerformance, completed_achievements, Achievement, AchievementCondition, achievement_properties,
-                        Car)
+                        Car, Notification, Message)
 from app import db
 from sqlalchemy.sql import func
 import itertools
@@ -952,17 +952,17 @@ def check_achievements(racers, check_type):
         for achieve in achieves_to_check:
             completed = determine_achieve_completion(racer, achieve)
             if completed:
-                try:
-                    User.query.filter_by(id=racer).first().add_achievement_condition(achieve)
-                    db.session.commit()
-                except AttributeError:
-                    continue
-            else:
-                try:
-                    User.query.filter_by(id=racer).first().remove_achievement_condition(achieve)
-                    db.session.commit()
-                except AttributeError:
-                    continue
+                user = User.query.filter_by(id=racer).first()
+                user.add_achievement_condition(achieve)
+                db.session.commit()                                                   
+            else:                
+                user = User.query.filter_by(id=racer).first()
+                user.remove_achievement_condition(achieve)
+                db.session.commit()
+                for ach in Achievement.query.all():
+                    if ach.achieve_property(achieve):
+                        user.uncomplete_achievement(ach)
+                        db.session.commit()
         check_player_completed_achievements(racer)
 
 def determine_achieve_completion(racer, achieve):
@@ -975,22 +975,26 @@ def determine_achieve_completion(racer, achieve):
     elif achieve.achievement_type == 'Car Variety':
         return eval(f'{RacePerformance.query.with_entities(RacePerformance.car_id).filter(RacePerformance.user_id == racer).distinct().count()} {achieve.operand} {achieve.value}')
     elif achieve.achievement_type == 'Class Variety':
-        return eval(f'{RacePerformance.query.filter_by(user_id=racer).filter(Car.query.filter_by(id=RacePerformance.car_id).first().car_class == achieve.car_class_info).count()} {achieve.operand} {achieve.value}')
+        return eval(f'{RacePerformance.query.filter_by(user_id=racer).filter(RacePerformance.car_id.in_([a.id for a in Car.query.with_entities(Car.id).filter_by(car_class=achieve.car_class_info).all()])).count()} {achieve.operand} {achieve.value}')
 
 def check_player_completed_achievements(user):
-    try:
-        achievements = Achievement.query.filter(Achievement.id.not_in(a.id for a in User.query.filter_by(id=user).first().completed_achievements.all())).all()
-        for achieve in achievements:
-            props_completed = []
-            for prop in achieve.properties.all():
-                if User.query.filter_by(id=user).first().achieve_earned(prop):
-                    props_completed.append(True)
-                else:
-                    props_completed.append(False)
-            if all(x == True for x in props_completed):
-                User.query.filter_by(id=user).first().complete_achievement(achieve)
+    achievements = Achievement.query.filter(Achievement.id.not_in(a.id for a in User.query.filter_by(id=user).first().completed_achievements.all())).all()
+    for achieve in achievements:
+        props_completed = []
+        for prop in achieve.properties.all():
+            if User.query.filter_by(id=user).first().achieve_earned(prop):
+                props_completed.append(True)
             else:
-                User.query.filter_by(id=user).first().uncomplete_achievement(achieve)
+                props_completed.append(False)
+        if all(x == True for x in props_completed):
+            u = User.query.filter_by(id=user).first()
+            u.complete_achievement(achieve)
+            message = Message(sender_id=1, recipient_id=user,
+                            body=f'You have unlocked the achievement "{achieve.name}" and earned {achieve.point_value} achievement points!')
+            db.session.add(message)
             db.session.commit()
-    except AttributeError:
-        pass
+            u.add_notification(f'Achievement Unlocked! {achieve.name}', u.new_messages())                    
+            db.session.commit()
+        else:
+            User.query.filter_by(id=user).first().uncomplete_achievement(achieve)
+        db.session.commit()

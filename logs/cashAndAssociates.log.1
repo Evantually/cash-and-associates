@@ -1,12 +1,4 @@
-2021-11-17 09:30:31,285 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:30:47,539 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:47:50,291 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:52:09,640 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:53:07,271 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:56:03,647 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:56:29,965 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:57:04,068 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:57:04,469 ERROR: Exception on /leaderboard [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-19 11:54:14,293 ERROR: Exception on /race_results/99 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -18,74 +10,47 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1437, in leaderboard
-    sorted_achievement_info = sorted(achievement_info, key=lambda d: d['score'] if d['score'] > 0 else None, reverse=True)
-TypeError: '<' not supported between instances of 'NoneType' and 'int'
-2021-11-17 09:57:32,442 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 09:58:56,678 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 10:00:10,591 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 10:00:35,004 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 17:16:15,364 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 17:19:53,381 ERROR: Exception on /race/finalize_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 500, in _literal_coercion
-    return expr._bind_param(operator, element, type_=bindparam_type)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 4451, in _bind_param
-    return BindParameter(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 1417, in __init__
-    self.type = _compared_to_type.coerce_compared_value(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\type_api.py", line 665, in coerce_compared_value
-    _coerced_type = _resolve_value_to_type(value)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\sqltypes.py", line 3276, in _resolve_value_to_type
-    raise exc.ArgumentError(
-sqlalchemy.exc.ArgumentError: Object WASP is not legal as a SQL literal value
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1095, in finalize_race
-    check_achievements(check_racers, 'Race Finish')
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 938, in check_achievements
-    racer_achieves = [a.id for a in AchievementCondition.query.join(completed_achievements).filter(completed_achievements.c.user_id == racer).all()]
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
-    return self.operate(eq, other)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 813, in operate
-    return op(self.comparator, *other, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 360, in __eq__
-    return self.operate(eq, other)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\type_api.py", line 76, in operate
-    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 97, in _boolean_compare
-    obj = coercions.expect(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 186, in expect
-    resolved = impl._literal_coercion(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 502, in _literal_coercion
-    self._raise_for_expected(element, err=err)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 487, in _raise_for_expected
-    return super(ExpressionElementImpl, self)._raise_for_expected(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 282, in _raise_for_expected
-    util.raise_(exc.ArgumentError(msg, code=code), replace_context=err)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
-    raise exception
-sqlalchemy.exc.ArgumentError: SQL expression element or literal value expected, got WASP.
-2021-11-17 17:34:13,213 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 17:34:42,406 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 18:56:01,077 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 19:03:46,198 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 19:14:25,043 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 22:36:01,914 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 22:36:13,720 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 22:36:28,471 ERROR: Exception on /track_records [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1424, in race_results
+    return render_template('race_results.html', title=f'Race - {race.name}', race=race, racers=racers,
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_results.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 172, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_results.html", line 13, in block 'app_content'
+    {% if racers[0].car_info.image %}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: list object has no element 0
+2021-11-19 11:55:10,036 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 11:56:26,574 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:02:22,357 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:05:24,328 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:06:21,250 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:10:10,838 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:17:25,766 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:35:14,700 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:48:04,654 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:56:23,926 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:57:23,644 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 12:58:10,473 ERROR: Exception on /race_results/104 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -97,17 +62,35 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1146, in track_records
-    'car_class': Car.query.filter_by(id=lap.stock_id).first().car_class,
-AttributeError: 'NoneType' object has no attribute 'car_class'
-2021-11-17 22:37:12,538 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:16:04,183 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:18:25,393 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:18:59,926 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:19:32,039 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:23:47,488 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:24:20,216 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:24:57,567 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:25:53,095 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:32:02,578 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-17 23:59:08,716 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1424, in race_results
+    return render_template('race_results.html', title=f'Race - {race.name}', race=race, racers=racers,
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_results.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 172, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_results.html", line 13, in block 'app_content'
+    {% if racers[0].car_info.image %}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: list object has no element 0
+2021-11-19 13:00:55,065 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 13:14:10,249 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-19 13:19:58,663 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
