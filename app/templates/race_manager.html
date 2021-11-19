@@ -59,6 +59,11 @@
     <ul id="racertimes" style="display: block;"></ul>
     {% endif %}
     <div class="row">
+        <div class="col-md-4" id="firstprizepool"></div>
+        <div class="col-md-4" id="secondprizepool"></div>
+        <div class="col-md-4" id="thirdprizepool"></div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -72,13 +77,18 @@
     <ol id="racers" style="padding: 10px;">
         {% for racer in racers %}
         <li style="padding: 5px;" racer-id="{{ racer.id }}" user-id="{{ racer.user_info.id }}" car-id="{{ racer.car_info.id }}">
-            <div class="row hover">
+            <div class="row">
                 <div class="col-md-3">
-                    {% if racer.car_info.image %}
-                    <img height="128px" src="{{ racer.car_info.image }}">
-                    {% else %}
-                    <img height="128px" src="{{ racer.car_stock.image }}">
-                    {% endif %}
+                    <div class="row">
+                        <div class="col-md-3">Paid: <input type="checkbox"></div>
+                        <div class="col-md-3">
+                            {% if racer.car_info.image %}
+                            <img height="128px" src="{{ racer.car_info.image }}">
+                            {% else %}
+                            <img height="128px" src="{{ racer.car_stock.image }}">
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-9">
                     <div class="row">
@@ -151,6 +161,18 @@
             pull: true
         }
     });
+
+    function calculatePayouts() {
+        if (Number.isNaN(parseInt($("#prizepool").val()))) {
+            payout_amount = parseInt(d3.select('#prizepool').attr('placeholder'));
+        } else {
+            payout_amount = parseInt($("#prizepool").val());
+        }
+        d3.select('#firstprizepool').text(`1st place payout: ${payout_amount * 0.5}`);
+        d3.select('#secondprizepool').text(`2nd place payout: ${payout_amount * 0.3}`);
+        d3.select('#thirdprizepool').text(`3rd place payout: ${payout_amount * 0.2}`);
+    }
+
     function SetStartPosition() {
         race_info = CollectRacerPositions();
         $.ajax(
@@ -417,5 +439,23 @@
           	split = now;
         }
     }
+    $("#prizepool").on({
+        change: () => {
+            calculatePayouts();
+        }
+    },{
+        mouseenter: () => {
+            calculatePayouts();
+        }
+    },{
+        mouseleave: () => {
+            calculatePayouts();
+        }
+    },{
+        input: () => {
+            calculatePayouts();
+        }
+    })
+    calculatePayouts();
 </script>
 {% endblock %}
