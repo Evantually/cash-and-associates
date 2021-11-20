@@ -45,7 +45,8 @@
 <script>
     $(document).ready(function() {        
         $('#races').DataTable({
-            paginate: false
+            paginate: false,
+            order: [[1, 'desc']]
         });
         d3.select('input').classed('form-control', true);
         select_elem = d3.select('select')
