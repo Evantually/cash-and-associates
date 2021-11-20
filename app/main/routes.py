@@ -17,7 +17,7 @@ from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
                         RacePerformance, Crew, CrewResults, Notification, Message,
-                        LapTime, Achievement)
+                        LapTime, Achievement, TrackRating)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
@@ -839,7 +839,7 @@ def edit_car(car_id):
 def manage_tracks():
     if current_user.race_lead:
         tracks = Track.query.order_by(Track.name).all()
-        return render_template('tracks.html', tracks=tracks)
+        return render_template('tracks.html', tracks=tracks, rating=TrackRating, func=func)
     flash('You do not have access to this page.')
     return redirect(url_for('main.index'))
 
@@ -1155,6 +1155,23 @@ def track_records_retrieve():
             track_info[track.name].append(entry)
     return jsonify({'data': track_info})
 
+@bp.route('/track_rating_submission', methods=['POST'])
+@login_required
+def track_rating_submission():
+    rating_info = request.get_json()
+    if RacePerformance.query.filter_by(user_id=rating_info['user_id']).filter_by(race_id=rating_info['track_id']).first():
+        check_rating = TrackRating.query.filter_by(user_id=rating_info['user_id']).filter_by(race_id=int(rating_info['race_id'])).first()
+        if check_rating:
+            check_rating.rating = rating_info['rating']
+            db.session.commit()
+            return jsonify({'text': "Your rating has been updated."})
+        rating = TrackRating(rating=rating_info['rating'], user_id=rating_info['user_id'],
+                            track_id=rating_info['track_id'], race_id=rating_info['race_id'])
+        db.session.add(rating)
+        db.session.commit()
+        return jsonify({'text': "Your rating has been recorded."})
+    return jsonify({'text': "You did not participate in this race."})
+
         #END API CALLS
     # END RACE LEAD SECTION
     # START RACER SECTION
@@ -1423,7 +1440,7 @@ def race_results(race_id):
             car_most_wins = None
         return render_template('race_results.html', title=f'Race - {race.name}', race=race, racers=racers,
                                 top_racer=racer_most_wins, top_car=car_most_wins, racer_wins=racer_number_wins, 
-                                car_wins=car_number_wins, dnfs=dnfs)
+                                car_wins=car_number_wins, dnfs=dnfs, track=Track.query.filter_by(id=race.track).first())
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 

@@ -1,29 +1,48 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block metas %}
+{{ super() }}
+    <link href=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/dataTables.bootstrap.min.css rel=stylesheet>
+{% endblock %}
+
 {% block app_content %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>Tracks</h2>
-    <table class="table table-hover">
-        <tr>
-            <th>Name</th>
-            <th>Map</th>
-            <th>Video</th>
-            <th>Times Ran</th>
-        </tr>
-    {% for track in tracks %}
-        <tr>
-            <td><a href="{{ url_for('main.edit_track', track_id=track.id) }}">{{ track.name }}</a></td>
-            <td><a href="{{ track.track_map }}" target="_blank">Map</a></td>
-            <td><a href="{{ track.track_video }}" target="_blank">Video</a></td>
-            <td>{{ track.times_ran }}</td>
-        </tr>
-    {% endfor %}
+    <table id="tracks" class="table table-hover">
+        <thead>
+            <tr>
+                <th data-field=name data-sortable=true>Name</th>
+                <th>Map</th>
+                <th>Video</th>
+                <th>Times Ran</th>
+                <th data-field=rating data-sortable=true>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for track in tracks %}
+            <tr>
+                <td><a href="{{ url_for('main.edit_track', track_id=track.id) }}">{{ track.name }}</a></td>
+                <td><a href="{{ track.track_map }}" target="_blank">Map</a></td>
+                <td><a href="{{ track.track_video }}" target="_blank">Video</a></td>
+                <td>{{ track.times_ran }}</td>
+                {% if rating.query.filter_by(track_id=track.id).first() %}
+                    <td>{{ rating.query.with_entities(rating.track_id, func.avg(rating.rating).label('average')).filter_by(track_id=track.id).group_by(rating.track_id).first().average|round(2) }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            </tr>        
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-
-
+<script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js></script>
+<script>
+    $(document).ready(function() {
+        $('#tracks').DataTable();
+    });
+</script>
 {% endblock %}

@@ -1,9 +1,114 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block metas %}
+<style>
+.rating {
+    float:left;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.rating > input:checked ~ label {
+    color: #f70;
+    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: #ea0;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > label:active {
+    position:relative;
+    top:2px;
+    left:2px;
+}
+
+/* end of Lea's code */
+
+/*
+ * Clearfix from html5 boilerplate
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/*
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+
+.clearfix {
+    *zoom: 1;
+}
+
+/* my stuff */
+#status, button {
+    margin: 20px 0;
+}
+</style>
+{{ super() }}
+{% endblock %}
+
 {% block app_content %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>{{ title }} | {{ race.highest_class }} Class Vehicles | {% if race.laps == 0 %}Sprint {% else %}{{ race.laps }} Laps {% endif %}</h2>
+    <hr>
+    <form id="ratingForm">
+        <div id="ratinginfo" track-id="{{ track.id }}" race-id="{{ race.id }}" user-id="{{ current_user.id }}"></div>
+        <fieldset class="rating">
+            <legend class="h4">Rate track | {{ track.name }}</legend>
+            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+        </fieldset>        
+        <div class="clearfix"></div>            
+    </form>
+    <hr>
     <h3>Race Results</h3>
     {% if racers | length > 0 %}
     <div class="row">
@@ -189,6 +294,35 @@
 
 {% block scripts %}
 {{ super() }}
-
-
+<script>
+    $(document).ready(function() {
+    $("form#ratingForm").on("change", function(e) 
+        {        
+            if ($("#ratingForm :radio:checked").length == 0) {
+                console.log("nothing checked");
+                return false;
+            } else {
+                data = {
+                    rating: parseInt($('input:radio[name=rating]:checked').val()),
+                    user_id: parseInt($('#ratinginfo').attr('user-id')),
+                    track_id: parseInt($('#ratinginfo').attr('track-id')),
+                    race_id: parseInt($('#ratinginfo').attr('race-id'))
+                }                
+                $.ajax(
+                    {
+                        url: '/track_rating_submission' ,
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: "application/json; charset=utf-8"
+                    }
+                ).done(function(response) {
+                    console.log(response);
+                    success_audio.play();
+                }).fail(function() {                
+                    fail_audio.play();
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}

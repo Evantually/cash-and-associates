@@ -1,4 +1,4 @@
-2021-11-19 13:20:06,583 ERROR: Exception on /messages [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-11-20 05:47:28,925 ERROR: Exception on /manage_tracks [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -10,8 +10,8 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1526, in messages
-    return render_template('messages.html', messages=messages.items,
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 842, in manage_tracks
+    return render_template('tracks.html', tracks=tracks, rating=TrackRating, func=func)
   File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
     return _render(
   File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
@@ -20,8 +20,8 @@ Traceback (most recent call last):
     self.environment.handle_exception()
   File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
     raise rewrite_traceback_stack(source=source)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\messages.html", line 1, in top-level template code
-    {% extends "base.html" %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\tracks.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
     {% extends 'bootstrap/base.html' %}
   File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
@@ -34,67 +34,22 @@ Traceback (most recent call last):
     {% block content -%}
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 172, in block 'content'
     {% block app_content %}{% endblock %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\messages.html", line 6, in block 'app_content'
-    {% include '_post.html' %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 59, in get_source
-    return self._get_source_fast(environment, template)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
-    raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: _post.html
-2021-11-19 13:22:03,213 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:22:05,350 ERROR: Exception on /messages [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1526, in messages
-    return render_template('messages.html', messages=messages.items,
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
-    return _render(
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
-    rv = template.render(context)
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\messages.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
-    {% extends 'bootstrap/base.html' %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
-    {% block doc -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
-    {%- block html %}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
-    {% block body -%}
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
-    {% block content -%}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 172, in block 'content'
-    {% block app_content %}{% endblock %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\messages.html", line 6, in block 'app_content'
-    {% include '_post.html' %}
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\_post.html", line 4, in top-level template code
-    <a href="{{ url_for('main.user', username=post.author.username) }}">
-  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'app.models.Message object' has no attribute 'author'
-2021-11-19 13:26:38,552 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:30:08,272 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:31:41,168 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:31:53,417 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:33:16,106 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:33:57,998 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:34:21,355 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:35:07,690 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:37:15,409 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:38:41,361 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:42:28,585 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:45:29,983 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-11-19 13:49:08,854 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\tracks.html", line 21, in block 'app_content'
+    <td>{{ rating.query.with_entities(rating.track_id, func.avg(rating.rating).label('average')).filter_by(track_id=track.id).group_by(rating.track_id).first().average|round(2) }}</td>
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\filters.py", line 1164, in do_round
+    return round(value, precision)
+TypeError: type Undefined doesn't define __round__ method
+2021-11-20 05:48:52,061 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 05:51:35,577 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 05:52:07,790 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 05:52:52,757 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 05:53:57,202 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 05:54:29,237 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:05:16,451 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:06:33,973 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:08:12,639 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:09:16,724 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:12:11,862 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:14:18,465 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:15:56,343 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-11-20 06:19:14,080 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]

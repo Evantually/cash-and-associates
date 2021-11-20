@@ -469,3 +469,10 @@ class LapTime(db.Model):
     stock_id = db.Column(db.Integer, db.ForeignKey('car.id'))
     track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
     dnf = db.Column(db.Boolean, default=False)
+
+class TrackRating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
+    track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
