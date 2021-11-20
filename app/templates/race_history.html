@@ -49,15 +49,7 @@
             order: [[1, 'desc']]
         });
         d3.select('input').classed('form-control', true);
-        select_elem = d3.select('select')
-        select_elem.classed('form-control', true);
-        select_elem.on('change', () => {
-            console.log('Changing the display')
-            elems = $('.flask-moment')
-            for (i=0;i<elems.length;i++) {
-                elems[i].show()
-            }
-        });            
+        d3.select('select').classed('form-control', true);
     });
 </script>
 {% endblock %}

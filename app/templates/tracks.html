@@ -42,7 +42,8 @@
 <script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js></script>
 <script>
     $(document).ready(function() {
-        $('#tracks').DataTable();
+        $('#tracks').DataTable({paginate: false});
+        d3.select('input').classed('form-control', true);
     });
 </script>
 {% endblock %}
