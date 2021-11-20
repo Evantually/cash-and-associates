@@ -1159,7 +1159,7 @@ def track_records_retrieve():
 @login_required
 def track_rating_submission():
     rating_info = request.get_json()
-    if RacePerformance.query.filter_by(user_id=rating_info['user_id']).filter_by(race_id=rating_info['track_id']).first():
+    if RacePerformance.query.filter_by(user_id=rating_info['user_id']).filter_by(race_id=rating_info['race_id']).first():
         check_rating = TrackRating.query.filter_by(user_id=rating_info['user_id']).filter_by(race_id=int(rating_info['race_id'])).first()
         if check_rating:
             check_rating.rating = rating_info['rating']
