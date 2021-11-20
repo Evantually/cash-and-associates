@@ -631,6 +631,7 @@ def post_to_discord(race):
     alert_urls = determine_webhooks(race)
     time1, time2, time3 = get_timezones(race.start_time)
     radio_freq = random.randint(20, 500) + round(random.random(),2)
+    backup_radio_freq = random.randint(20, 500) + round(random.random(),2)
     for url in alert_urls:
         joint_race = 'JOINT RACE' if len(alert_urls) > 1 else ''
         allowed_mentions = {"parse": [url[1]]} if url[1] == 'everyone' else {"roles": [url[2]]}
@@ -645,7 +646,8 @@ def post_to_discord(race):
                                 Suggested donation: ${race.buyin}\n\
                                 [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
                                 :red_car::dash: :blue_car::dash: :police_car::dash: :police_car::dash: :police_car::dash:\n\
-                                {joint_race}',
+                                {joint_race}\n\
+                                Backup Radio: {backup_radio_freq}',
                 'footer': {
                     'text': 'This message contains sensitive info for your eyes only. Do not share with anyone.'
                 },
