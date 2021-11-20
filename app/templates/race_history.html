@@ -1,39 +1,62 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block metas %}
+{{ super() }}
+    <link href=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/dataTables.bootstrap.min.css rel=stylesheet>
+{% endblock %}
+
 {% block app_content %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>Race History</h2>
-    <table class="table table-hover">
-        <tr>
-            <th>Name (Click for info)</th>
-            <th>Time Ran</th>
-            <th>Track</th>
-            <th>Number of Racers</th>
-            <th>Crew Race</th>
-            {% if current_user.race_lead %}
-            <th>Edit</th>
-            <th>Manage</th>
-            {% endif %}
-        </tr>
-    {% for race in races %}
-        <tr>
-            <td><a href="{{ url_for('main.race_info', race_id=race.id) }}">{{ race.name }}</a></td>
-            <td>{{ moment(race.start_time).format('MMMM Do YYYY, h:mm:ss a') }}</td>
-            <td>{{ race.track_info.name }}</td>
-            <td>{{ race.participants.all() | length }}</td>
-            <td>{{ race.crew_race }}</td>
-            {% if current_user.race_lead %}
-            <td><a href="{{ url_for('main.edit_race', race_id=race.id) }}">Edit</a></td>
-            <td><a href="{{ url_for('main.manage_race', race_id=race.id) }}">Manage</a></td>
-            {% endif %}
-        </tr>
-    {% endfor %}
+    <table id="races" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name (Click for info)</th>
+                <th>Time Ran</th>
+                <th>Track</th>                                
+                <th>Participated</th>
+                {% if current_user.race_lead %}
+                <th>Edit</th>
+                <th>Manage</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for race in races %}
+            <tr>
+                <td><a href="{{ url_for('main.race_info', race_id=race.id) }}">{{ race.name }}</a></td>
+                <td>{{ moment(race.start_time).format('MMMM Do YYYY, h:mm:ss a', refresh=True) }}</td>
+                <td>{{ race.track_info.name }}</td>
+                <td>{{ 'Yes' if rp.query.filter_by(race_id=race.id).filter_by(user_id=current_user.id).first() else 'No' }}</td>
+                {% if current_user.race_lead %}
+                <td><a href="{{ url_for('main.edit_race', race_id=race.id) }}">Edit</a></td>
+                <td><a href="{{ url_for('main.manage_race', race_id=race.id) }}">Manage</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-
-
+<script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js></script>
+<script>
+    $(document).ready(function() {        
+        $('#races').DataTable({
+            paginate: false
+        });
+        d3.select('input').classed('form-control', true);
+        select_elem = d3.select('select')
+        select_elem.classed('form-control', true);
+        select_elem.on('change', () => {
+            console.log('Changing the display')
+            elems = $('.flask-moment')
+            for (i=0;i<elems.length;i++) {
+                elems[i].show()
+            }
+        });            
+    });
+</script>
 {% endblock %}
