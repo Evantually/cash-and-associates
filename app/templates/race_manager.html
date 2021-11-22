@@ -34,7 +34,7 @@
     <div class="row">
         <div class="col-md-3"><a href="javascript:SetStartPosition();" role="button"><button class="btn btn-primary btn-lg">Set Starting Positions</button></a></div>
         <div class="col-md-3"><a href="javascript:SetEndPosition();" role="button"><button class="btn btn-primary btn-lg">Set Ending Positions</button></a></div>
-        <div class="col-md-3"><a href="javascript:FinalizeRace();" role="button"><button class="btn btn-primary btn-lg">Finalize Race</button></a></div>
+        <div class="col-md-3"><a href="javascript:FinalizeRace();" role="button"><button id="finalizeracebutton" class="btn btn-primary btn-lg">Finalize Race</button></a></div>
         <div id="raceresults" class="col-md-3" style="visibility: hidden;"><a href="{{ url_for('main.race_results', race_id=race.id) }}" role="button"><button class="btn btn-primary btn-lg">Race Results</button></a></div>
     </div>
     <div id="display">
@@ -214,6 +214,7 @@
     function FinalizeRace() {
         race_info = CollectRacerPositions();
         console.log(race_info);
+        document.getElementById("finalizeracebutton").disabled = true;
         $.ajax(
             {
                 url: '/race/finalize_race' ,
@@ -223,11 +224,13 @@
             }
         )
         .done(function(response) {
+            document.getElementById("finalizeracebutton").disabled = false;
             $("#response").text(response['text'])
             success_audio.play();
             $('#raceresults').css('visibility', 'visible');
         })
         .fail(function() {
+            document.getElementById("finalizeracebutton").disabled = false;
             $("#response").text("{{ _('Error: Could not contact server.') }}");
                 fail_audio.play();
         })
