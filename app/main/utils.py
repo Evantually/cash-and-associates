@@ -631,9 +631,13 @@ def post_cancel_to_discord(race):
 def post_to_discord(race):
     alert_urls = determine_webhooks(race)
     time1, time2, time3 = get_timezones(race.start_time)
-    lap_milliseconds = LapTime.query.filter_by(track_id=race.track).order_by(LapTime.milliseconds).first().milliseconds
-    lap_split = convert_from_milliseconds(lap_milliseconds)
-    best_lap = f'{lap_split[0]}:{lap_split[1]}.{lap_split[2]}'
+    lap_time = LapTime.query.filter_by(track_id=race.track).order_by(LapTime.milliseconds).first()
+    if lap_time:
+        lap_milliseconds = lap_time.milliseconds
+        lap_split = convert_from_milliseconds(lap_milliseconds)
+        best_lap = f'{lap_split[0]}:{lap_split[1]}.{lap_split[2]}'
+    else:
+        best_lap = '00:00:00.000'
     radio_freq = random.randint(20, 500) + round(random.random(),2)
     backup_radio_freq = random.randint(20, 500) + round(random.random(),2)
     for url in alert_urls:
