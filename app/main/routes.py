@@ -1475,10 +1475,11 @@ def race_history():
 def achievements():
     if current_user.racer:
         completed_achievements = [x.id for x in current_user.completed_achievements]
-        achievement_score = str(sum([x.point_value for x in current_user.completed_achievements]))
-        achievements = Achievement.query.all()
+        achievement_score = str(sum([x.point_value for x in current_user.completed_achievements]))        
+        categories = [a.achievement_category for a in Achievement.query.with_entities(Achievement.achievement_category).order_by(Achievement.achievement_category).distinct().all()]
         return render_template('achievements.html', completed_achievements=completed_achievements,
-                                achievements=achievements, achievement_score=achievement_score)
+                                achievement_score=achievement_score,
+                                ach_obj=Achievement, categories=categories)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 

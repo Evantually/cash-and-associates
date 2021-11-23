@@ -2,9 +2,10 @@ from datetime import datetime, timedelta
 import pytz
 from app.models import (User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry, Crew, Race, 
                         RacePerformance, completed_achievements, Achievement, AchievementCondition, achievement_properties,
-                        Car, Notification, Message)
+                        Car, Notification, Message, LapTime, Track, OwnedCar)
 from app import db
 from sqlalchemy.sql import func
+from sqlalchemy import and_
 import itertools
 import requests
 import random
@@ -630,6 +631,9 @@ def post_cancel_to_discord(race):
 def post_to_discord(race):
     alert_urls = determine_webhooks(race)
     time1, time2, time3 = get_timezones(race.start_time)
+    lap_milliseconds = LapTime.query.filter_by(track_id=race.track).order_by(LapTime.milliseconds).first().milliseconds
+    lap_split = convert_from_milliseconds(lap_milliseconds)
+    best_lap = f'{lap_split[0]}:{lap_split[1]}.{lap_split[2]}'
     radio_freq = random.randint(20, 500) + round(random.random(),2)
     backup_radio_freq = random.randint(20, 500) + round(random.random(),2)
     for url in alert_urls:
@@ -642,6 +646,7 @@ def post_to_discord(race):
                                 Upcoming Race | {race.track_info.name} | {str(race.laps) + " Laps" if race.track_info.lap_race else "Sprint"} | {race.highest_class} class vehicles\n\
                                 Start time: {time1} | {time2} | {time3}\n\
                                 ({(race.start_time - datetime.utcnow()).seconds // 60} minutes from receipt of this message)\n\
+                                Lap Record: {best_lap}\n\
                                 Radio: {radio_freq}\n\
                                 Suggested donation: ${race.buyin}\n\
                                 [Sign Up]({url_for("main.race_signup", race_id=race.id, _external=True)})\n\
@@ -712,19 +717,6 @@ def calculate_crew_points(race_info, db_entry=False):
     return jsonify({'crew1name': crews[0].replace(' ',''), 'crew1score': crew1_score, 'crew2name':crews[1].replace(' ',''), 'crew2score':crew2_score})
 
 def initialize_achievements():
-    remove_achieves = Achievement.query.all()
-    for rem_ach in remove_achieves:
-        for prop in rem_ach.properties:
-            rem_ach.remove_achievement_condition(prop)
-        db.session.delete(rem_ach)
-        db.session.commit()
-    remove_completions = User.query.all()
-    for u in remove_completions:
-        for rem_ach_con in u.achievements:
-            u.remove_achievement_condition(rem_ach_con)
-    for rem_ach_con in AchievementCondition.query.all():
-        db.session.delete(rem_ach_con)
-        db.session.commit()
     achievements = [
         {
             'name': 'Revved Up and Ready',
@@ -787,6 +779,36 @@ def initialize_achievements():
                 }
             ]
         },{
+            'name': 'Nothing But Throttle',
+            'point_value': 10,
+            'description': 'Win 5 races.',
+            'image': '',
+            'category': 'Wins',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Wins',
+                    'condition_criteria': 5,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'I Wanted A Challenge',
+            'point_value': 25,
+            'description': 'Win 10 races.',
+            'image': '',
+            'category': 'Wins',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Wins',
+                    'condition_criteria': 1,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
             'name': 'Poe Dee Umm',
             'point_value': 5,
             'description': 'Finish a race in the top 3.',
@@ -812,6 +834,36 @@ def initialize_achievements():
                     'check_condition': 'Race Finish',
                     'achievement_type': 'Podiums',
                     'condition_criteria': 10,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'Standing Tall',
+            'point_value': 25,
+            'description': 'Finish a race in the top 3 twenty-five times.',
+            'image': '',
+            'category': 'Podiums',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Podiums',
+                    'condition_criteria': 25,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'Fame And Fortune',
+            'point_value': 50,
+            'description': 'Finish a race in the top 3 fifty times.',
+            'image': '',
+            'category': 'Podiums',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Podiums',
+                    'condition_criteria': 50,
                     'operand': '>=',
                     'car_class_info': None
                 }
@@ -921,11 +973,161 @@ def initialize_achievements():
                     'car_class_info': 'X'
                 }
             ]
+        },{
+            'name': 'Repairs Covered',
+            'point_value': 10,
+            'description': 'Receive $10,000 in race winnings.',
+            'image': '',
+            'category': 'Money',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Payouts',
+                    'condition_criteria': 10000,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'EZ Money',
+            'point_value': 25,
+            'description': 'Receive $25,000 in race winnings.',
+            'image': '',
+            'category': 'Money',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Payouts',
+                    'condition_criteria': 25000,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'Am I the 1%?',
+            'point_value': 50,
+            'description': 'Receive $100,000 in race winnings.',
+            'image': '',
+            'category': 'Money',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Payouts',
+                    'condition_criteria': 100000,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'My Tithe, Sire',
+            'point_value': 10,
+            'description': 'Pay $10,000 in race buyins.',
+            'image': '',
+            'category': 'Money',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Buyins',
+                    'condition_criteria': 10000,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'Feels Like Taxes',
+            'point_value': 25,
+            'description': 'Pay $25,000 in race buyins.',
+            'image': '',
+            'category': 'Money',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Buyins',
+                    'condition_criteria': 25000,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'This Could Have Been A Car',
+            'point_value': 50,
+            'description': 'Pay $100,000 in race buyins.',
+            'image': '',
+            'category': 'Money',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Buyins',
+                    'condition_criteria': 100000,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'Just Go Faster',
+            'point_value': 10,
+            'description': 'Have the fastest lap time for at least one track (Overall).',
+            'image': '',
+            'category': 'Lap Times',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Lap Records',
+                    'condition_criteria': 1,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'I Am Become Speed, Destroyer of Times',
+            'point_value': 50,
+            'description': 'Have the fastest lap time for five tracks simultaenously (Overall).',
+            'image': '',
+            'category': 'Lap Times',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Lap Records',
+                    'condition_criteria': 5,
+                    'operand': '>=',
+                    'car_class_info': None
+                }
+            ]
+        },{
+            'name': 'Just Go Faster (A-Class)',
+            'point_value': 10,
+            'description': 'Have the fastest lap time for at least one track (A-Class).',
+            'image': '',
+            'category': 'Lap Times',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Lap Records',
+                    'condition_criteria': 1,
+                    'operand': '>=',
+                    'car_class_info': 'A'
+                }
+            ]
+        },{
+            'name': 'I Am Become Speed, Destroyer of Times (A-Class)',
+            'point_value': 50,
+            'description': 'Have the fastest lap time for five tracks simultaneously (A-Class).',
+            'image': '',
+            'category': 'Lap Times',
+            'criteria': [
+                {
+                    'check_condition': 'Race Finish',
+                    'achievement_type': 'Lap Records',
+                    'condition_criteria': 5,
+                    'operand': '>=',
+                    'car_class_info': 'A'
+                }
+            ]
         }
     ]
     for achieve in achievements:
         if Achievement.query.filter_by(name=achieve['name']).first():
-            continue
+            pass
         else:
             ach = Achievement(name=achieve['name'], description=achieve['description'],
                                 point_value=achieve['point_value'], image=achieve['image'], 
@@ -978,6 +1180,19 @@ def determine_achieve_completion(racer, achieve):
         return eval(f'{RacePerformance.query.with_entities(RacePerformance.car_id).filter(RacePerformance.user_id == racer).distinct().count()} {achieve.operand} {achieve.value}')
     elif achieve.achievement_type == 'Class Variety':
         return eval(f'{RacePerformance.query.filter_by(user_id=racer).filter(RacePerformance.car_id.in_([a.id for a in Car.query.with_entities(Car.id).filter_by(car_class=achieve.car_class_info).all()])).count()} {achieve.operand} {achieve.value}')
+    elif achieve.achievement_type == 'Payouts':
+        return eval(f'{RacePerformance.query.with_entities(RacePerformance.user_id, func.sum(RacePerformance.payout).label("earnings")).filter_by(user_id=racer).group_by(RacePerformance.user_id).first().earnings} {achieve.operand} {achieve.value}')
+    elif achieve.achievement_type == 'Buyins':
+        return eval(f'{Race.query.with_entities(RacePerformance.user_id, func.sum(Race.buyin).label("buyins")).join(RacePerformance, RacePerformance.race_id==Race.id).filter(RacePerformance.user_id==racer).group_by(RacePerformance.user_id).first().buyins} {achieve.operand} {achieve.value}')
+    elif achieve.achievement_type == 'Lap Records':
+        if achieve.car_class_info:
+            car_ids = [a.id for a in Car.query.filter_by(car_class=achieve.car_class_info)]
+            owned_car_ids = [a.id for a in OwnedCar.query.filter(OwnedCar.car_id.in_(car_ids)).all()]
+            subquery = LapTime.query.with_entities(Track.id, func.min(LapTime.milliseconds).label('milliseconds')).join(Track, Track.id==LapTime.track_id).filter(LapTime.car_id.in_(owned_car_ids)).group_by(Track.id).subquery()
+        else:
+            subquery = LapTime.query.with_entities(Track.id, func.min(LapTime.milliseconds).label('milliseconds')).join(Track, Track.id==LapTime.track_id).group_by(Track.id).subquery()
+        subquery2 = db.session.query(subquery).with_entities(LapTime.user_id).select_from(subquery).join(LapTime, and_(subquery.c.milliseconds==LapTime.milliseconds, subquery.c.id==LapTime.track_id)).subquery()
+        return eval(f'{db.session.query(subquery2).with_entities(subquery2.c.user_id, func.count(subquery2.c.user_id).label("total")).filter(subquery2.c.user_id==racer).group_by(subquery2.c.user_id).first().total} {achieve.operand} {achieve.value}')
 
 def check_player_completed_achievements(user):
     achievements = Achievement.query.filter(Achievement.id.not_in(a.id for a in User.query.filter_by(id=user).first().completed_achievements.all())).all()

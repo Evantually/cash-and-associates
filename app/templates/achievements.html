@@ -9,26 +9,29 @@
 {% block app_content %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h3>Achievement Points: {{ achievement_score }}</h3>
-    {% for achieve in achievements %}
-        {% if loop.index % 4 == 1 %}
-        <div class="row">
-        {% endif %}
-            <div class="col-md-3" style="border: 2px solid;">
-                <div class="row">
-                    <div class="col-md-12">
-                        <img style="position: absolute; opacity: {{ '0.7;' if achieve.id in completed_achievements else '0.4;' }}" src="{{ url_for('static', filename='imgs/completed_achievement.png') if achieve.id in completed_achievements else url_for('static', filename='imgs/achievement.png') }}">
-                        <div style="background-color: rgba(129, 129, 129, 0.5); height: 300px; text-align: center; padding: 50px 0; font-weight: bold;">
-                            <h3>{{ achieve.name }}</h3>
-                            <p>{{ achieve.description }}</p>
-                            <p>Points: {{ achieve.point_value }}</p>
-                        </div>                    
+    {% for category in categories %}
+        <h2>{{ category }}</h2>
+        {% set achievements = ach_obj.query.filter_by(achievement_category=category).all() %}
+        {% for achieve in achievements %}
+            {% if loop.index % 4 == 1 %}
+            <div class="row">
+            {% endif %}
+                <div class="col-md-3" style="border: 2px solid;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img style="position: absolute; opacity: {{ '0.7;' if achieve.id in completed_achievements else '0.4;' }}" src="{{ url_for('static', filename='imgs/completed_achievement.png') if achieve.id in completed_achievements else url_for('static', filename='imgs/achievement.png') }}">
+                            <div style="background-color: rgba(129, 129, 129, 0.5); height: 300px; text-align: center; padding: 50px 0; font-weight: bold;">
+                                <h3>{{ achieve.name }}</h3>
+                                <p>{{ achieve.description }}</p>
+                                <p>Points: {{ achieve.point_value }}</p>
+                            </div>                    
+                        </div>
                     </div>
                 </div>
+            {% if loop.index % 4 == 0 or loop.index == achievements|length %}
             </div>
-        {% if loop.index % 4 == 0 %}
-        </div>
-        <hr>
-        {% endif %}
+            {% endif %}
+        {% endfor %}
     {% endfor %}
 {% endblock %}
 
