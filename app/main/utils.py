@@ -803,7 +803,7 @@ def initialize_achievements():
                 {
                     'check_condition': 'Race Finish',
                     'achievement_type': 'Wins',
-                    'condition_criteria': 1,
+                    'condition_criteria': 10,
                     'operand': '>=',
                     'car_class_info': None
                 }
