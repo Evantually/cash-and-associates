@@ -1181,9 +1181,21 @@ def determine_achieve_completion(racer, achieve):
     elif achieve.achievement_type == 'Class Variety':
         return eval(f'{RacePerformance.query.filter_by(user_id=racer).filter(RacePerformance.car_id.in_([a.id for a in Car.query.with_entities(Car.id).filter_by(car_class=achieve.car_class_info).all()])).count()} {achieve.operand} {achieve.value}')
     elif achieve.achievement_type == 'Payouts':
-        return eval(f'{RacePerformance.query.with_entities(RacePerformance.user_id, func.sum(RacePerformance.payout).label("earnings")).filter_by(user_id=racer).group_by(RacePerformance.user_id).first().earnings} {achieve.operand} {achieve.value}')
+        payouts = RacePerformance.query.with_entities(RacePerformance.user_id, func.sum(RacePerformance.payout).label("earnings")).filter_by(user_id=racer).group_by(RacePerformance.user_id).first()
+        if payouts:
+            try:
+                return eval(f'{payouts.earnings} {achieve.operand} {achieve.value}')
+            except TypeError:
+                return False
+        return False
     elif achieve.achievement_type == 'Buyins':
-        return eval(f'{Race.query.with_entities(RacePerformance.user_id, func.sum(Race.buyin).label("buyins")).join(RacePerformance, RacePerformance.race_id==Race.id).filter(RacePerformance.user_id==racer).group_by(RacePerformance.user_id).first().buyins} {achieve.operand} {achieve.value}')
+        buyins = Race.query.with_entities(RacePerformance.user_id, func.sum(Race.buyin).label("buyins")).join(RacePerformance, RacePerformance.race_id==Race.id).filter(RacePerformance.user_id==racer).group_by(RacePerformance.user_id).first()
+        if buyins:
+            try:
+                return eval(f'{buyins.buyins} {achieve.operand} {achieve.value}')
+            except TypeError:
+                return False
+        return False
     elif achieve.achievement_type == 'Lap Records':
         if achieve.car_class_info:
             car_ids = [a.id for a in Car.query.filter_by(car_class=achieve.car_class_info)]
@@ -1192,7 +1204,13 @@ def determine_achieve_completion(racer, achieve):
         else:
             subquery = LapTime.query.with_entities(Track.id, func.min(LapTime.milliseconds).label('milliseconds')).join(Track, Track.id==LapTime.track_id).group_by(Track.id).subquery()
         subquery2 = db.session.query(subquery).with_entities(LapTime.user_id).select_from(subquery).join(LapTime, and_(subquery.c.milliseconds==LapTime.milliseconds, subquery.c.id==LapTime.track_id)).subquery()
-        return eval(f'{db.session.query(subquery2).with_entities(subquery2.c.user_id, func.count(subquery2.c.user_id).label("total")).filter(subquery2.c.user_id==racer).group_by(subquery2.c.user_id).first().total} {achieve.operand} {achieve.value}')
+        result = db.session.query(subquery2).with_entities(subquery2.c.user_id, func.count(subquery2.c.user_id).label("total")).filter(subquery2.c.user_id==racer).group_by(subquery2.c.user_id).first()
+        if result:
+            try:
+                return eval(f'{result.total} {achieve.operand} {achieve.value}')
+            except TypeError:
+                return False
+        return False
 
 def check_player_completed_achievements(user):
     achievements = Achievement.query.filter(Achievement.id.not_in(a.id for a in User.query.filter_by(id=user).first().completed_achievements.all())).all()
