@@ -220,7 +220,11 @@
                 url: '/race/finalize_race' ,
                 type: 'POST',
                 data: JSON.stringify(race_info),
-                contentType: "application/json; charset=utf-8"
+                contentType: "application/json; charset=utf-8",
+                error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                }
             }
         )
         .done(function(response) {

@@ -1059,9 +1059,12 @@ def set_end_order():
     if racer.race_lead or racer.race_host:
         racers = race_info['racer_order']
         for index, racer in enumerate(racers):
-            rp = RacePerformance.query.filter_by(id=racer[0]).first()
-            rp.end_position = index + 1
-            db.session.commit()
+            try:
+                rp = RacePerformance.query.filter_by(id=racer[0]).first()
+                rp.end_position = index + 1
+                db.session.commit()
+            except AttributeError:
+                pass
         return jsonify({'text': "Ending positions have saved successfully."})
     return jsonify({'text': "You don't have sufficient privileges to set this information."})
 
@@ -1075,21 +1078,27 @@ def finalize_race():
         race = Race.query.filter_by(id=RacePerformance.query.filter_by(id=racers[0][0]).first().race_id).first()
         racer_ids = []
         for index, racer in enumerate(racers):
-            rp = RacePerformance.query.filter_by(id=int(racer[0])).first()
-            racer_ids.append(rp.user_id)
-            rp.end_position = index + 1            
-            db.session.commit()
-            for lap in racer[3]:
-                lt = LapTime(milliseconds=lap, race_id=race.id, user_id=racer[1],
-                car_id=racer[2], track_id=race.track_info.id, stock_id=OwnedCar.query.filter_by(id=racer[2]).first().car_id)
-                db.session.add(lt)
+            try:
+                rp = RacePerformance.query.filter_by(id=int(racer[0])).first()
+                racer_ids.append(rp.user_id)
+                rp.end_position = index + 1            
                 db.session.commit()
+                for lap in racer[3]:
+                    lt = LapTime(milliseconds=lap, race_id=race.id, user_id=racer[1],
+                    car_id=racer[2], track_id=race.track_info.id, stock_id=OwnedCar.query.filter_by(id=racer[2]).first().car_id)
+                    db.session.add(lt)
+                    db.session.commit()
+            except AttributeError:
+                pass
         dnfs = race_info['dnf_order']
         for racer in dnfs:
-            rp = RacePerformance.query.filter_by(id=racer[0]).first()
-            racer_ids.append(rp.user_id)
-            rp.end_position = 0
-            db.session.commit()
+            try:
+                rp = RacePerformance.query.filter_by(id=racer[0]).first()
+                racer_ids.append(rp.user_id)
+                rp.end_position = 0
+                db.session.commit()
+            except AttributeError:
+                pass
         calculate_payouts(race, race_info['prizepool'])
         check_achievements(racer_ids, 'Race Finish')
         if race.crew_race:
