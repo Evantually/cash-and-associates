@@ -83,7 +83,7 @@
                                             {% endif %}
                                             <li><a href="{{ url_for('main.add_owned_car') }}">Add Owned Car</a></li>
                                             <li><a href="{{ url_for('main.my_cars') }}">My Cars</a></li>
-                                            {% if current_user.race_lead %}
+                                            {% if current_user.race_lead or current_user.race_host %}
                                             <li class="divider"></li>
                                             <li class="dropdown-header">Admin</li>
                                             <li class="divider"></li>

@@ -1525,7 +1525,7 @@ def track_records():
 @bp.route('/send_encrypted_message', methods=['GET', 'POST'])
 @login_required
 def send_encrypted_message():
-    if current_user.race_lead:
+    if current_user.race_lead or current_user.race_host:
         form = EncryptedMessageForm()
         if form.validate_on_submit():
             post_encrypted_message(form)
