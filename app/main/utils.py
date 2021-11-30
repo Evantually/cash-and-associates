@@ -580,6 +580,10 @@ def determine_message_webhooks(form):
         alert_urls.append([Config.OCTANE_PROMOTIONAL_ANNOUNCEMENT_WEBHOOK, 'everyone'])
     if form.member_race_alert.data:
         alert_urls.append([Config.OCTANE_MEMBER_WEBHOOK, 'everyone'])
+    if form.member_announcements.data:
+        alert_urls.append([Config.OCTANE_MEMBER_ANNOUNCEMENTS_WEBHOOK, 'everyone'])
+    if form.member_championship.data:
+        alert_urls.append([Config.OCTANE_MEMBER_CHAMPIONSHIP_WEBHOOK, 'everyone'])
     return alert_urls
 
 def get_role_tags(form):

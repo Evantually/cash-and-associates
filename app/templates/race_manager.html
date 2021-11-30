@@ -29,7 +29,7 @@
 {% block app_content %}
     <h1 id="user" auth-id="{{ current_user.id }}"">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     <h2>{{ title }}</h2>
-    {% if current_user.race_lead %}
+    {% if current_user.race_lead or current_user.race_host %}
     <div class="row"><div class="col-md-12"><p id="response"></p></div></div>
     <div class="row">
         <div class="col-md-3"><a href="javascript:SetStartPosition();" role="button"><button class="btn btn-primary btn-lg">Set Starting Positions</button></a></div>
