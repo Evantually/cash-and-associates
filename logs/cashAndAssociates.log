@@ -32,3 +32,99 @@ requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perha
 2021-11-30 11:15:56,109 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
 2021-11-30 11:16:15,470 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
 2021-11-30 12:16:27,647 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-12-01 12:26:11,105 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-12-01 12:34:26,099 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-12-01 12:34:59,291 ERROR: Exception on /race/finalize_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1103, in finalize_race
+    async_check_achievements(racer_ids, 'Race Finish')
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 1165, in async_check_achievements
+    args=(current_app._get_current_object(), racers, check_type)).start()
+NameError: name 'current_app' is not defined
+2021-12-01 12:35:24,051 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+2021-12-01 12:35:49,960 ERROR: Exception on /race_signup/116 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1289, in race_signup
+    form.car.choices = [(c.id, c.name if c.name else c.car_info.name) for c in OwnedCar.query.join(Car, OwnedCar.car_id==Car.id).filter(OwnedCar.user_id==current_user.id).filter(Car.car_class.in_(classes)).all()]
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 604, in in_
+    return self.operate(in_op, other)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 316, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 1401, in in_op
+    return a.in_(b)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 604, in in_
+    return self.operate(in_op, other)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\properties.py", line 430, in operate
+    return op(self.__clause_element__(), *other, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 1401, in in_op
+    return a.in_(b)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 604, in in_
+    return self.operate(in_op, other)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\elements.py", line 813, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 1401, in in_op
+    return a.in_(b)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\operators.py", line 604, in in_
+    return self.operate(in_op, other)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\type_api.py", line 76, in operate
+    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 155, in _in_impl
+    seq_or_selectable = coercions.expect(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 186, in expect
+    resolved = impl._literal_coercion(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 564, in _literal_coercion
+    self._raise_for_expected(element, **kw)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\coercions.py", line 282, in _raise_for_expected
+    util.raise_(exc.ArgumentError(msg, code=code), replace_context=err)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+sqlalchemy.exc.ArgumentError: IN expression list, SELECT construct, or bound parameter object expected, got None.
+2021-12-01 12:37:23,336 ERROR: Exception on /setup_race [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 892, in setup_race
+    post_to_discord(race)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 677, in post_to_discord
+    result = requests.post(url[0], json=data, headers={"Content-Type": "application/json"})
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 119, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 528, in request
+    prep = self.prepare_request(req)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 456, in prepare_request
+    p.prepare(
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 316, in prepare
+    self.prepare_url(url, params)
+  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 390, in prepare_url
+    raise MissingSchema(error)
+requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perhaps you meant http://None?

@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from threading import Thread
 import pytz
 from app.models import (User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry, Crew, Race, 
                         RacePerformance, completed_achievements, Achievement, AchievementCondition, achievement_properties,
@@ -9,7 +10,7 @@ from sqlalchemy import and_
 import itertools
 import requests
 import random
-from flask import url_for, jsonify
+from flask import url_for, jsonify, current_app
 from config import Config
 
 def organize_data_by_date(data):
@@ -1159,25 +1160,30 @@ def initialize_achievements():
                 ach.add_achievement_condition(ach_con)
                 db.session.commit()
 
-def check_achievements(racers, check_type):
-    for racer in racers:
-        racer_achieves = [a.id for a in AchievementCondition.query.join(completed_achievements).filter(completed_achievements.c.user_id == racer).all()]
-        achieves_to_check = AchievementCondition.query.filter(AchievementCondition.id.not_in(racer_achieves)).all()
-        for achieve in achieves_to_check:
-            completed = determine_achieve_completion(racer, achieve)
-            if completed:
-                user = User.query.filter_by(id=racer).first()
-                user.add_achievement_condition(achieve)
-                db.session.commit()                                                   
-            else:                
-                user = User.query.filter_by(id=racer).first()
-                user.remove_achievement_condition(achieve)
-                db.session.commit()
-                for ach in Achievement.query.all():
-                    if ach.achieve_property(achieve):
-                        user.uncomplete_achievement(ach)
-                        db.session.commit()
-        check_player_completed_achievements(racer)
+def async_check_achievements(racers, check_type):
+    Thread(target=check_achievements,
+            args=(current_app._get_current_object(), racers, check_type)).start()
+
+def check_achievements(app, racers, check_type):
+    with app.app_context():
+        for racer in racers:
+            racer_achieves = [a.id for a in AchievementCondition.query.join(completed_achievements).filter(completed_achievements.c.user_id == racer).all()]
+            achieves_to_check = AchievementCondition.query.filter(AchievementCondition.id.not_in(racer_achieves)).all()
+            for achieve in achieves_to_check:
+                completed = determine_achieve_completion(racer, achieve)
+                if completed:
+                    user = User.query.filter_by(id=racer).first()
+                    user.add_achievement_condition(achieve)
+                    db.session.commit()                                                   
+                else:                
+                    user = User.query.filter_by(id=racer).first()
+                    user.remove_achievement_condition(achieve)
+                    db.session.commit()
+                    for ach in Achievement.query.all():
+                        if ach.achieve_property(achieve):
+                            user.uncomplete_achievement(ach)
+                            db.session.commit()
+            check_player_completed_achievements(racer)
 
 def determine_achieve_completion(racer, achieve):
     if achieve.achievement_type == 'Race Participation':

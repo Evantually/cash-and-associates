@@ -23,7 +23,7 @@ from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
                             summarize_job, moving_average, clear_temps, blackjack_cards, 
                             get_available_classes, determine_crew_points, get_timezones,
-                            post_to_discord, calculate_crew_points, check_achievements,
+                            post_to_discord, calculate_crew_points, async_check_achievements,
                             calculate_payouts, convert_from_milliseconds, post_encrypted_message,
                             post_cancel_to_discord)
 
@@ -1100,7 +1100,7 @@ def finalize_race():
             except AttributeError:
                 pass
         calculate_payouts(race, race_info['prizepool'])
-        # check_achievements(racer_ids, 'Race Finish')
+        async_check_achievements(racer_ids, 'Race Finish')
         if race.crew_race:
             results = calculate_crew_points(race_info, True)
             if CrewResults.query.filter_by(race_id=race.id).first():
