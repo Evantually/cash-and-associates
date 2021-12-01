@@ -1100,7 +1100,7 @@ def finalize_race():
             except AttributeError:
                 pass
         calculate_payouts(race, race_info['prizepool'])
-        check_achievements(racer_ids, 'Race Finish')
+        # check_achievements(racer_ids, 'Race Finish')
         if race.crew_race:
             results = calculate_crew_points(race_info, True)
             if CrewResults.query.filter_by(race_id=race.id).first():
