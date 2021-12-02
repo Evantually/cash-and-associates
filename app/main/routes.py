@@ -1160,7 +1160,7 @@ def track_records_retrieve():
                     'lap_time': lap.milliseconds
                 }
             except AttributeError:
-                continue
+                pass
             track_info[track.name].append(entry)
     return jsonify({'data': track_info})
 
@@ -1519,6 +1519,15 @@ def leaderboard():
 def track_records():
     if current_user.racer:
         return render_template('track_records.html', title='Track Records')
+    flash('You do not have access to this section. Talk to the appropriate person for access.')
+    return redirect(url_for('main.index'))
+
+@bp.route('/track_records/<track_id>', methods=['GET'])
+@login_required
+def specific_track_record(track_id):
+    lap_times = LapTime.query.with_entities(User.username, func.min(LapTime.milliseconds).filter(LapTime.track_id==track_id).filter(text('milliseconds') != None).label('milliseconds')).join(User, User.id==LapTime.user_id).group_by(User.username).order_by(text('milliseconds')).all()
+    if current_user.racer:
+        return render_template('specific_track_record.html', title='Track Records')
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 

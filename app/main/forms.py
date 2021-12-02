@@ -208,8 +208,8 @@ class EncryptedMessageForm(FlaskForm):
     member_championship = BooleanField('League - Member | #championship-alerts Channel')
     prospect_announcement = BooleanField('League - Prospects | #announcements-prospects Channel')
     newcomer_announcement = BooleanField('League - Newcomer | #announcements-newcomer Channel')    
-    member_announcements = BooleanField('League - Member | ##announcements-league Channel')
-
+    member_announcements = BooleanField('League - Member | #announcements-league Channel')
+    promotional_announcement = BooleanField('Promotional | #promotional-announcement Channel')
     prospect_tag = BooleanField('Role Tag - Prospect')
     newcomer_tag = BooleanField('Role Tag - Newcomer')
     member_tag = BooleanField('Role Tag - League Member')
