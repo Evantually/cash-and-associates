@@ -29,7 +29,7 @@
                 <td>{{ moment(race.start_time).format('MMMM Do YYYY, h:mm:ss a', refresh=True) }}</td>
                 <td>{{ race.track_info.name }}</td>
                 <td>{{ 'Yes' if rp.query.filter_by(race_id=race.id).filter_by(user_id=current_user.id).first() else 'No' }}</td>
-                {% if current_user.race_lead %}
+                {% if current_user.race_lead or current_user.race_host %}
                 <td><a href="{{ url_for('main.edit_race', race_id=race.id) }}">Edit</a></td>
                 <td><a href="{{ url_for('main.manage_race', race_id=race.id) }}">Manage</a></td>
                 {% endif %}
