@@ -40,6 +40,11 @@
 {{ super() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/google-palette/1.1.0/palette.js"></script>
 <script>
+    var receivedinfo;
+    var promise = $.get('/track_records_retrieve', (info) => {
+        receivedinfo = info;
+    });
+
     function millisToMinutesAndSeconds(millis) {
         var minutes = Math.floor(millis / 60000);
         var seconds = Math.floor((millis % 60000) / 1000);
@@ -60,9 +65,8 @@
     }
 
     function getTrackRecords() {
-        $.get('/track_records_retrieve', (info) => {
-            $('#loading').html('<img src="{{ url_for('static', filename='loading.gif') }}">');
-            data = info.data;
+        promise.done(() => {
+            data = JSON.parse(JSON.stringify(receivedinfo.data));
             console.log(data);
             record_counts = {}
             for ([key, value] of Object.entries(data)) {
@@ -125,6 +129,8 @@
                     tr = d3.select('#records').append('tr')
                         .classed('data', true);
                     tr.append('td')
+                            .append('a')
+                            .attr('href', `/track_records/${value.track_id}`)
                             .text(value.track)
                     tr.append('td')
                         .text(value.racer)

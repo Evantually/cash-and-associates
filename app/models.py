@@ -51,6 +51,7 @@ class User(UserMixin, db.Model):
     race_lead = db.Column(db.Boolean, default=False)
     race_host = db.Column(db.Boolean, default=False)
     racer = db.Column(db.Boolean, default=False)
+    jrp = db.Column(db.Boolean, default=False)
     race_crew = db.Column(db.String(120))
     crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
     race_points = db.Column(db.Integer)
@@ -345,6 +346,7 @@ class Track(db.Model):
     race_org = db.Column(db.String(64))
     meet_location = db.Column(db.String(256))
     crew_id =  db.Column(db.Integer, db.ForeignKey('crew.id'))
+    disabled = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f'{self.name}'
@@ -476,3 +478,29 @@ class TrackRating(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     race_id = db.Column(db.Integer, db.ForeignKey('race.id'))
     track_id = db.Column(db.Integer, db.ForeignKey('track.id'))
+
+class CalendarEvent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship('User')
+    start = db.Column(db.DateTime, default=datetime.utcnow)
+    end = db.Column(db.DateTime, default=datetime.utcnow)
+    category = db.Column(db.String(128))
+    title = db.Column(db.String(128))
+    description = db.Column(db.Text)
+    company = db.Column(db.String(128))
+    image = db.Column(db.String(128))
+    location = db.Column(db.String(128))
+    cost = db.Column(db.Integer, default=0)
+
+class Policy(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    title = db.Column(db.String(128))
+    description = db.Column(db.Text)
+
+class PolicyRating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    policy_id = db.Column(db.Integer, db.ForeignKey('user.id'))

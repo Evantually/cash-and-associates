@@ -12,12 +12,13 @@ from app.main.forms import (EditProfileForm, EmptyForm, AddProductForm,
     AddJobForm, ManageSubscriptionForm, ManageUserForm, ManageRacerForm, AddCarForm,
     AddOwnedCarForm, AddTrackForm, SetupRaceForm, RaceSignupForm, EditOwnedCarForm,
     EditRaceForm, AddCrewForm, AddToRaceForm, RacerSelectForm, RacerManageSelectForm,
-    EncryptedMessageForm)
+    EncryptedMessageForm, AddCalendarEventForm)
 from app.models import (User, Transaction, Product, Category, Company,
                         Inventory, Job, HuntingEntry, FishingEntry, PostalEntry,
                         BlackjackHand, BlackjackEntry, Car, OwnedCar, Track, Race,
                         RacePerformance, Crew, CrewResults, Notification, Message,
-                        LapTime, Achievement, TrackRating)
+                        LapTime, Achievement, TrackRating, CalendarEvent, Policy,
+                        PolicyRating)
 from app.translate import translate
 from app.main import bp
 from app.main.utils import (organize_data_by_date, summarize_data, format_currency, setup_company,
@@ -25,7 +26,8 @@ from app.main.utils import (organize_data_by_date, summarize_data, format_curren
                             get_available_classes, determine_crew_points, get_timezones,
                             post_to_discord, calculate_crew_points, async_check_achievements,
                             calculate_payouts, convert_from_milliseconds, post_encrypted_message,
-                            post_cancel_to_discord)
+                            post_cancel_to_discord, post_calendar_event_to_discord,
+                            background_jobs)
 
 
 @bp.before_app_request
@@ -34,6 +36,7 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
     g.locale = str(get_locale())
+    
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -62,6 +65,50 @@ def index():
                             revenue_info=revenue_info, expenses=expenses,
                             expense_info=expense_info, balance=balance)
 
+@bp.route('/calendar', methods=['GET'])
+def calendar():
+    return render_template('calendar.html')
+
+@bp.route('/calendar_events', methods=['GET'])
+def calendar_events():
+    output = {"entries": []}
+    events = CalendarEvent.query.all()
+    for event in events:
+        event_info = {
+            "id": event.id,
+            "author": event.author.username,
+            "start": event.start,
+            "end": event.end,
+            "title": event.title,
+            "description": event.description,
+            "company": event.company,
+            "image": event.image,
+            "location": event.location,
+            "cost": event.cost,
+            "category": event.category
+        }
+        output["entries"].append(event_info)
+    return jsonify(output)
+
+@bp.route('/add_calendar_event', methods=['GET','POST'])
+@login_required
+def add_calendar_event():
+    form = AddCalendarEventForm()
+    if form.validate_on_submit():
+        start_utc_time_init = form.start_utc.data.replace('T',' ')
+        start_utc_time = start_utc_time_init.replace('Z','')
+        end_utc_time_init = form.end_utc.data.replace('T',' ')
+        end_utc_time = end_utc_time_init.replace('T', ' ')
+        event = CalendarEvent(start=start_utc_time, end=end_utc_time,
+                            title=form.title.data, description=form.description.data,
+                            company=form.company.data, image=form.image.data,
+                            user_id=current_user.id, location=form.location.data)
+        db.session.add(event)                            
+        db.session.commit()
+        post_calendar_event_to_discord(event)
+        flash('The event has been added to the calendar.')        
+        return redirect(url_for('main.calendar'))
+    return render_template('add_product.html', title="Add Calendar Event", form=form)
 
 @bp.route('/user/<username>')
 @login_required
@@ -817,7 +864,7 @@ def edit_car(car_id):
                         image=car.image)
         if form.validate_on_submit():
             if form.delete.data:
-                db.session.delete(car)
+                car.user_id = 245                
                 db.session.commit()
                 flash('The car has been removed from your cars.')
                 return redirect(url_for('main.my_cars'))
@@ -858,6 +905,7 @@ def edit_track(track_id):
             track.lap_race = form.lap_race.data
             track.embed_link = form.embed_link.data
             track.meet_location = form.meet_location.data
+            track.disabled = form.disabled.data
             db.session.commit()
             flash(f'{track.name} has been updated successfully.')
             return redirect(url_for('main.manage_tracks'))
@@ -1152,6 +1200,7 @@ def track_records_retrieve():
         for lap in LapTime.query.filter_by(track_id=track.id).all():
             try:
                 entry = {
+                    'track_id': track.id,
                     'track': track.name,
                     'racer': User.query.filter_by(id=lap.user_id).first().username,
                     'car_class': Car.query.filter_by(id=lap.stock_id).first().car_class,
@@ -1525,9 +1574,18 @@ def track_records():
 @bp.route('/track_records/<track_id>', methods=['GET'])
 @login_required
 def specific_track_record(track_id):
-    lap_times = LapTime.query.with_entities(User.username, func.min(LapTime.milliseconds).filter(LapTime.track_id==track_id).filter(text('milliseconds') != None).label('milliseconds')).join(User, User.id==LapTime.user_id).group_by(User.username).order_by(text('milliseconds')).all()
+    track = Track.query.filter_by(id=track_id).first()
+    outputdata = {}
+    car_classes = [x[0] for x in Car.query.with_entities(Car.car_class).distinct().all()]
+    for cc in car_classes:
+        outputdata[cc] = []
+        subquery = User.query.with_entities(User.username, Car.name, func.min(LapTime.milliseconds).filter(Car.car_class == cc).filter(LapTime.track_id==track_id).label('milliseconds')).join(LapTime, User.id==LapTime.user_id).join(Car, Car.id==LapTime.stock_id).group_by(User.username, Car.name).order_by(text('milliseconds')).subquery()
+        lap_times = db.session.query(subquery).filter(subquery.c.milliseconds != None).all()
+        for lt in lap_times:
+            outputdata[cc].append(lt)
     if current_user.racer:
-        return render_template('specific_track_record.html', title='Track Records')
+        return render_template('specific_track_record.html', title='Track Records', lap_times=lap_times,
+                            track=track)
     flash('You do not have access to this section. Talk to the appropriate person for access.')
     return redirect(url_for('main.index'))
 

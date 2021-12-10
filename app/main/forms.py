@@ -1,7 +1,7 @@
 from flask import request
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField, DecimalField, BooleanField, SelectField
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, DecimalField, BooleanField, SelectField, HiddenField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.fields.html5 import DateTimeLocalField
@@ -123,13 +123,14 @@ class AddTrackForm(FlaskForm):
     track_video = StringField(_l('Video'))
     embed_link = StringField(_l('Embed Link'))
     lap_race = BooleanField('Lap Race?')
+    disabled = BooleanField('Disable this track')
     submit = SubmitField(_l('Submit'))
 
 class SetupRaceForm(FlaskForm):
     name = StringField(_l('Name'))
     start_time = DateTimeLocalField('Start time', format='%Y-%m-%dT%H:%M')
     utc_time = StringField('UTC Adjusted Time (Let Auto-Fill by re-clicking start time when finished)')
-    track = QuerySelectField(query_factory=lambda: Track.query.order_by(Track.name).all())
+    track = QuerySelectField(query_factory=lambda: Track.query.filter_by(disabled=False).order_by(Track.name).all())
     laps = IntegerField(_l('Laps'))
     highest_class = StringField(_l('Highest Class Allowed'))
     buyin = IntegerField(_l('Buy-in'))
@@ -214,4 +215,18 @@ class EncryptedMessageForm(FlaskForm):
     newcomer_tag = BooleanField('Role Tag - Newcomer')
     member_tag = BooleanField('Role Tag - League Member')
     promotional_tag = BooleanField('Role Tag - Promotional')
+    submit = SubmitField(_l('Submit'))
+
+class AddCalendarEventForm(FlaskForm):
+    start = DateTimeLocalField('Start Time (Use local time. It will automatically be converted)', format='%Y-%m-%dT%H:%M')
+    start_utc = StringField('Start time UTC formatted')
+    end = DateTimeLocalField('End Time (Use local time. It will automatically be converted)', format='%Y-%m-%dT%H:%M')
+    end_utc = StringField('End time UTC formatted')
+    title = StringField(_l('Title'))
+    description = TextAreaField('Description (Include flyer image link in the text here)')
+    location = StringField(_l('Location'))
+    cost = IntegerField('Cost')
+    company = StringField(_l('Company'))
+    image = StringField(_l('Location Image (with .png, .jpg, etc. file extension)'))
+    repeat_event = BooleanField('Repeat Event')
     submit = SubmitField(_l('Submit'))

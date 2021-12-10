@@ -184,6 +184,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
     <script>
+        $(document).ready(() => {
+            $('#start_utc').css('display', 'none')
+            $('[for="start_utc"]').css('display', 'none')
+            $('#end_utc').css('display', 'none')
+            $('[for="end_utc"]').css('display', 'none')
+        });
         $("#start_time").on("change", function() {
             console.log('The time has changed');
             var datetimeLocal = new Date($("#start_time").val());
@@ -191,6 +197,22 @@
             var datetimeUTC = new moment(datetimeLocal).utc().format();
             console.log(datetimeUTC);
             $("#utc_time").val(datetimeUTC);
+        });
+        $("#start").on("change", function() {
+            console.log('The time has changed');
+            var datetimeLocal = new Date($("#start").val());
+            console.log(datetimeLocal);
+            var datetimeUTC = new moment(datetimeLocal).utc().format();
+            console.log(datetimeUTC);
+            $("#start_utc").val(datetimeUTC);
+        });
+        $("#end").on("change", function() {
+            console.log('The time has changed');
+            var datetimeLocal = new Date($("#end").val());
+            console.log(datetimeLocal);
+            var datetimeUTC = new moment(datetimeLocal).utc().format();
+            console.log(datetimeUTC);
+            $("#end_utc").val(datetimeUTC);
         });
         var fail_audio = new Audio("{{ url_for('static', filename='audio/failure.mp3') }}")
         var success_audio = new Audio("{{ url_for('static', filename='audio/success.mp3') }}")

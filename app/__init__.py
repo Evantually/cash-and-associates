@@ -9,7 +9,13 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
+from flask_apscheduler import APScheduler as _BaseAPScheduler
 from config import Config
+
+class APScheduler(_BaseAPScheduler):
+    def run_job(self, id, jobstore=None):
+        with self.app.app_context():
+            super().run_job(id=id, jobstore=jobstore)
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,7 +26,7 @@ mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
 babel = Babel()
-
+apsched = APScheduler()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -32,7 +38,9 @@ def create_app(config_class=Config):
     mail.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
-    babel.init_app(app)
+    babel.init_app(app)        
+    apsched.init_app(app)
+    apsched.start()
 
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
@@ -74,6 +82,7 @@ def create_app(config_class=Config):
         app.logger.info('Cash & Associates startup')
 
     return app
+
 
 
 @babel.localeselector

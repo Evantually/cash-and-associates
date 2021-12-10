@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
+import time
 from threading import Thread
 import pytz
 from app.models import (User, Product, Company, Inventory, Transaction, Job, HuntingEntry, FishingEntry, Crew, Race, 
                         RacePerformance, completed_achievements, Achievement, AchievementCondition, achievement_properties,
-                        Car, Notification, Message, LapTime, Track, OwnedCar)
+                        Car, Notification, Message, LapTime, Track, OwnedCar, CalendarEvent)
 from app import db
 from sqlalchemy.sql import func
 from sqlalchemy import and_
@@ -496,12 +497,11 @@ def determine_crew_points(crew1, crew2):
             crew_2_points = total_points
     return crew_1_points, crew_2_points
 
-def get_timezones(utc_time):
+def get_timezones(utc_time, fmt):
     eastern_us = pytz.timezone('America/New_York')
     uk = pytz.timezone('Europe/London')
     central_europe = pytz.timezone('Europe/Helsinki')
 
-    fmt = '%I:%M %p %Z'
     utc = pytz.utc.localize(utc_time)
     time1 = utc.astimezone(eastern_us).strftime(fmt)
     time2 = utc.astimezone(uk).strftime(fmt)
@@ -538,6 +538,25 @@ def convert_from_milliseconds(milliseconds):
     seconds = (milliseconds // 1000) % 60
     millis = milliseconds - (minutes * 60000) - (seconds * 1000)
     return minutes, seconds, millis
+
+def get_time_until(start_time):
+    time_until = start_time - datetime.utcnow()
+    timestr = ''
+    if time_until.days > 0:
+        timestr = f'{time_until.days} days ' if time_until.days > 1 else f'{time_until.days} day '
+    m, _ = divmod(time_until.seconds, 60)
+    h, m = divmod(m, 60)
+    if h > 0:
+        if h > 1:
+            timestr += f'{h} hours '
+        else:
+            timestr += f'{h} hour '
+    if m > 0:
+        if m > 1:
+            timestr += f'{m} minutes'
+        else:
+            timestr += f'{m} minute'
+    return timestr
 
 def determine_webhooks(race):
     alert_urls = []
@@ -631,13 +650,56 @@ def post_cancel_to_discord(race):
         except requests.exceptions.HTTPError as err:
             print(err)
         else:
-            print("Payload delivered successfully, code {}.".format(result.status_code))
+            print("Payload delivered successfully, code {}.".format(result.status_code))    
 
-
+def post_calendar_event_to_discord(event, reminder=False):
+    alert_url = Config.OCTANE_ANNOUNCEMENTS_WEBHOOK
+    st1, st2, st3 = get_timezones(event.start, f'%a %b %d@%I:%M %p %Z')
+    end1, end2, end3 = get_timezones(event.end, f'%a %b %d@%I:%M %p %Z')
+    time_to_event = get_time_until(event.start)
+    if reminder:
+        content = f'{event.description}\n\n**This is an automatic reminder this event will be happening in {time_to_event}.**'
+    else:
+        content = f'{event.description}\n\n**This event will be happening in {time_to_event}.**'
+    data = {
+        'username': event.author.username,
+        'content': content,
+        'embeds': [{
+            'fields': [{
+                "name": "Start Time",
+                "value": f'{st1}\n{st2}\n{st3}',
+                "inline": True
+            },{
+                "name": "End Time",
+                "value": f'{end1}\n{end2}\n{end3}',
+                "inline": True
+            },{
+                "name": "Location",
+                "value": f'{event.location}',
+            },{
+                "name": "Cost",
+                "value": '${:0,.0f}'.format(float(event.cost)),
+                "inline": True
+            }],            
+            'footer': {
+                'text': f'This event brought to you by {event.company}.'
+            },
+            'title': event.title
+        }],
+    }
+    if event.image:
+        data['embeds'][-1]['image'] = {'url': event.image}
+    result = requests.post(alert_url, json=data, headers={"Content-Type": "application/json"})
+    try:
+        result.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+    else:
+        print("Payload delivered successfully, code {}.".format(result.status_code))    
 
 def post_to_discord(race):
     alert_urls = determine_webhooks(race)
-    time1, time2, time3 = get_timezones(race.start_time)
+    time1, time2, time3 = get_timezones(race.start_time, '%I:%M %p %Z')
     lap_time = LapTime.query.filter_by(track_id=race.track).order_by(LapTime.milliseconds).first()
     if lap_time:
         lap_milliseconds = lap_time.milliseconds
@@ -1248,4 +1310,14 @@ def check_player_completed_achievements(user):
             db.session.commit()
         else:
             User.query.filter_by(id=user).first().uncomplete_achievement(achieve)
-        db.session.commit()
+        db.session.commit()          
+
+def background_jobs(app):
+    with app.app_context():
+        time_intervals = [2880, 1440, 120, 15]
+        events = CalendarEvent.query.all()
+        for event in events:
+            curr_time = datetime.utcnow()
+            for ti in time_intervals:
+                if event.start - timedelta(minutes=ti) <= curr_time  and event.start - timedelta(minutes=ti-1) >= curr_time:
+                    post_calendar_event_to_discord(event, True)
