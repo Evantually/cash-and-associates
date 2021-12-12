@@ -133,7 +133,9 @@ def edit_calendar_event(event_id):
                             company=event.company, image=event.image,
                             location=event.location, cost=event.cost)
     if form.validate_on_submit():
-        if form.delete_event.data:            
+        if form.delete_event.data:
+            event.description = form.deletion_reason.data
+            db.session.commit()
             post_calendar_event_to_discord(event, deleted=True)
             db.session.delete(event)
             db.session.commit()

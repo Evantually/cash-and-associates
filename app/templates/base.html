@@ -229,15 +229,26 @@
             $('[for="start_utc"]').css('display', 'none')
             $('#end_utc').css('display', 'none')
             $('[for="end_utc"]').css('display', 'none')
-            $('#delete_event').css('display', 'none')
+            $('#deletion_reason').css('display', 'none')
+            $('[for="deletion_reason"]').css('display', 'none')
+            $('#delete_event').css('display', 'none')            
             $('label:contains("Delete Event")').css('display', 'none')
             if (window.location.href.indexOf("edit") > -1) {
                 $("#start").val(new moment($("#start_utc").val()).format('YYYY-MM-DDTHH:mm'))
                 $("#end").val(new moment($("#end_utc").val()).format('YYYY-MM-DDTHH:mm'))
                 $('#delete_event').css('display', 'inline-block')
-                $('label:contains("Delete Event")').css('display', 'inline-block')
+                $('label:contains("Delete Event")').css('display', 'inline-block')                
             }
         });
+        $("#delete_event").on("click", function() {
+            if ($('#delete_event').is(':checked')) {
+                $('#deletion_reason').css('display', 'inline-block')
+                $('[for="deletion_reason"]').css('display', 'inline-block')
+            } else {
+                $('#deletion_reason').css('display', 'none')
+                $('[for="deletion_reason"]').css('display', 'none')
+            }
+        })
         $("#start_time").on("change", function() {
             console.log('The time has changed');
             var datetimeLocal = new Date($("#start_time").val());

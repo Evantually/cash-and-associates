@@ -685,10 +685,9 @@ def post_calendar_event_to_discord(event, reminder=False, update=False, deleted=
     elif update:
         content = f'**This event has been updated.**\n\n{event.description}\n\n**This event will be happening in {time_to_event}.**'
     elif deleted:
-        content = f'**This event has been cancelled.**\n\n~~{event.description}~~'
+        content = f'**This event has been cancelled.**\n\n{event.description}'
     else:
-        content = f'{event.description}\n\n**This event will be happening in {time_to_event}.**'
-    print('https://www.cashaccountancy.com/calendar' if reminder else url_for('main.calendar', _external=True))
+        content = f'{event.description}\n\n**This event will be happening in {time_to_event}.**'    
     for image in images:
         content = content.replace(image, '')
     data = {

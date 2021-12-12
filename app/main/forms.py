@@ -233,6 +233,7 @@ class AddCalendarEventForm(FlaskForm):
     image = StringField(_l('Location Image (with .png, .jpg, etc. file extension)'))
     force_event = BooleanField('Force Schedule Event')
     delete_event = BooleanField('Delete Event')
+    deletion_reason = TextAreaField('Reason for deletion')
     submit = SubmitField(_l('Submit'))
 
     def validate_start_utc(self, start_utc):
