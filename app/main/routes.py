@@ -27,7 +27,7 @@ from app.main.utils import (organize_data_by_date, summarize_data, format_curren
                             post_to_discord, calculate_crew_points, async_check_achievements,
                             calculate_payouts, convert_from_milliseconds, post_encrypted_message,
                             post_cancel_to_discord, post_calendar_event_to_discord,
-                            background_jobs)
+                            background_jobs, parse_urls, check_if_image)
 
 
 @bp.before_app_request
@@ -65,6 +65,8 @@ def index():
                             revenue_info=revenue_info, expenses=expenses,
                             expense_info=expense_info, balance=balance)
 
+# CALENDAR START
+
 @bp.route('/calendar', methods=['GET'])
 def calendar():
     return render_template('calendar.html')
@@ -74,18 +76,26 @@ def calendar_events():
     output = {"entries": []}
     events = CalendarEvent.query.all()
     for event in events:
+        urls = parse_urls(event.description)
+        images = check_if_image(urls)
+        description = event.description
+        for image in images:
+            description = description.replace(image, '')
         event_info = {
             "id": event.id,
+            "google_id": event.google_id,
+            "user_id": event.user_id,
             "author": event.author.username,
             "start": event.start,
             "end": event.end,
             "title": event.title,
-            "description": event.description,
+            "description": description,
             "company": event.company,
             "image": event.image,
             "location": event.location,
             "cost": event.cost,
-            "category": event.category
+            "category": event.category,
+            "images": images
         }
         output["entries"].append(event_info)
     return jsonify(output)
@@ -99,16 +109,97 @@ def add_calendar_event():
         start_utc_time = start_utc_time_init.replace('Z','')
         end_utc_time_init = form.end_utc.data.replace('T',' ')
         end_utc_time = end_utc_time_init.replace('T', ' ')
+        starttime = datetime.strptime(start_utc_time, f'%Y-%m-%d %H:%M:%S')
         event = CalendarEvent(start=start_utc_time, end=end_utc_time,
                             title=form.title.data, description=form.description.data,
                             company=form.company.data, image=form.image.data,
-                            user_id=current_user.id, location=form.location.data)
+                            user_id=current_user.id, location=form.location.data,
+                            cost=form.cost.data)        
         db.session.add(event)                            
         db.session.commit()
         post_calendar_event_to_discord(event)
         flash('The event has been added to the calendar.')        
         return redirect(url_for('main.calendar'))
     return render_template('add_product.html', title="Add Calendar Event", form=form)
+
+@bp.route('/edit_calendar_event/<event_id>', methods=['GET','POST'])
+@login_required
+def edit_calendar_event(event_id):
+    event = CalendarEvent.query.filter_by(id=event_id).first()
+    start_utc = datetime.strftime(event.start, f'%Y-%m-%dT%H:%M:%SZ')
+    end_utc = datetime.strftime(event.end, f'%Y-%m-%dT%H:%M:%SZ')
+    form = AddCalendarEventForm(start_utc=start_utc, end_utc=end_utc,
+                            title=event.title, description=event.description,
+                            company=event.company, image=event.image,
+                            location=event.location, cost=event.cost)
+    if form.validate_on_submit():
+        if form.delete_event.data:            
+            post_calendar_event_to_discord(event, deleted=True)
+            db.session.delete(event)
+            db.session.commit()
+            flash('The event has been deleted.')
+            return redirect(url_for('main.calendar'))
+        start_utc_time_init = form.start_utc.data.replace('T',' ')
+        start_utc_time = start_utc_time_init.replace('Z','')
+        end_utc_time_init = form.end_utc.data.replace('T',' ')
+        end_utc_time = end_utc_time_init.replace('T', ' ')
+        event.start = start_utc_time
+        event.end = end_utc_time
+        event.title = form.title.data
+        event.description = form.description.data
+        event.company = form.company.data
+        event.image = form.image.data
+        event.user_id=current_user.id
+        event.location = form.location.data
+        event.cost = form.cost.data
+        db.session.commit()
+        flash('The event has been updated.')
+        post_calendar_event_to_discord(event, update=True)
+        return redirect(url_for('main.calendar'))
+    return render_template('add_product.html', title="Edit Calendar Event", form=form)
+
+@bp.route('/add_calendar_event/<start>/<end>/<start_utc>/<end_utc>', methods=['GET','POST'])
+@login_required
+def add_calendar_event_ui(start, end, start_utc, end_utc):
+    st = datetime.strptime(start, f'%Y-%m-%dT%I:%M%p')
+    en = datetime.strptime(end, f'%Y-%m-%dT%I:%M%p')
+    start_utc = start_utc.replace('+00:00','Z')
+    end_utc = end_utc.replace('+00:00','Z')
+    # st_fm = st.strftime(f'%Y-%m-%dT%H:%M:%S%z')
+    # en_fm = en.strftime(f'%Y-%m-%dT%H:%M:%S%z')
+    form = AddCalendarEventForm(start=st, end=en, start_utc=start_utc, end_utc=end_utc)
+    if form.validate_on_submit():
+        start_utc_time_init = form.start_utc.data.replace('T',' ')
+        start_utc_time = start_utc_time_init.replace('Z','')
+        end_utc_time_init = form.end_utc.data.replace('T',' ')
+        end_utc_time = end_utc_time_init.replace('T', ' ')
+        starttime = datetime.strptime(start_utc_time, f'%Y-%m-%d %H:%M:%S')
+        event = CalendarEvent(start=start_utc_time, end=end_utc_time,
+                            title=form.title.data, description=form.description.data,
+                            company=form.company.data, image=form.image.data,
+                            user_id=current_user.id, location=form.location.data,
+                            cost=form.cost.data)        
+        db.session.add(event)                            
+        db.session.commit()
+        post_calendar_event_to_discord(event)
+        flash('The event has been added to the calendar.')        
+        return redirect(url_for('main.calendar'))
+    return render_template('add_product.html', title="Add Calendar Event", form=form)
+
+# CALENDAR END
+
+# POLICY START
+
+@bp.route('/enacted_policy', methods=['GET'])
+def enacted_policy():
+    return render_template('index.html')
+
+@bp.route('/suggest_policy', methods=['GET', 'POST'])
+@login_required
+def suggest_policy():
+    return render_template('index.html')
+
+# POLICY END
 
 @bp.route('/user/<username>')
 @login_required
@@ -233,7 +324,8 @@ def manage_subscriptions(user_id):
     if current_user.access_level == 'admin' or current_user.company == 1:
         user = User.query.filter_by(id=user_id).first_or_404()
         form = ManageSubscriptionForm(hunter=user.hunter, fisher=user.fisher, postal=user.postal,
-                                    blackjack=user.blackjack, personal=user.personal, business=user.business)
+                                    blackjack=user.blackjack, personal=user.personal, business=user.business,
+                                    jrp=user.jrp, nd=user.nd, auto_renew=user.auto_renew)
         if form.validate_on_submit():
             user.hunter = form.hunter.data
             user.fisher = form.fisher.data
@@ -241,6 +333,8 @@ def manage_subscriptions(user_id):
             user.personal = form.personal.data
             user.business = form.business.data
             user.blackjack = form.blackjack.data
+            user.jrp = form.jrp.data
+            user.nd = form.nd.data
             user.auto_renew = form.auto_renew.data
             if form.extend.data:
                 if user.sub_expiration > datetime.utcnow():

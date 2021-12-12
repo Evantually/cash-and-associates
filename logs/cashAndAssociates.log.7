@@ -1,130 +1,139 @@
-2021-12-09 16:54:58,506 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-11 19:36:44,997 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 19:38:30,155 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 19:40:39,343 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 35, in before_request
-    if current_user.is_authenticated:
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 422, in __get__
-    obj = instance._get_current_object()
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 544, in _get_current_object
-    return self.__local()  # type: ignore
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 346, in _get_user
-    current_app.login_manager._load_user()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
-    user = self._user_callback(user_id)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\models.py", line 142, in load_user
-    return User.query.get(int(id))
-  File "<string>", line 2, in get
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\deprecations.py", line 390, in warned
-    return fn(*args, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 942, in get
-    return self._get_impl(ident, loading.load_on_pk_identity)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 946, in _get_impl
-    return self.session._get_impl(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2839, in _get_impl
-    return db_load_fn(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
-    session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1688, in execute
-    conn = self._connection_for_bind(bind)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1529, in _connection_for_bind
-    return self._transaction._connection_for_bind(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
-    conn = bind.connect()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3165, in connect
-    return self._connection_cls(self, close_with_result=close_with_result)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
-    else engine.raw_connection()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3244, in raw_connection
-    return self._wrap_pool_connect(self.pool.connect, _connection)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3211, in _wrap_pool_connect
-    return fn()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 307, in connect
-    return _ConnectionFairy._checkout(self)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 767, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 425, in checkout
-    rec = pool._do_get()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\impl.py", line 134, in _do_get
-    raise exc.TimeoutError(
-sqlalchemy.exc.TimeoutError: QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00 (Background on this error at: http://sqlalche.me/e/14/3o7r)
-2021-12-09 16:55:08,518 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
+    post_calendar_event_to_discord(event)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 678, in post_calendar_event_to_discord
+    images = check_if_image(urls)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 23, in check_if_image
+    site = urlopen(url)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 523, in open
+    response = meth(req, response)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 632, in http_response
+    response = self.parent.error(
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 561, in error
+    return self._call_chain(*args)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 494, in _call_chain
+    result = func(*args)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+2021-12-11 22:06:15,235 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:06:26,038 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 35, in before_request
-    if current_user.is_authenticated:
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 422, in __get__
-    obj = instance._get_current_object()
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 544, in _get_current_object
-    return self.__local()  # type: ignore
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 346, in _get_user
-    current_app.login_manager._load_user()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
-    user = self._user_callback(user_id)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\models.py", line 142, in load_user
-    return User.query.get(int(id))
-  File "<string>", line 2, in get
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\deprecations.py", line 390, in warned
-    return fn(*args, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 942, in get
-    return self._get_impl(ident, loading.load_on_pk_identity)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 946, in _get_impl
-    return self.session._get_impl(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2839, in _get_impl
-    return db_load_fn(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
-    session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1688, in execute
-    conn = self._connection_for_bind(bind)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1529, in _connection_for_bind
-    return self._transaction._connection_for_bind(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
-    conn = bind.connect()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3165, in connect
-    return self._connection_cls(self, close_with_result=close_with_result)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
-    else engine.raw_connection()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3244, in raw_connection
-    return self._wrap_pool_connect(self.pool.connect, _connection)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3211, in _wrap_pool_connect
-    return fn()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 307, in connect
-    return _ConnectionFairy._checkout(self)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 767, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 425, in checkout
-    rec = pool._do_get()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\impl.py", line 134, in _do_get
-    raise exc.TimeoutError(
-sqlalchemy.exc.TimeoutError: QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00 (Background on this error at: http://sqlalche.me/e/14/3o7r)
-2021-12-09 17:04:37,978 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 17:10:32,543 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 17:38:57,233 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 17:38:59,965 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
+    post_calendar_event_to_discord(event)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 678, in post_calendar_event_to_discord
+    images = check_if_image(urls)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 23, in check_if_image
+    site = urlopen(url)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 523, in open
+    response = meth(req, response)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 632, in http_response
+    response = self.parent.error(
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 561, in error
+    return self._call_chain(*args)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 494, in _call_chain
+    result = func(*args)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+2021-12-11 22:08:50,428 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:08:52,924 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 24, in check_if_image
+    site = urlopen(url)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 523, in open
+    response = meth(req, response)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 632, in http_response
+    response = self.parent.error(
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 561, in error
+    return self._call_chain(*args)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 494, in _call_chain
+    result = func(*args)
+  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 641, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
+    post_calendar_event_to_discord(event)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 681, in post_calendar_event_to_discord
+    images = check_if_image(urls)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 28, in check_if_image
+    except HTTPError:
+NameError: name 'HTTPError' is not defined
+2021-12-11 22:09:34,320 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:11:13,315 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:23:43,193 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:25:59,381 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 110, in add_calendar_event
+    if form.force_event.data == False:
+AttributeError: 'AddCalendarEventForm' object has no attribute 'force_event'
+2021-12-11 22:26:19,419 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:26:22,242 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
+    if event.start < datetime.utcnow():
+TypeError: '<' not supported between instances of 'str' and 'datetime.datetime'
+2021-12-11 22:27:09,433 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

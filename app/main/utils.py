@@ -13,6 +13,22 @@ import requests
 import random
 from flask import url_for, jsonify, current_app
 from config import Config
+import re
+from urllib.request import urlopen
+from urllib.error import HTTPError
+
+def check_if_image(urls):
+    image_formats = ("image/png", "image/jpeg", "image/gif")
+    images = []
+    for url in urls:
+        try:
+            site = urlopen(url)
+            meta = site.info()
+            if meta["content-type"] in image_formats:
+                images.append(url)
+        except HTTPError:
+            pass
+    return images
 
 def organize_data_by_date(data):
     output = {}
@@ -618,6 +634,11 @@ def get_role_tags(form):
         tags.append('<@&910663731313278976>')
     return tags
 
+def parse_urls(desctext):
+    researchtext = r"\b((?:https?://)?(?:(?:www\.)?(?:[\da-z\.-]+)\.(?:[a-z]{2,6})|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:(?:[0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(?::[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(?::[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(?::[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(?::[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:(?:(?::[0-9a-fA-F]{1,4}){1,6})|:(?:(?::[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(?::[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(?:ffff(?::0{1,4}){0,1}:){0,1}(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])|(?:[0-9a-fA-F]{1,4}:){1,4}:(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])))(?::[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])?(?:/[\w\.-]*)*/?)\b"
+    matches = re.findall(researchtext, desctext)
+    return matches
+
 def post_encrypted_message(race):
     alert_urls = determine_message_webhooks(race)
     tags = get_role_tags(race)
@@ -652,43 +673,63 @@ def post_cancel_to_discord(race):
         else:
             print("Payload delivered successfully, code {}.".format(result.status_code))    
 
-def post_calendar_event_to_discord(event, reminder=False):
-    alert_url = Config.OCTANE_ANNOUNCEMENTS_WEBHOOK
+def post_calendar_event_to_discord(event, reminder=False, update=False, deleted=False):
+    alert_url = Config.TESTING_WEBHOOK
     st1, st2, st3 = get_timezones(event.start, f'%a %b %d@%I:%M %p %Z')
     end1, end2, end3 = get_timezones(event.end, f'%a %b %d@%I:%M %p %Z')
     time_to_event = get_time_until(event.start)
+    urls = parse_urls(event.description)
+    images = check_if_image(urls)
     if reminder:
         content = f'{event.description}\n\n**This is an automatic reminder this event will be happening in {time_to_event}.**'
+    elif update:
+        content = f'**This event has been updated.**\n\n{event.description}\n\n**This event will be happening in {time_to_event}.**'
+    elif deleted:
+        content = f'**This event has been cancelled.**\n\n~~{event.description}~~'
     else:
         content = f'{event.description}\n\n**This event will be happening in {time_to_event}.**'
+    print('https://www.cashaccountancy.com/calendar' if reminder else url_for('main.calendar', _external=True))
+    for image in images:
+        content = content.replace(image, '')
     data = {
         'username': event.author.username,
         'content': content,
         'embeds': [{
             'fields': [{
                 "name": "Start Time",
-                "value": f'{st1}\n{st2}\n{st3}',
+                "value": f'{st1}\n{st2}\n{st3}' if not deleted else f'~~{st1}~~\n~~{st2}~~\n~~{st3}~~',
                 "inline": True
             },{
                 "name": "End Time",
-                "value": f'{end1}\n{end2}\n{end3}',
+                "value": f'{end1}\n{end2}\n{end3}' if not deleted else f'~~{end1}~~\n~~{end2}~~\n~~{end3}~~',
                 "inline": True
             },{
                 "name": "Location",
-                "value": f'{event.location}',
+                "value": f'{event.location}' if not deleted else f'~~{event.location}~~',
             },{
                 "name": "Cost",
-                "value": '${:0,.0f}'.format(float(event.cost)),
+                "value": '${:0,.0f}'.format(float(event.cost)) if not deleted else '~~${:0,.0f}~~'.format(float(event.cost)),
+                "inline": True
+            },{
+                "name": "Other Events",
+                "value": f"[Calendar]({'https://www.cashaccountancy.com/calendar' if reminder else url_for('main.calendar', _external=True)})",
                 "inline": True
             }],            
             'footer': {
-                'text': f'This event brought to you by {event.company}.'
+                'text': f'This event brought to you by {event.company}.' if not deleted else f'~~This event brought to you by {event.company}.~~'
             },
-            'title': event.title
+            'title': event.title if not deleted else f'~~{event.title}~~'
         }],
     }
-    if event.image:
-        data['embeds'][-1]['image'] = {'url': event.image}
+    if not deleted:
+        if event.image:
+            data['embeds'][0]['image'] = {'url': event.image}
+        for image in images:
+            data['embeds'].insert(0,{            
+                "image": {
+                    "url": image
+                }
+            })
     result = requests.post(alert_url, json=data, headers={"Content-Type": "application/json"})
     try:
         result.raise_for_status()

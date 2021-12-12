@@ -1,116 +1,117 @@
-2021-12-09 16:54:38,487 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-10 03:30:05,239 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 03:49:06,461 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 04:22:34,080 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:03:17,106 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:35:53,730 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:35:54,692 ERROR: Exception on /index [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 35, in before_request
-    if current_user.is_authenticated:
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 422, in __get__
-    obj = instance._get_current_object()
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 544, in _get_current_object
-    return self.__local()  # type: ignore
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 346, in _get_user
-    current_app.login_manager._load_user()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
-    user = self._user_callback(user_id)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\models.py", line 142, in load_user
-    return User.query.get(int(id))
-  File "<string>", line 2, in get
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\deprecations.py", line 390, in warned
-    return fn(*args, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 942, in get
-    return self._get_impl(ident, loading.load_on_pk_identity)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 946, in _get_impl
-    return self.session._get_impl(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2839, in _get_impl
-    return db_load_fn(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
-    session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1688, in execute
-    conn = self._connection_for_bind(bind)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1529, in _connection_for_bind
-    return self._transaction._connection_for_bind(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
-    conn = bind.connect()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3165, in connect
-    return self._connection_cls(self, close_with_result=close_with_result)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
-    else engine.raw_connection()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3244, in raw_connection
-    return self._wrap_pool_connect(self.pool.connect, _connection)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3211, in _wrap_pool_connect
-    return fn()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 307, in connect
-    return _ConnectionFairy._checkout(self)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 767, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 425, in checkout
-    rec = pool._do_get()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\impl.py", line 134, in _do_get
-    raise exc.TimeoutError(
-sqlalchemy.exc.TimeoutError: QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00 (Background on this error at: http://sqlalche.me/e/14/3o7r)
-2021-12-09 16:54:48,496 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 64, in index
+    return render_template('index.html', title=_('Home'), revenue=revenue, transactions=transactions,
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 176, in template
+    {% endif %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endif'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2021-12-10 13:35:54,785 ERROR: Exception on /favicon.ico [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1489, in dispatch_request
+    self.raise_routing_exception(req)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1471, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\ctx.py", line 367, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\routing.py", line 2032, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 35, in before_request
-    if current_user.is_authenticated:
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 422, in __get__
-    obj = instance._get_current_object()
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 544, in _get_current_object
-    return self.__local()  # type: ignore
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 346, in _get_user
-    current_app.login_manager._load_user()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
-    user = self._user_callback(user_id)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\models.py", line 142, in load_user
-    return User.query.get(int(id))
-  File "<string>", line 2, in get
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\deprecations.py", line 390, in warned
-    return fn(*args, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 942, in get
-    return self._get_impl(ident, loading.load_on_pk_identity)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 946, in _get_impl
-    return self.session._get_impl(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2839, in _get_impl
-    return db_load_fn(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
-    session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1688, in execute
-    conn = self._connection_for_bind(bind)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1529, in _connection_for_bind
-    return self._transaction._connection_for_bind(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
-    conn = bind.connect()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3165, in connect
-    return self._connection_cls(self, close_with_result=close_with_result)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
-    else engine.raw_connection()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3244, in raw_connection
-    return self._wrap_pool_connect(self.pool.connect, _connection)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3211, in _wrap_pool_connect
-    return fn()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 307, in connect
-    return _ConnectionFairy._checkout(self)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 767, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 425, in checkout
-    rec = pool._do_get()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\impl.py", line 134, in _do_get
-    raise exc.TimeoutError(
-sqlalchemy.exc.TimeoutError: QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00 (Background on this error at: http://sqlalche.me/e/14/3o7r)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1383, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1323, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\errors\handlers.py", line 8, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\errors\404.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 176, in template
+    {% endif %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endif'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2021-12-10 13:36:21,809 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:39:46,857 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:39:49,250 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:39:50,574 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:41:47,401 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:42:22,386 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 13:43:07,218 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 16:05:00,667 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 14:33:35,246 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 14:58:02,544 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:05:30,727 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:17:39,038 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:20:35,639 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:23:06,685 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:25:40,075 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:25:53,916 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
+    post_calendar_event_to_discord(event)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 712, in post_calendar_event_to_discord
+    data['embeds'].insert({
+TypeError: insert expected 2 arguments, got 1
+2021-12-11 15:26:46,508 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:30:14,623 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 15:30:28,453 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 18:51:31,949 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 18:53:18,606 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 18:53:22,794 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 18:53:26,463 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 18:55:01,382 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 19:32:05,187 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

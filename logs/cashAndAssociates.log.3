@@ -1,115 +1,113 @@
-2021-12-09 23:19:55,877 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-12 01:03:00,386 ERROR: Exception on /add_calendar_event/2021-12-13T07:00/2021-12-13T11:00 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    app.apsched.add_job(background_jobs,'interval',minutes=1)
-AttributeError: 'Flask' object has no attribute 'apsched'
-2021-12-09 23:19:58,744 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 144, in add_calendar_event_ui
+    return render_template('add_product.html', title="Add Calendar Event", form=form)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\add_product.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 211, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\add_product.html", line 8, in block 'app_content'
+    {{ wtf.quick_form(form) }}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\runtime.py", line 828, in _invoke
+    rv = self._func(*arguments)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\wtf.html", line 205, in template
+    {{ form_field(field,
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\runtime.py", line 828, in _invoke
+    rv = self._func(*arguments)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\wtf.html", line 123, in template
+    {{field(class="form-control", **kwargs)|safe}}
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 160, in __call__
+    return self.meta.render_field(self, kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\meta.py", line 56, in render_field
+    return field.widget(field, **render_kw)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\widgets\core.py", line 158, in __call__
+    kwargs['value'] = field._value()
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 784, in _value
+    return self.data and self.data.strftime(self.format) or ''
+AttributeError: 'str' object has no attribute 'strftime'
+2021-12-12 01:04:09,236 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-12 01:04:18,440 ERROR: Exception on /add_calendar_event/2021-12-13T07:00/2021-12-13T11:00 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    app.apsched.add_job(background_jobs,'interval',minutes=1)
-AttributeError: 'Flask' object has no attribute 'apsched'
-2021-12-09 23:20:05,891 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    app.apsched.add_job(background_jobs,'interval',minutes=1)
-AttributeError: 'Flask' object has no attribute 'apsched'
-2021-12-09 23:20:08,757 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    app.apsched.add_job(background_jobs,'interval',minutes=1)
-AttributeError: 'Flask' object has no attribute 'apsched'
-2021-12-09 23:31:35,511 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-09 23:31:36,420 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    apsched.add_job("do_job_1", background_jobs,'interval',minutes=1)
-TypeError: add_job() takes 3 positional arguments but 4 were given
-2021-12-09 23:32:25,521 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-09 23:32:26,499 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    apsched.add_job(background_jobs,'interval',minutes=1)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_apscheduler\scheduler.py", line 168, in add_job
-    return self._scheduler.add_job(**job_def)
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
-    'trigger': self._create_trigger(trigger, trigger_args),
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 926, in _create_trigger
-    return self._create_plugin_instance('trigger', trigger, trigger_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 911, in _create_plugin_instance
-    return plugin_cls(**constructor_kwargs)
-TypeError: __init__() got an unexpected keyword argument 'minutes'
-2021-12-09 23:32:29,308 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    apsched.add_job(background_jobs,'interval',minutes=1)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_apscheduler\scheduler.py", line 168, in add_job
-    return self._scheduler.add_job(**job_def)
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
-    'trigger': self._create_trigger(trigger, trigger_args),
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 926, in _create_trigger
-    return self._create_plugin_instance('trigger', trigger, trigger_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 911, in _create_plugin_instance
-    return plugin_cls(**constructor_kwargs)
-TypeError: __init__() got an unexpected keyword argument 'minutes'
-2021-12-09 23:32:39,719 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-09 23:32:39,852 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
-    apsched.add_job(background_jobs,'interval',seconds=60)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_apscheduler\scheduler.py", line 168, in add_job
-    return self._scheduler.add_job(**job_def)
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
-    'trigger': self._create_trigger(trigger, trigger_args),
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 926, in _create_trigger
-    return self._create_plugin_instance('trigger', trigger, trigger_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 911, in _create_plugin_instance
-    return plugin_cls(**constructor_kwargs)
-TypeError: __init__() got an unexpected keyword argument 'seconds'
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 144, in add_calendar_event_ui
+    return render_template('add_product.html', title="Add Calendar Event", form=form)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\add_product.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 211, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\add_product.html", line 8, in block 'app_content'
+    {{ wtf.quick_form(form) }}
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\runtime.py", line 828, in _invoke
+    rv = self._func(*arguments)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\wtf.html", line 205, in template
+    {{ form_field(field,
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\runtime.py", line 828, in _invoke
+    rv = self._func(*arguments)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\wtf.html", line 123, in template
+    {{field(class="form-control", **kwargs)|safe}}
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 160, in __call__
+    return self.meta.render_field(self, kwargs)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\meta.py", line 56, in render_field
+    return field.widget(field, **render_kw)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\widgets\core.py", line 158, in __call__
+    kwargs['value'] = field._value()
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 784, in _value
+    return self.data and self.data.strftime(self.format) or ''
+AttributeError: 'str' object has no attribute 'strftime'
+2021-12-12 01:07:30,492 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-12 01:14:31,529 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

@@ -1,4 +1,16 @@
-2021-12-09 16:54:18,491 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-10 01:41:16,274 ERROR: Exception on /race_history [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column track.disabled does not exist
+LINE 1: ...ck_meet_location, track.crew_id AS track_crew_id, track.disa...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -10,90 +22,97 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1620, in notifications
-    return jsonify([{
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2837, in __iter__
-    return self._iter().__iter__()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 2844, in _iter
-    result = self.session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1688, in execute
-    conn = self._connection_for_bind(bind)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1529, in _connection_for_bind
-    return self._transaction._connection_for_bind(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
-    conn = bind.connect()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3165, in connect
-    return self._connection_cls(self, close_with_result=close_with_result)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
-    else engine.raw_connection()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3244, in raw_connection
-    return self._wrap_pool_connect(self.pool.connect, _connection)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3211, in _wrap_pool_connect
-    return fn()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 307, in connect
-    return _ConnectionFairy._checkout(self)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 767, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 425, in checkout
-    rec = pool._do_get()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\impl.py", line 134, in _do_get
-    raise exc.TimeoutError(
-sqlalchemy.exc.TimeoutError: QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00 (Background on this error at: http://sqlalche.me/e/14/3o7r)
-2021-12-09 16:54:28,494 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 35, in before_request
-    if current_user.is_authenticated:
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 422, in __get__
-    obj = instance._get_current_object()
-  File "i:\anaconda\envs\cash\lib\site-packages\werkzeug\local.py", line 544, in _get_current_object
-    return self.__local()  # type: ignore
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 26, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 346, in _get_user
-    current_app.login_manager._load_user()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\login_manager.py", line 318, in _load_user
-    user = self._user_callback(user_id)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\models.py", line 142, in load_user
-    return User.query.get(int(id))
-  File "<string>", line 2, in get
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\deprecations.py", line 390, in warned
-    return fn(*args, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 942, in get
-    return self._get_impl(ident, loading.load_on_pk_identity)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\query.py", line 946, in _get_impl
-    return self.session._get_impl(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 2839, in _get_impl
-    return db_load_fn(
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 1527, in race_history
+    return render_template('race_history.html', races=races, rp=RacePerformance)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\templating.py", line 128, in _render
+    rv = template.render(context)
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_history.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
+    {%- block html %}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
+    {% block body -%}
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\base.html", line 171, in block 'content'
+    {% block app_content %}{% endblock %}
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\templates\race_history.html", line 30, in block 'app_content'
+    <td>{{ race.track_info.name }}</td>
+  File "i:\anaconda\envs\cash\lib\site-packages\jinja2\environment.py", line 474, in getattr
+    return getattr(obj, attribute)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 480, in __get__
+    return self.impl.get(state, dict_)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\attributes.py", line 931, in get
+    value = self.callable_(state, passive)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 879, in _load_for_state
+    return self._emit_lazyload(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\strategies.py", line 982, in _emit_lazyload
+    return loading.load_on_pk_identity(
   File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\loading.py", line 531, in load_on_pk_identity
     session.execute(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1688, in execute
-    conn = self._connection_for_bind(bind)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1529, in _connection_for_bind
-    return self._transaction._connection_for_bind(
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
-    conn = bind.connect()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3165, in connect
-    return self._connection_cls(self, close_with_result=close_with_result)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
-    else engine.raw_connection()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3244, in raw_connection
-    return self._wrap_pool_connect(self.pool.connect, _connection)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 3211, in _wrap_pool_connect
-    return fn()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 307, in connect
-    return _ConnectionFairy._checkout(self)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 767, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\base.py", line 425, in checkout
-    rec = pool._do_get()
-  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\pool\impl.py", line 134, in _do_get
-    raise exc.TimeoutError(
-sqlalchemy.exc.TimeoutError: QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00 (Background on this error at: http://sqlalche.me/e/14/3o7r)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\orm\session.py", line 1689, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1582, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\sql\lambdas.py", line 481, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1451, in _execute_clauseelement
+    ret = self._execute_context(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1813, in _execute_context
+    self._handle_dbapi_exception(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1994, in _handle_dbapi_exception
+    util.raise_(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\base.py", line 1770, in _execute_context
+    self.dialect.do_execute(
+  File "i:\anaconda\envs\cash\lib\site-packages\sqlalchemy\engine\default.py", line 717, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column track.disabled does not exist
+LINE 1: ...ck_meet_location, track.crew_id AS track_crew_id, track.disa...
+                                                             ^
+
+[SQL: SELECT track.id AS track_id, track.name AS track_name, track.track_map AS track_track_map, track.track_video AS track_track_video, track.embed_link AS track_embed_link, track.lap_race AS track_lap_race, track.record_time AS track_record_time, track.record_holder AS track_record_holder, track.times_ran AS track_times_ran, track.race_org AS track_race_org, track.meet_location AS track_meet_location, track.crew_id AS track_crew_id, track.disabled AS track_disabled 
+FROM track 
+WHERE track.id = %(pk_1)s]
+[parameters: {'pk_1': 12}]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+2021-12-10 01:41:36,083 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:41:39,738 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:41:43,892 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:47:26,638 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:47:49,112 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:48:46,740 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:51:34,971 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:55:09,156 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:57:36,991 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:00:45,034 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:16:29,239 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:17:11,425 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:21:46,062 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:24:35,491 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:25:57,324 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:30:25,782 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:35:44,529 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:36:05,656 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:38:08,411 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:39:42,654 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:41:16,293 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:41:37,581 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:42:55,067 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:48:39,763 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:48:59,553 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:50:43,813 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 02:53:50,266 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 03:07:57,956 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 03:28:41,272 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

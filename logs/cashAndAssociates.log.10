@@ -1,4 +1,88 @@
-2021-12-09 15:51:31,370 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-09 23:32:40,072 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
+    apsched.add_job(background_jobs,'interval',seconds=60)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_apscheduler\scheduler.py", line 168, in add_job
+    return self._scheduler.add_job(**job_def)
+  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
+    'trigger': self._create_trigger(trigger, trigger_args),
+  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 926, in _create_trigger
+    return self._create_plugin_instance('trigger', trigger, trigger_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 911, in _create_plugin_instance
+    return plugin_cls(**constructor_kwargs)
+TypeError: __init__() got an unexpected keyword argument 'seconds'
+2021-12-09 23:32:46,475 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
+    apsched.add_job(background_jobs,'interval',seconds=60)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_apscheduler\scheduler.py", line 168, in add_job
+    return self._scheduler.add_job(**job_def)
+  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
+    'trigger': self._create_trigger(trigger, trigger_args),
+  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 926, in _create_trigger
+    return self._create_plugin_instance('trigger', trigger, trigger_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\apscheduler\schedulers\base.py", line 911, in _create_plugin_instance
+    return plugin_cls(**constructor_kwargs)
+TypeError: __init__() got an unexpected keyword argument 'seconds'
+2021-12-09 23:35:53,933 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-09 23:35:56,598 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
+    apsched.add_job(func=background_jobs,trigger='interval',seconds=60)
+TypeError: add_job() missing 1 required positional argument: 'id'
+2021-12-09 23:35:59,453 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
+    apsched.add_job(func=background_jobs,trigger='interval',seconds=60)
+TypeError: add_job() missing 1 required positional argument: 'id'
+2021-12-09 23:36:06,612 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
+    apsched.add_job(func=background_jobs,trigger='interval',seconds=60)
+TypeError: add_job() missing 1 required positional argument: 'id'
+2021-12-09 23:36:09,468 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 12, in start_tasks
+    apsched.add_job(func=background_jobs,trigger='interval',seconds=60)
+TypeError: add_job() missing 1 required positional argument: 'id'
+2021-12-09 23:36:15,334 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-09 23:37:11,455 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -10,107 +94,26 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 106, in add_calendar_event
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 108, in add_calendar_event
     post_calendar_event_to_discord(event)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 654, in post_calendar_event_to_discord
-    result = requests.post(alert_url, json=data, headers={"Content-Type": "application/json"})
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 119, in post
-    return request('post', url, data=data, json=json, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 61, in request
-    return session.request(method=method, url=url, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 528, in request
-    prep = self.prepare_request(req)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 456, in prepare_request
-    p.prepare(
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 316, in prepare
-    self.prepare_url(url, params)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 390, in prepare_url
-    raise MissingSchema(error)
-requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perhaps you meant http://None?
-2021-12-09 15:53:44,475 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 15:53:47,898 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 106, in add_calendar_event
-    post_calendar_event_to_discord(event)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 654, in post_calendar_event_to_discord
-    result = requests.post(alert_url, json=data, headers={"Content-Type": "application/json"})
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 119, in post
-    return request('post', url, data=data, json=json, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 61, in request
-    return session.request(method=method, url=url, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 528, in request
-    prep = self.prepare_request(req)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 456, in prepare_request
-    p.prepare(
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 316, in prepare
-    self.prepare_url(url, params)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 390, in prepare_url
-    raise MissingSchema(error)
-requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perhaps you meant http://None?
-2021-12-09 15:54:15,922 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 15:55:18,093 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 15:58:10,064 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 15:59:44,460 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:01:04,634 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:01:39,519 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:03:47,937 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:08:41,012 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:08:53,812 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:09:06,697 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:13:04,676 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:13:37,773 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:15:17,864 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:15:54,775 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:16:47,947 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:18:43,840 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:21:08,777 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:24:13,840 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:25:05,021 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:25:50,044 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:26:36,641 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:27:54,167 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:45:44,690 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:46:13,502 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:49:53,712 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:49:58,425 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 39, in before_request
-    background_jobs()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 1295, in background_jobs
-    args=(current_app._get_current_object(), CalendarEvent)).start()
-NameError: name 'CalendarEvent' is not defined
-2021-12-09 16:50:08,328 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1511, in full_dispatch_request
-    rv = self.preprocess_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1857, in preprocess_request
-    rv = self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 39, in before_request
-    background_jobs()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 1295, in background_jobs
-    args=(current_app._get_current_object(), CalendarEvent)).start()
-NameError: name 'CalendarEvent' is not defined
-2021-12-09 16:50:15,603 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
-2021-12-09 16:51:21,513 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:74]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 638, in post_calendar_event_to_discord
+    st1, st2, st3 = get_timezones(event.start, '%a %b, %-d %I:%M %p %Z')
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 506, in get_timezones
+    time1 = utc.astimezone(eastern_us).strftime(fmt)
+ValueError: Invalid format string
+2021-12-09 23:49:03,872 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:03:10,784 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:06:23,159 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:09:13,365 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:11:27,502 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:33:08,472 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:33:49,134 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:34:57,166 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:35:48,501 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:36:50,458 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:37:12,984 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:38:17,976 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 00:54:34,897 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:03:25,610 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:28:43,981 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-10 01:39:31,960 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

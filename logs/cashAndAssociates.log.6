@@ -1,132 +1,119 @@
-2021-12-09 17:39:09,968 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-11 22:27:11,490 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:39:19,977 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
+    if datetime(event.start) < datetime.utcnow():
+TypeError: an integer is required (got type str)
+2021-12-11 22:33:14,715 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:33:17,033 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:39:29,993 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 105, in add_calendar_event
+    starttime = datetime.strptime(start_utc_time, f'%Y-%m-%dT%H%M%SZ')
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '2021-12-12 02:00:00' does not match format '%Y-%m-%dT%H%M%SZ'
+2021-12-11 22:33:47,293 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:33:49,240 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:39:40,005 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 105, in add_calendar_event
+    starttime = datetime.strptime(start_utc_time, f'%Y-%m-%d %H%M%S')
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '2021-12-12 02:00:00' does not match format '%Y-%m-%d %H%M%S'
+2021-12-11 22:34:24,961 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:34:29,298 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:39:50,013 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 115, in add_calendar_event
+    start=form.start.data, end=form.end.data, start_utc=form.start_utc.data, end_utc=event.end_utc.data,
+AttributeError: 'CalendarEvent' object has no attribute 'end_utc'
+2021-12-11 22:36:21,422 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:36:25,162 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:40:00,014 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 118, in add_calendar_event
+    force_event=form.repeat_event.data
+AttributeError: 'AddCalendarEventForm' object has no attribute 'repeat_event'
+2021-12-11 22:36:42,309 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:46:00,443 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:46:58,946 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:48:35,229 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:53:10,636 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:54:58,793 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:55:03,634 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:40:10,020 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:40:20,027 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:40:30,035 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:40:40,041 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:40:50,042 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
-2021-12-09 17:41:00,056 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
-    self.try_trigger_before_first_request_functions()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
-    self.ensure_sync(func)()
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\microblog.py", line 16, in start_background_jobs
-    apsched.add_interval_job(background_jobs, seconds=5)
-AttributeError: 'BackgroundScheduler' object has no attribute 'add_interval_job'
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 100, in add_calendar_event
+    if form.validate_on_submit():
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_wtf\form.py", line 100, in validate_on_submit
+    return self.is_submitted() and self.validate()
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\form.py", line 318, in validate
+    return super(Form, self).validate(extra)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\form.py", line 150, in validate
+    if not field.validate(self, extra):
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 226, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 246, in _run_validation_chain
+    validator(form, self)
+TypeError: validate_start_utc() missing 1 required positional argument: 'force_event'
+2021-12-11 22:56:46,752 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

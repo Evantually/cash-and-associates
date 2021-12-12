@@ -52,6 +52,7 @@ class User(UserMixin, db.Model):
     race_host = db.Column(db.Boolean, default=False)
     racer = db.Column(db.Boolean, default=False)
     jrp = db.Column(db.Boolean, default=False)
+    nd = db.Column(db.Boolean, default=False)
     race_crew = db.Column(db.String(120))
     crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
     race_points = db.Column(db.Integer)
@@ -491,6 +492,7 @@ class CalendarEvent(db.Model):
     company = db.Column(db.String(128))
     image = db.Column(db.String(128))
     location = db.Column(db.String(128))
+    google_id = db.Column(db.String(128))
     cost = db.Column(db.Integer, default=0)
 
 class Policy(db.Model):

@@ -6,7 +6,8 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.fields.html5 import DateTimeLocalField
 from flask_babel import _, lazy_gettext as _l
-from app.models import User, Product, Category, Car, Track, Crew
+from app.models import User, Product, Category, Car, Track, Crew, CalendarEvent
+from datetime import datetime
 
 
 class EditProfileForm(FlaskForm):
@@ -90,6 +91,8 @@ class ManageSubscriptionForm(FlaskForm):
     blackjack = BooleanField('Blackjack Subscription')
     personal = BooleanField('Personal Subscription')
     business = BooleanField('Business Subscription')
+    jrp = BooleanField('JustRP Member')
+    nd = BooleanField('ND Member')
     sub_length = IntegerField(_l('Subscription Length (Days)'))
     extend = BooleanField('Extend Subscription')
     auto_renew = BooleanField('Automatically Renew')
@@ -149,7 +152,7 @@ class SetupRaceForm(FlaskForm):
 
 class EditRaceForm(FlaskForm):
     name = StringField(_l('Name'))
-    track = QuerySelectField(query_factory=lambda: Track.query.order_by(Track.name).all())
+    track = QuerySelectField(query_factory=lambda: Track.query.filter_by(disabled=False).order_by(Track.name).all())
     laps = IntegerField(_l('Laps'))
     highest_class = StringField(_l('Highest Class Allowed'))
     crew_race = BooleanField('Crew Race?')
@@ -185,7 +188,7 @@ class EditOwnedCarForm(FlaskForm):
 class AddCrewForm(FlaskForm):
     name = StringField(_l('Name'))
     image = StringField(_l('Crew Image'))
-    home_track = QuerySelectField(query_factory=lambda: Track.query.filter(Track.crew_id==None).all())
+    home_track = QuerySelectField(query_factory=lambda: Track.query.filter(Track.crew_id==None).order_by(Track.name).all())
     points = IntegerField(_l('Points'))
     submit = SubmitField(_l('Submit'))
 
@@ -218,15 +221,28 @@ class EncryptedMessageForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class AddCalendarEventForm(FlaskForm):
-    start = DateTimeLocalField('Start Time (Use local time. It will automatically be converted)', format='%Y-%m-%dT%H:%M')
+    start = DateTimeLocalField('Start Time (Use local time. It will automatically be converted)', format=f'%Y-%m-%dT%H:%M', validators=[DataRequired()])
     start_utc = StringField('Start time UTC formatted')
-    end = DateTimeLocalField('End Time (Use local time. It will automatically be converted)', format='%Y-%m-%dT%H:%M')
+    end = DateTimeLocalField('End Time (Use local time. It will automatically be converted)', format=f'%Y-%m-%dT%H:%M', validators=[DataRequired()])
     end_utc = StringField('End time UTC formatted')
-    title = StringField(_l('Title'))
-    description = TextAreaField('Description (Include flyer image link in the text here)')
-    location = StringField(_l('Location'))
-    cost = IntegerField('Cost')
-    company = StringField(_l('Company'))
+    title = StringField(_l('Title'), validators=[DataRequired()])
+    description = TextAreaField('Description (Include flyer image link in the text here)', validators=[DataRequired()])
+    location = StringField(_l('Location'), validators=[DataRequired()])
+    cost = IntegerField('Cost', validators=[DataRequired()])
+    company = StringField(_l('Company'), validators=[DataRequired()])
     image = StringField(_l('Location Image (with .png, .jpg, etc. file extension)'))
-    repeat_event = BooleanField('Repeat Event')
+    force_event = BooleanField('Force Schedule Event')
+    delete_event = BooleanField('Delete Event')
     submit = SubmitField(_l('Submit'))
+
+    def validate_start_utc(self, start_utc):
+        if not self.force_event.data and not self.delete_event.data:
+            starttime = datetime.strptime(start_utc.data, f'%Y-%m-%dT%H:%M:%SZ')
+            if datetime.strptime(start_utc.data, f'%Y-%m-%dT%H:%M:%SZ') < datetime.utcnow():
+                raise ValidationError(_('The time you have selected for this event is in the past. Please verify, and choose "Force Schedule Event" if necessary.'))
+            if CalendarEvent.query.filter(CalendarEvent.start <= starttime).filter(CalendarEvent.end >= starttime).first():
+                raise ValidationError(_('The time you have selected occurs during an existing event. Please verify, and choose "Force Schedule Event" if necessary.'))
+
+class AddPolicyForm(FlaskForm):
+    title = StringField('Title/Name of Policy', validators=[DataRequired(),Length(max=64)])
+    description = TextAreaField('Description (Include flyer image link in the text here)', validators=[DataRequired()])

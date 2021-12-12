@@ -26,6 +26,7 @@
                     <li><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
                     {% if current_user.is_anonymous %}
                     {% else %}
+                        {% if current_user.business %}
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Business Tools
                             <span class="caret"></span></a>
@@ -42,6 +43,7 @@
                                 <li><a href="{{ url_for('main.tutorials') }}">{{ _('Tutorials') }}</a></li>
                             </ul>
                         </li>
+                        {% endif %}
                         {% if current_user.access_level == 'admin' or current_user.company == 1 %}
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Tools
@@ -53,6 +55,7 @@
                             </ul>
                         </li>
                         {% endif %}
+                        {% if current_user.nd %}
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Job Trackers
                             <span class="caret"></span></a>
@@ -66,6 +69,43 @@
                                 {% endif %}
                             </ul>
                         </li>
+                        {% endif %}
+                        {% if current_user.jrp %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community Info
+                            <span class="caret"></span></a>                              
+                            <ul class="dropdown-menu multi-column columns-3">
+                                <div class="row">
+                                    <div class="col-md-4">  
+                                        <ul class="multi-column-dropdown">
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Calendar</li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{ url_for('main.calendar') }}">View Events</a></li>
+                                            <li><a href="{{ url_for('main.add_calendar_event') }}">Add Event</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="multi-column-dropdown">
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Government Policy</li>
+                                            <li class="divider"></li>                                            
+                                            <li><a href="{{ url_for('main.enacted_policy') }}">Enacted Policy</a></li>
+                                            <li><a href="{{ url_for('main.suggest_policy') }}">Suggest Policy</a></li>
+                                        </ul>
+                                    </div>                                    
+                                    <div class="col-md-4">
+                                        <ul class="multi-column-dropdown">
+                                            <li class="divider"></li>
+                                            <li class="dropdown-header">Chamber of Commerce</li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{ url_for('main.achievements') }}">Achievements</a></li>                                            
+                                        </ul>
+                                    </div>
+                                </div> 
+                            </ul>
+                        </li>
+                        {% endif %}
                         {% if current_user.racer %}
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Racing
@@ -184,11 +224,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
     <script>
-        $(document).ready(() => {
+        $(document).ready(() => {          
             $('#start_utc').css('display', 'none')
             $('[for="start_utc"]').css('display', 'none')
             $('#end_utc').css('display', 'none')
             $('[for="end_utc"]').css('display', 'none')
+            $('#delete_event').css('display', 'none')
+            $('label:contains("Delete Event")').css('display', 'none')
+            if (window.location.href.indexOf("edit") > -1) {
+                $("#start").val(new moment($("#start_utc").val()).format('YYYY-MM-DDTHH:mm'))
+                $("#end").val(new moment($("#end_utc").val()).format('YYYY-MM-DDTHH:mm'))
+                $('#delete_event').css('display', 'inline-block')
+                $('label:contains("Delete Event")').css('display', 'inline-block')
+            }
         });
         $("#start_time").on("change", function() {
             console.log('The time has changed');
