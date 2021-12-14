@@ -76,3 +76,4 @@ Traceback (most recent call last):
     apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
 NameError: name 'background_jobs' is not defined
 2021-12-14 14:25:04,312 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-14 14:38:02,140 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
