@@ -28,6 +28,9 @@ from app.main.utils import (organize_data_by_date, summarize_data, format_curren
                             calculate_payouts, convert_from_milliseconds, post_encrypted_message,
                             post_cancel_to_discord, post_calendar_event_to_discord,
                             parse_urls, check_if_image)
+from flask_wtf.csrf import CSRFProtect
+
+csrf = CSRFProtect()
 
 
 @bp.before_app_request
@@ -68,6 +71,7 @@ def index():
 # CALENDAR START
 
 @bp.route('/calendar', methods=['GET'])
+@csrf.exempt
 def calendar():
     return render_template('calendar.html')
 
@@ -85,7 +89,7 @@ def calendar_events():
             "id": event.id,
             "google_id": event.google_id,
             "user_id": event.user_id,
-            "author": event.author.username,
+            "author": event.author_name,
             "start": event.start,
             "end": event.end,
             "title": event.title,
@@ -101,6 +105,7 @@ def calendar_events():
     return jsonify(output)
 
 @bp.route('/add_calendar_event', methods=['GET','POST'])
+@csrf.exempt
 @login_required
 def add_calendar_event():
     form = AddCalendarEventForm()
@@ -131,7 +136,8 @@ def edit_calendar_event(event_id):
     form = AddCalendarEventForm(start_utc=start_utc, end_utc=end_utc,
                             title=event.title, description=event.description,
                             company=event.company, image=event.image,
-                            location=event.location, cost=event.cost)
+                            location=event.location, cost=event.cost,
+                            author=event.author_name)
     if form.validate_on_submit():
         if form.delete_event.data:
             event.description = form.deletion_reason.data
@@ -154,6 +160,7 @@ def edit_calendar_event(event_id):
         event.user_id=current_user.id
         event.location = form.location.data
         event.cost = form.cost.data
+        event.author_name = form.author.data
         db.session.commit()
         flash('The event has been updated.')
         post_calendar_event_to_discord(event, update=True)
@@ -180,7 +187,7 @@ def add_calendar_event_ui(start, end, start_utc, end_utc):
                             title=form.title.data, description=form.description.data,
                             company=form.company.data, image=form.image.data,
                             user_id=current_user.id, location=form.location.data,
-                            cost=form.cost.data)        
+                            cost=form.cost.data, author_name=form.author.data)        
         db.session.add(event)                            
         db.session.commit()
         post_calendar_event_to_discord(event)
