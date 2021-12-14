@@ -221,6 +221,7 @@ class EncryptedMessageForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class AddCalendarEventForm(FlaskForm):
+    author = StringField(_l('Event Host (Ex. Casper Green)'), validators=[DataRequired()])
     start = DateTimeLocalField('Start Time (Use local time. It will automatically be converted)', format=f'%Y-%m-%dT%H:%M', validators=[DataRequired()])
     start_utc = StringField('Start time UTC formatted')
     end = DateTimeLocalField('End Time (Use local time. It will automatically be converted)', format=f'%Y-%m-%dT%H:%M', validators=[DataRequired()])

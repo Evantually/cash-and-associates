@@ -114,7 +114,7 @@ def add_calendar_event():
                             title=form.title.data, description=form.description.data,
                             company=form.company.data, image=form.image.data,
                             user_id=current_user.id, location=form.location.data,
-                            cost=form.cost.data)        
+                            cost=form.cost.data, author_name=form.author.data)        
         db.session.add(event)                            
         db.session.commit()
         post_calendar_event_to_discord(event)

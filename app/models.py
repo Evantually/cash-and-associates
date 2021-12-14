@@ -484,6 +484,7 @@ class CalendarEvent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     author = db.relationship('User')
+    author_name = db.Column(db.String(128))
     start = db.Column(db.DateTime, default=datetime.utcnow)
     end = db.Column(db.DateTime, default=datetime.utcnow)
     category = db.Column(db.String(128))

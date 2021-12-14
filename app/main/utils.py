@@ -691,7 +691,7 @@ def post_calendar_event_to_discord(event, reminder=False, update=False, deleted=
     for image in images:
         content = content.replace(image, '')
     data = {
-        'username': event.author.username,
+        'username': event.author_name,
         'content': content,
         'embeds': [{
             'fields': [{

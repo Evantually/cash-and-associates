@@ -77,3 +77,7 @@ Traceback (most recent call last):
 NameError: name 'background_jobs' is not defined
 2021-12-14 14:25:04,312 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
 2021-12-14 14:38:02,140 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-14 17:10:30,419 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-14 17:10:32,462 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-14 17:10:33,925 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-14 17:16:30,468 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
