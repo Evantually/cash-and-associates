@@ -1,107 +1,78 @@
-2021-12-12 03:38:56,109 ERROR: Exception on /edit_calendar_event/25 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-14 14:22:31,233 ERROR: Exception on /static/styles/dark-mode.css [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 136, in edit_calendar_event
-    post_calendar_event_to_discord(event, delete=True)
-TypeError: post_calendar_event_to_discord() got an unexpected keyword argument 'delete'
-2021-12-12 03:39:10,497 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 03:39:14,917 ERROR: Exception on /edit_calendar_event/25 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py", line 86, in start_tasks
+    apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+NameError: name 'background_jobs' is not defined
+2021-12-14 14:22:31,234 ERROR: Exception on /static/styles/statistic.css [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 129, in edit_calendar_event
-    form = AddCalendarEventForm(title=event.title, description=event.description,
-AttributeError: 'NoneType' object has no attribute 'title'
-2021-12-12 03:39:35,755 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 03:40:05,258 ERROR: Exception on /add_calendar_event/2021-12-12T04:00AM/2021-12-12T05:00AM/2021-12-12T10:00:00+00:00/2021-12-12T11:00:00+00:00 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py", line 86, in start_tasks
+    apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+NameError: name 'background_jobs' is not defined
+2021-12-14 14:22:31,325 ERROR: Exception on /favicon.ico [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 181, in add_calendar_event_ui
-    post_calendar_event_to_discord(event)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 687, in post_calendar_event_to_discord
-    elif delete:
-NameError: name 'delete' is not defined
-2021-12-12 03:40:30,180 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 03:41:00,894 ERROR: Exception on /edit_calendar_event/26 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py", line 86, in start_tasks
+    apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+NameError: name 'background_jobs' is not defined
+2021-12-14 14:22:31,328 ERROR: Exception on /static/audio/failure.mp3 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 134, in edit_calendar_event
-    post_calendar_event_to_discord(event, deleted=True)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 708, in post_calendar_event_to_discord
-    "value": f'{event.location}' if not delete else f'~~{event.location}~~',
-NameError: name 'delete' is not defined
-2021-12-12 03:41:18,635 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 03:58:34,752 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 04:01:42,197 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 04:39:52,662 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 04:41:32,066 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 04:44:34,827 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-13 19:28:28,441 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-14 04:33:18,336 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-14 04:35:42,477 ERROR: Exception on /add_calendar_event/2021-12-14T05:00AM/2021-12-14T06:00AM/2021-12-14T11:00:00+00:00/2021-12-14T12:00:00+00:00 [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py", line 86, in start_tasks
+    apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+NameError: name 'background_jobs' is not defined
+2021-12-14 14:22:31,330 ERROR: Exception on /static/audio/success.mp3 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 186, in add_calendar_event_ui
-    post_calendar_event_to_discord(event)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 732, in post_calendar_event_to_discord
-    result = requests.post(alert_url, json=data, headers={"Content-Type": "application/json"})
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 119, in post
-    return request('post', url, data=data, json=json, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\api.py", line 61, in request
-    return session.request(method=method, url=url, **kwargs)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 528, in request
-    prep = self.prepare_request(req)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\sessions.py", line 456, in prepare_request
-    p.prepare(
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 316, in prepare
-    self.prepare_url(url, params)
-  File "i:\anaconda\envs\cash\lib\site-packages\requests\models.py", line 390, in prepare_url
-    raise MissingSchema(error)
-requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perhaps you meant http://None?
-2021-12-14 04:36:44,216 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-14 04:50:15,817 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-14 13:52:05,900 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py", line 86, in start_tasks
+    apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+NameError: name 'background_jobs' is not defined
+2021-12-14 14:22:41,334 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py", line 86, in start_tasks
+    apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+NameError: name 'background_jobs' is not defined
+2021-12-14 14:22:51,346 ERROR: Exception on /notifications [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1508, in full_dispatch_request
+    self.try_trigger_before_first_request_functions()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1560, in try_trigger_before_first_request_functions
+    self.ensure_sync(func)()
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py", line 86, in start_tasks
+    apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+NameError: name 'background_jobs' is not defined
+2021-12-14 14:25:04,312 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

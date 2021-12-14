@@ -1,1 +1,1 @@
-web: flask db upgrade; flask translate compile; gunicorn microblog:app --daemon
+web: flask db upgrade; flask translate compile; gunicorn microblog:app --workers 1

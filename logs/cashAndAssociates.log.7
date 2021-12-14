@@ -1,6 +1,4 @@
-2021-12-11 19:36:44,997 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 19:38:30,155 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 19:40:39,343 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-11 22:27:11,490 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -13,26 +11,10 @@ Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
   File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
-    post_calendar_event_to_discord(event)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 678, in post_calendar_event_to_discord
-    images = check_if_image(urls)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 23, in check_if_image
-    site = urlopen(url)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 214, in urlopen
-    return opener.open(url, data, timeout)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 523, in open
-    response = meth(req, response)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 632, in http_response
-    response = self.parent.error(
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 561, in error
-    return self._call_chain(*args)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 494, in _call_chain
-    result = func(*args)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 641, in http_error_default
-    raise HTTPError(req.full_url, code, msg, hdrs, fp)
-urllib.error.HTTPError: HTTP Error 403: Forbidden
-2021-12-11 22:06:15,235 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 22:06:26,038 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+    if datetime(event.start) < datetime.utcnow():
+TypeError: an integer is required (got type str)
+2021-12-11 22:33:14,715 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:33:17,033 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -44,46 +26,15 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
-    post_calendar_event_to_discord(event)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 678, in post_calendar_event_to_discord
-    images = check_if_image(urls)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 23, in check_if_image
-    site = urlopen(url)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 214, in urlopen
-    return opener.open(url, data, timeout)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 523, in open
-    response = meth(req, response)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 632, in http_response
-    response = self.parent.error(
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 561, in error
-    return self._call_chain(*args)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 494, in _call_chain
-    result = func(*args)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 641, in http_error_default
-    raise HTTPError(req.full_url, code, msg, hdrs, fp)
-urllib.error.HTTPError: HTTP Error 403: Forbidden
-2021-12-11 22:08:50,428 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 22:08:52,924 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 24, in check_if_image
-    site = urlopen(url)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 214, in urlopen
-    return opener.open(url, data, timeout)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 523, in open
-    response = meth(req, response)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 632, in http_response
-    response = self.parent.error(
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 561, in error
-    return self._call_chain(*args)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 494, in _call_chain
-    result = func(*args)
-  File "i:\anaconda\envs\cash\lib\urllib\request.py", line 641, in http_error_default
-    raise HTTPError(req.full_url, code, msg, hdrs, fp)
-urllib.error.HTTPError: HTTP Error 403: Forbidden
-
-During handling of the above exception, another exception occurred:
-
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 105, in add_calendar_event
+    starttime = datetime.strptime(start_utc_time, f'%Y-%m-%dT%H%M%SZ')
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '2021-12-12 02:00:00' does not match format '%Y-%m-%dT%H%M%SZ'
+2021-12-11 22:33:47,293 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:33:49,240 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -95,17 +46,15 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
-    post_calendar_event_to_discord(event)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 681, in post_calendar_event_to_discord
-    images = check_if_image(urls)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\utils.py", line 28, in check_if_image
-    except HTTPError:
-NameError: name 'HTTPError' is not defined
-2021-12-11 22:09:34,320 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 22:11:13,315 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 22:23:43,193 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 22:25:59,381 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 105, in add_calendar_event
+    starttime = datetime.strptime(start_utc_time, f'%Y-%m-%d %H%M%S')
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "i:\anaconda\envs\cash\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '2021-12-12 02:00:00' does not match format '%Y-%m-%d %H%M%S'
+2021-12-11 22:34:24,961 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:34:29,298 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -117,11 +66,11 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 110, in add_calendar_event
-    if form.force_event.data == False:
-AttributeError: 'AddCalendarEventForm' object has no attribute 'force_event'
-2021-12-11 22:26:19,419 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-11 22:26:22,242 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 115, in add_calendar_event
+    start=form.start.data, end=form.end.data, start_utc=form.start_utc.data, end_utc=event.end_utc.data,
+AttributeError: 'CalendarEvent' object has no attribute 'end_utc'
+2021-12-11 22:36:21,422 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:36:25,162 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -133,7 +82,38 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
   File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
     return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 111, in add_calendar_event
-    if event.start < datetime.utcnow():
-TypeError: '<' not supported between instances of 'str' and 'datetime.datetime'
-2021-12-11 22:27:09,433 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 118, in add_calendar_event
+    force_event=form.repeat_event.data
+AttributeError: 'AddCalendarEventForm' object has no attribute 'repeat_event'
+2021-12-11 22:36:42,309 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:46:00,443 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:46:58,946 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:48:35,229 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:53:10,636 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:54:58,793 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-11 22:55:03,634 ERROR: Exception on /add_calendar_event [POST] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+Traceback (most recent call last):
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 100, in add_calendar_event
+    if form.validate_on_submit():
+  File "i:\anaconda\envs\cash\lib\site-packages\flask_wtf\form.py", line 100, in validate_on_submit
+    return self.is_submitted() and self.validate()
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\form.py", line 318, in validate
+    return super(Form, self).validate(extra)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\form.py", line 150, in validate
+    if not field.validate(self, extra):
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 226, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 246, in _run_validation_chain
+    validator(form, self)
+TypeError: validate_start_utc() missing 1 required positional argument: 'force_event'
+2021-12-11 22:56:46,752 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]

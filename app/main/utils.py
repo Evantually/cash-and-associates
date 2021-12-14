@@ -1350,14 +1350,4 @@ def check_player_completed_achievements(user):
             db.session.commit()
         else:
             User.query.filter_by(id=user).first().uncomplete_achievement(achieve)
-        db.session.commit()          
-
-def background_jobs(app):
-    with app.app_context():
-        time_intervals = [2880, 1440, 120, 15]
-        events = CalendarEvent.query.all()
-        for event in events:
-            curr_time = datetime.utcnow()
-            for ti in time_intervals:
-                if event.start - timedelta(minutes=ti) <= curr_time  and event.start - timedelta(minutes=ti-1) >= curr_time:
-                    post_calendar_event_to_discord(event, True)
+        db.session.commit()    

@@ -27,7 +27,7 @@ from app.main.utils import (organize_data_by_date, summarize_data, format_curren
                             post_to_discord, calculate_crew_points, async_check_achievements,
                             calculate_payouts, convert_from_milliseconds, post_encrypted_message,
                             post_cancel_to_discord, post_calendar_event_to_discord,
-                            background_jobs, parse_urls, check_if_image)
+                            parse_urls, check_if_image)
 
 
 @bp.before_app_request
