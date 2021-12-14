@@ -10,8 +10,7 @@ cli.register(app)
 
 @app.before_first_request
 def start_tasks():
-        if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-                apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
+        apsched.add_job(func=background_jobs, args=[app], trigger='interval',seconds=60, id="do_job_1")
 
 @app.shell_context_processor
 def make_shell_context():
