@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, DecimalField, BooleanField, SelectField, HiddenField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from wtforms.validators import ValidationError, DataRequired, Length
+from wtforms.validators import ValidationError, DataRequired, Length, InputRequired
 from wtforms.fields.html5 import DateTimeLocalField
 from flask_babel import _, lazy_gettext as _l
 from app.models import User, Product, Category, Car, Track, Crew, CalendarEvent
@@ -32,7 +32,7 @@ class EmptyForm(FlaskForm):
 
 class AddProductForm(FlaskForm):
     product = StringField(_l('Product Name'), validators=[DataRequired()])
-    price = IntegerField(_l('Price'), validators=[DataRequired()])
+    price = IntegerField(_l('Price'), validators=[InputRequired()])
     img_url = StringField(_l('Image URL'))
     sales_item = BooleanField('Sales Item? Check this if you want on your point of sale page.')
     company_item = BooleanField('Company Item? Check this if you want this to appear for all employees.')
@@ -42,8 +42,8 @@ class AddTransactionForm(FlaskForm):
     transaction_type = SelectField(_l('Transaction Type'), choices=[('Expense','Expense'), ('Revenue','Revenue')])
     name = StringField('Transaction Name')
     product = SelectField('Product')
-    price = IntegerField(_l('Price'), validators=[DataRequired()])
-    quantity = IntegerField(_l('Quantity'), validators=[DataRequired()])
+    price = IntegerField(_l('Price'), validators=[InputRequired()])
+    quantity = IntegerField(_l('Quantity'), validators=[InputRequired()])
     category = QuerySelectField(query_factory=lambda: Category.query.all())
     inventory = BooleanField('Inventory item?')
     description = TextAreaField('Details')
@@ -67,8 +67,8 @@ class AddEmployeeForm(FlaskForm):
 
 class AddInventoryForm(FlaskForm):
     product = SelectField('Product')
-    price = IntegerField(_l('Price'), validators=[DataRequired()])
-    quantity = IntegerField(_l('Quantity'), validators=[DataRequired()])
+    price = IntegerField(_l('Price'), validators=[InputRequired()])
+    quantity = IntegerField(_l('Quantity'), validators=[InputRequired()])
     category = QuerySelectField(query_factory=lambda: Category.query.all())
 
 class AddJobForm(FlaskForm):
@@ -134,9 +134,9 @@ class SetupRaceForm(FlaskForm):
     start_time = DateTimeLocalField('Start time', format='%Y-%m-%dT%H:%M')
     utc_time = StringField('UTC Adjusted Time (Let Auto-Fill by re-clicking start time when finished)')
     track = QuerySelectField(query_factory=lambda: Track.query.filter_by(disabled=False).order_by(Track.name).all())
-    laps = IntegerField(_l('Laps'))
+    laps = IntegerField(_l('Laps'), validators=[InputRequired()])
     highest_class = StringField(_l('Highest Class Allowed'))
-    buyin = IntegerField(_l('Buy-in'))
+    buyin = IntegerField(_l('Buy-in'), validators=[InputRequired()])
     octane_member = BooleanField('Octane Member Race')
     octane_prospect = BooleanField('Octane Prospect Race')
     octane_crew = BooleanField('Octane Crew Race')
@@ -153,7 +153,7 @@ class SetupRaceForm(FlaskForm):
 class EditRaceForm(FlaskForm):
     name = StringField(_l('Name'))
     track = QuerySelectField(query_factory=lambda: Track.query.filter_by(disabled=False).order_by(Track.name).all())
-    laps = IntegerField(_l('Laps'))
+    laps = IntegerField(_l('Laps'), validators=[InputRequired()])
     highest_class = StringField(_l('Highest Class Allowed'))
     crew_race = BooleanField('Crew Race?')
     challenging_crew = QuerySelectField(query_factory=lambda: Crew.query.order_by(Crew.name).all())
@@ -189,7 +189,7 @@ class AddCrewForm(FlaskForm):
     name = StringField(_l('Name'))
     image = StringField(_l('Crew Image'))
     home_track = QuerySelectField(query_factory=lambda: Track.query.filter(Track.crew_id==None).order_by(Track.name).all())
-    points = IntegerField(_l('Points'))
+    points = IntegerField(_l('Points'), validators=[InputRequired()])
     submit = SubmitField(_l('Submit'))
 
 class AddToRaceForm(FlaskForm):
@@ -228,7 +228,7 @@ class AddCalendarEventForm(FlaskForm):
     title = StringField(_l('Title'), validators=[DataRequired()])
     description = TextAreaField('Description (Include flyer image link in the text here)', validators=[DataRequired()])
     location = StringField(_l('Location'), validators=[DataRequired()])
-    cost = IntegerField('Cost', validators=[DataRequired()])
+    cost = IntegerField('Cost', validators=[InputRequired()])
     company = StringField(_l('Company'), validators=[DataRequired()])
     image = StringField(_l('Location Image (with .png, .jpg, etc. file extension)'))
     force_event = BooleanField('Force Schedule Event')
