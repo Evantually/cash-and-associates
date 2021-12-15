@@ -3,7 +3,6 @@ from app.models import (User, Transaction, Car, Race, Track, OwnedCar, Notificat
         Message, LapTime, Achievement, AchievementCondition, RacePerformance,
         completed_achievements, player_achievements, CalendarEvent)
 from app.main.utils import background_jobs
-import os
 
 app = create_app()
 cli.register(app)

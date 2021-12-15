@@ -3,9 +3,21 @@
 
 {% block app_content %}
     <h1>{{ title }}</h1>
+    <button id="goback" onclick="goBack()" class="btn btn-danger">Go Back</button>
     <div class="row">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>
     </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    window.onbeforeunload = function() {
+        return true;
+    };
+    function goBack() {
+        window.history.back();
+    }
+</script>
 {% endblock %}

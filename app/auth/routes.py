@@ -9,12 +9,7 @@ from app.auth.forms import LoginForm, RegistrationForm, \
 from app.models import User
 from app.auth.email import send_password_reset_email
 
-from flask_wtf.csrf import CSRFProtect
-
-csrf = CSRFProtect()
-
 @bp.route('/login', methods=['GET', 'POST'])
-@csrf.exempt
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))

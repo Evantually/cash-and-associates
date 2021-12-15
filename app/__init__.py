@@ -22,6 +22,7 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = 'main.tutorials'
 login.login_message = _l('Please log in to access this page.')
+login.session_protection = 'strong'
 mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
@@ -80,6 +81,7 @@ def create_app(config_class=Config):
 
         app.logger.setLevel(logging.INFO)
         app.logger.info('Cash & Associates startup')
+        app.session_interface.get_cookie_domain = lambda _app: None
 
     return app
 

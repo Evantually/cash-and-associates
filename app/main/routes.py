@@ -28,10 +28,6 @@ from app.main.utils import (organize_data_by_date, summarize_data, format_curren
                             calculate_payouts, convert_from_milliseconds, post_encrypted_message,
                             post_cancel_to_discord, post_calendar_event_to_discord,
                             parse_urls, check_if_image)
-from flask_wtf.csrf import CSRFProtect
-
-csrf = CSRFProtect()
-
 
 @bp.before_app_request
 def before_request():
@@ -40,8 +36,6 @@ def before_request():
         db.session.commit()
     g.locale = str(get_locale())
     
-
-
 @bp.route('/', methods=['GET', 'POST'])
 def landing_page():
     return render_template('landing_page.html')
@@ -71,7 +65,6 @@ def index():
 # CALENDAR START
 
 @bp.route('/calendar', methods=['GET'])
-@csrf.exempt
 def calendar():
     return render_template('calendar.html')
 
@@ -105,7 +98,6 @@ def calendar_events():
     return jsonify(output)
 
 @bp.route('/add_calendar_event', methods=['GET','POST'])
-@csrf.exempt
 @login_required
 def add_calendar_event():
     form = AddCalendarEventForm()
