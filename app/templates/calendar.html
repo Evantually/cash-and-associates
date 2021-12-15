@@ -97,14 +97,34 @@
                 {% endif %}
             },
             'beforeCreateSchedule': function(e) {
-                console.log('beforeCreateSchedule', e);
-                var end = new moment(`${e.end._date}`);
-                var start = new moment(`${e.start._date}`);
-                var end_utc = new moment.utc(e.end._date);
-                var start_utc = new moment.utc(e.start._date);
-                console.log(end, start);
-                console.log(`/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}`);
-                window.location.href = `/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}/${start_utc.format('YYYY-MM-DDTHH:mm:ssZ')}/${end_utc.format('YYYY-MM-DDTHH:mm:ssZ')}`;
+                var triggerEventName = e.triggerEventName;
+                console.log(triggerEventName);                
+                if (triggerEventName === 'mouseup') {
+                    if (calendar.getViewName() === 'week') {
+                        console.log('beforeCreateSchedule', e);
+                        var end = new moment(`${e.end._date}`);
+                        var start = new moment(`${e.start._date}`);
+                        var end_utc = new moment.utc(e.end._date);
+                        var start_utc = new moment.utc(e.start._date);
+                        console.log(end, start);
+                        console.log(`/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}`);
+                        window.location.href = `/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}/${start_utc.format('YYYY-MM-DDTHH:mm:ssZ')}/${end_utc.format('YYYY-MM-DDTHH:mm:ssZ')}`;
+                        e.guide.clearGuideElement();
+                    }
+                }
+                if (triggerEventName === 'dblclick') {
+                    if (calendar.getViewName() === 'month') {
+                        console.log('beforeCreateSchedule', e);
+                        var end = new moment(`${e.end._date}`);
+                        var start = new moment(`${e.start._date}`);
+                        var end_utc = new moment.utc(e.end._date);
+                        var start_utc = new moment.utc(e.start._date);
+                        console.log(end, start);
+                        console.log(`/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}`);
+                        window.location.href = `/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}/${start_utc.format('YYYY-MM-DDTHH:mm:ssZ')}/${end_utc.format('YYYY-MM-DDTHH:mm:ssZ')}`;
+                        e.guide.clearGuideElement();
+                    }
+                }
                 e.guide.clearGuideElement();
             }
         });
