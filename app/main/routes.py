@@ -68,6 +68,10 @@ def index():
 def calendar():
     return render_template('calendar.html')
 
+@bp.route('/calendarview', methods=['GET'])
+def calendarview():
+    return render_template('calendarnoninteractive.html')
+
 @bp.route('/calendar_events', methods=['GET'])
 def calendar_events():
     output = {"entries": []}

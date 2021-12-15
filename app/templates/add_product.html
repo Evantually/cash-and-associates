@@ -13,10 +13,13 @@
 {% block scripts %}
 {{ super() }}
 <script>
-    window.onbeforeunload = function() {
-        return true;
-    };
     function goBack() {
+        window.onbeforeunload = function(e) {
+            console.log(e)
+            if (e.srcElement.activeElement.id == 'goback') {
+                return true;
+            }            
+        };
         window.history.back();
     }
 </script>

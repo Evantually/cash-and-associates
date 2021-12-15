@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block metas %}
+<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css" />
+<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+{% endblock %}
+
+{% block app_content %}
+    <div id="buttoncontrols">
+        <button id="today" type="button" class="btn btn-primary calendar-btn calendar-move-today">Today</button>
+        <button id="previous" type="button" class="btn btn-primary calendar-btn calendar-move-day"><i class="arrow left"></i></button>
+        <button id ="next" type="button" class="btn btn-primary calendar-btn calendar-move-day"><i class="arrow right"></i></button>
+        <button id ="week" type="button" class="btn btn-primary calendar-btn calendar-move-day">Week View</button>
+        <button id ="month" style="display: none;" type="button" class="btn btn-primary calendar-btn calendar-move-day">Month View</button>
+    </div>
+    <div id="calendar" style="height: 800px;"></div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
+<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+<script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
+<script>
+    $('nav').css('display', 'none')
+    var data;    
+    var promise = $.get('/calendar_events', (receivedData) => {
+        data = receivedData
+    }, "json");
+    promise.done(() => {
+        console.log(data);
+        var Calendar = tui.Calendar;
+        var calendar = new Calendar('#calendar', {
+            defaultView: 'month',
+            taskView: false,
+            milestoneView: false,
+            template: {
+                time: function(schedule) {
+                    return `${schedule.title} ${new moment(new Date(schedule.start)).format('LT')}`;
+                }
+            },
+            calendars: [
+                {
+                    id: '1',
+                    name: 'Upcoming Events',
+                    color: '#ffffff',
+                    bgColor: '#9e5fff',
+                    dragBgColor: '#9e5fff',
+                    borderColor: '#9e5fff'
+                }
+            ],
+            useDetailPopup: true,
+            isReadOnly: true
+        });
+        schedules = [];
+        data["entries"].forEach((event) => {
+            schedules.push({
+                id: event.id.toString(),
+                calendarId: "1",
+                title: event.title,
+                category: 'time',
+                start: new Date(new moment(event.start).format()),
+                end: new Date(new moment(event.end).format()),
+                body: event.description,
+                location: event.location,
+                raw: {
+                    companyname: event.company,
+                    cost: event.cost,
+                    author: event.author,
+                    google_id: event.google_id,
+                    author_id: event.user_id,
+                    image: event.image,
+                    images: event.images
+                },                                                
+                isReadOnly: true
+            })
+        });
+        console.log(schedules);
+        calendar.createSchedules(schedules);
+        calendar.on({
+            'clickSchedule': (e) => {
+                console.log('clickSchedule', e);
+                $('.tui-full-calendar-popup-detail').each((index, elem) => {                    
+                    $(elem).css('color', '#010b13')
+                });
+                d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).text(`Cost: $${e.schedule.raw.cost}`)
+                for (i=0;i<e.schedule.raw.images.length;i++) {
+                    d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('img').attr('src', e.schedule.raw.images[i]).attr("width", "100%")    
+                }
+                d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).text(`Hosted by: ${e.schedule.raw.author} & ${e.schedule.raw.companyname}`)
+                d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('img').attr('src', e.schedule.raw.image).attr("width", "100%")
+                {% if current_user.is_authenticated %}
+                if ({{ current_user.id }}==e.schedule.raw.author_id) {
+                    d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('a').attr('href', `/edit_calendar_event/${e.schedule.id}`).text(`Edit this event.`)
+                }
+                {% endif %}
+            },
+            'beforeCreateSchedule': function(e) {
+                var triggerEventName = e.triggerEventName;
+                console.log(triggerEventName);                
+                if (triggerEventName === 'mouseup') {
+                    if (calendar.getViewName() === 'week') {
+                        console.log('beforeCreateSchedule', e);
+                        var end = new moment(`${e.end._date}`);
+                        var start = new moment(`${e.start._date}`);
+                        var end_utc = new moment.utc(e.end._date);
+                        var start_utc = new moment.utc(e.start._date);
+                        console.log(end, start);
+                        console.log(`/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}`);
+                        window.location.href = `/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}/${start_utc.format('YYYY-MM-DDTHH:mm:ssZ')}/${end_utc.format('YYYY-MM-DDTHH:mm:ssZ')}`;
+                        e.guide.clearGuideElement();
+                    }
+                }
+                if (triggerEventName === 'dblclick') {
+                    if (calendar.getViewName() === 'month') {
+                        console.log('beforeCreateSchedule', e);
+                        var end = new moment(`${e.end._date}`);
+                        var start = new moment(`${e.start._date}`);
+                        var end_utc = new moment.utc(e.end._date);
+                        var start_utc = new moment.utc(e.start._date);
+                        console.log(end, start);
+                        console.log(`/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}`);
+                        window.location.href = `/add_calendar_event/${start.format('YYYY-MM-DDThh:mmA')}/${end.format('YYYY-MM-DDThh:mmA')}/${start_utc.format('YYYY-MM-DDTHH:mm:ssZ')}/${end_utc.format('YYYY-MM-DDTHH:mm:ssZ')}`;
+                        e.guide.clearGuideElement();
+                    }
+                }
+                e.guide.clearGuideElement();
+            }
+        });
+        $('#today').on("click", () => {
+            calendar.today();
+        });
+        $('#previous').on("click", () => {
+            calendar.prev();
+        });
+        $('#next').on("click", () => {
+            calendar.next();
+        });
+        $('#week').on("click", () => {
+            calendar.changeView('week', true);
+            $('#month').css('display', 'inline-block');
+            $('#week').css('display', 'none');
+        });
+        $('#month').on("click", () => {
+            calendar.changeView('month', true);
+            $('#week').css('display', 'inline-block');
+            $('#month').css('display', 'none');
+        });
+        calendar.render();
+    })
+</script>
+{% endblock %}

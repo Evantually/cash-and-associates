@@ -1,4 +1,4 @@
-2021-12-12 00:54:10,685 ERROR: Exception on /add_calendar_event/2021-12-13 07:12 AM/2021-12-13 11:12 AM [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-12 01:03:00,386 ERROR: Exception on /add_calendar_event/2021-12-13T07:00/2021-12-13T11:00 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -53,8 +53,8 @@ Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 784, in _value
     return self.data and self.data.strftime(self.format) or ''
 AttributeError: 'str' object has no attribute 'strftime'
-2021-12-12 00:55:17,424 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 00:55:30,421 ERROR: Exception on /add_calendar_event/2021-12-13 07:12 AM/2021-12-13 11:12 AM [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
+2021-12-12 01:04:09,236 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-12 01:04:18,440 ERROR: Exception on /add_calendar_event/2021-12-13T07:00/2021-12-13T11:00 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
 Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
     response = self.full_dispatch_request()
@@ -109,20 +109,5 @@ Traceback (most recent call last):
   File "i:\anaconda\envs\cash\lib\site-packages\wtforms\fields\core.py", line 784, in _value
     return self.data and self.data.strftime(self.format) or ''
 AttributeError: 'str' object has no attribute 'strftime'
-2021-12-12 01:01:13,856 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
-2021-12-12 01:01:19,263 ERROR: Exception on /add_calendar_event/2021-12-13T07:00am+00:00/2021-12-13T11:00am+00:00 [GET] [in i:\anaconda\envs\cash\lib\site-packages\flask\app.py:1454]
-Traceback (most recent call last):
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 2070, in wsgi_app
-    response = self.full_dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "i:\anaconda\envs\cash\lib\site-packages\flask\app.py", line 1499, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "i:\anaconda\envs\cash\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
-    return func(*args, **kwargs)
-  File "E:\Evan\Documents\NewDayRP\cash-and-associates\app\main\routes.py", line 123, in add_calendar_event_ui
-    st = datetime(start)
-TypeError: an integer is required (got type str)
-2021-12-12 01:02:50,647 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-12 01:07:30,492 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
+2021-12-12 01:14:31,529 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:82]
