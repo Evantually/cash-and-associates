@@ -711,7 +711,7 @@ def post_calendar_event_to_discord(event, reminder=False, update=False, deleted=
                 "inline": True
             },{
                 "name": "Other Events",
-                "value": f"[Calendar]({'https://www.cashaccountancy.com/calendar' if reminder else url_for('main.calendar', _external=True)})",
+                "value": f"[Calendar]({'https://www.discord.gg/simplyrp' if reminder else url_for('main.calendar', _external=True)})",
                 "inline": True
             }],            
             'footer': {
