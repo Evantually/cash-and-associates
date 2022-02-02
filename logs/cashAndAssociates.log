@@ -61,3 +61,6 @@ jinja2.exceptions.UndefinedError: there is no parent block called 'scripts'.
 2022-02-02 00:16:35,988 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:83]
 2022-02-02 00:17:52,734 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:83]
 2022-02-02 00:18:49,582 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:83]
+2022-02-02 00:34:18,470 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:83]
+2022-02-02 00:37:07,431 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:83]
+2022-02-02 00:38:54,325 INFO: Cash & Associates startup [in E:\Evan\Documents\NewDayRP\cash-and-associates\app\__init__.py:83]
