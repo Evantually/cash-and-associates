@@ -8,12 +8,25 @@
 {% endblock %}
 
 {% block app_content %}
+    <div id="simply">
+        <div class="row">
+            <div class="col-md-2">
+                <img width="100px" height="100px" src="{{ url_for('static', filename='images/SRP-500.png') }}">
+            </div>
+            <div class="col-md-2">
+                <h3><a style="color:white;" href="https://www.discord.gg/simplyrp">Simply Roleplay Events Calendar</a></h3>
+            </div>
+            <div class="col-md-8">
+            </div>
+        </div>
+    </div>
     <div id="buttoncontrols">
         <button id="today" type="button" class="btn btn-primary calendar-btn calendar-move-today">Today</button>
         <button id="previous" type="button" class="btn btn-primary calendar-btn calendar-move-day"><i class="arrow left"></i></button>
         <button id ="next" type="button" class="btn btn-primary calendar-btn calendar-move-day"><i class="arrow right"></i></button>
         <button id ="week" type="button" class="btn btn-primary calendar-btn calendar-move-day">Week View</button>
         <button id ="month" style="display: none;" type="button" class="btn btn-primary calendar-btn calendar-move-day">Month View</button>
+        <span class="calendar-render-range"></span>
     </div>
     <div id="calendar" style="height: 800px;"></div>
 {% endblock %}
@@ -40,12 +53,12 @@
             template: {
                 time: function(schedule) {
                     return `${schedule.title} ${new moment(new Date(schedule.start)).format('LT')}`;
-                }
+                },
             },
             calendars: [
                 {
                     id: '1',
-                    name: 'Upcoming Events',
+                    name: 'Simply Roleplay Upcoming Events',
                     color: '#ffffff',
                     bgColor: '#9e5fff',
                     dragBgColor: '#9e5fff',
@@ -91,10 +104,11 @@
                     d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('img').attr('src', e.schedule.raw.images[i]).attr("width", "100%")    
                 }
                 d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).text(`Hosted by: ${e.schedule.raw.author} & ${e.schedule.raw.companyname}`)
-                d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('img').attr('src', e.schedule.raw.image).attr("width", "100%")
+                d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('a').attr('href', 'https://www.discord.gg/simplyrp').text(`This calendar is maintained by the wonderful team at Simply Roleplay.`)
+                d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('a').attr('href', 'https://www.discord.gg/simplyrp').append('img').attr('src', "{{ url_for('static', filename='images/SRP-500.png') }}").attr("width", "100%")
                 {% if current_user.is_authenticated %}
                 if ({{ current_user.id }}==e.schedule.raw.author_id) {
-                    d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('a').attr('href', `/edit_calendar_event/${e.schedule.id}`).text(`Edit this event.`)
+                    d3.select('.tui-full-calendar-popup-container').append('div').classed('tui-full-calendar-popup-detail-item', true).append('span').classed('tui-full-calendar-content', true).append('a').attr('href', `https://www.discord.gg/simplyrp`).text(`Edit this event.`)
                 }
                 {% endif %}
             },
