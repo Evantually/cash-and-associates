@@ -78,6 +78,21 @@ def jrp_register():
     return render_template('auth/register.html', title=_('Register'),
                            form=form)
 
+@bp.route('/srp_register', methods=['GET', 'POST'])
+def srp_register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data, srp=True)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash(_('Congratulations, you are now a registered user!'))
+        return redirect(url_for('auth.login'))
+    return render_template('auth/register.html', title=_('Register'),
+                           form=form)
+
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:

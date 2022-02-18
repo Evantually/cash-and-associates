@@ -674,7 +674,7 @@ def post_cancel_to_discord(race):
             print("Payload delivered successfully, code {}.".format(result.status_code))    
 
 def post_calendar_event_to_discord(event, reminder=False, update=False, deleted=False):
-    alert_url = Config.TESTING_WEBHOOK
+    alert_url = Config.CALENDAR_WEBHOOK
     st1, st2, st3 = get_timezones(event.start, f'%a %b %d@%I:%M %p %Z')
     end1, end2, end3 = get_timezones(event.end, f'%a %b %d@%I:%M %p %Z')
     time_to_event = get_time_until(event.start)

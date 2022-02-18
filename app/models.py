@@ -52,6 +52,7 @@ class User(UserMixin, db.Model):
     race_host = db.Column(db.Boolean, default=False)
     racer = db.Column(db.Boolean, default=False)
     jrp = db.Column(db.Boolean, default=False)
+    srp = db.Column(db.Boolean, default=False)
     nd = db.Column(db.Boolean, default=False)
     race_crew = db.Column(db.String(120))
     crew_id = db.Column(db.Integer, db.ForeignKey('crew.id'))
