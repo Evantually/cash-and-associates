@@ -330,7 +330,7 @@ def manage_subscriptions(user_id):
         user = User.query.filter_by(id=user_id).first_or_404()
         form = ManageSubscriptionForm(hunter=user.hunter, fisher=user.fisher, postal=user.postal,
                                     blackjack=user.blackjack, personal=user.personal, business=user.business,
-                                    jrp=user.jrp, nd=user.nd, auto_renew=user.auto_renew)
+                                    jrp=user.jrp, srp=user.srp, nd=user.nd, auto_renew=user.auto_renew)
         if form.validate_on_submit():
             user.hunter = form.hunter.data
             user.fisher = form.fisher.data
