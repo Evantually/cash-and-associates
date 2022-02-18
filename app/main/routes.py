@@ -339,6 +339,7 @@ def manage_subscriptions(user_id):
             user.business = form.business.data
             user.blackjack = form.blackjack.data
             user.jrp = form.jrp.data
+            user.srp = form.srp.data
             user.nd = form.nd.data
             user.auto_renew = form.auto_renew.data
             if form.extend.data:
